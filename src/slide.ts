@@ -2,7 +2,7 @@
  * PptxGenJS: Slide Class
  */
 
-import { CHART_NAME, SHAPE_NAME } from './core-enums'
+import { CHART_NAME, ChartType, SHAPE_NAME } from './core-enums'
 import {
 	AddSlideProps,
 	BackgroundProps,
@@ -11,6 +11,7 @@ import {
 	IChartOpts,
 	IChartOptsLib,
 	IOptsChartData,
+	IOptsCustomChartData,
 	ISlideObject,
 	ISlideRel,
 	ISlideRelChart,
@@ -47,7 +48,7 @@ export default class Slide {
 	public _slideObjects: ISlideObject[]
 	public _newAutoPagedSlides: PresSlide[]
 
-	constructor (params: {
+	constructor(params: {
 		addSlide: (options?: AddSlideProps) => PresSlide
 		getSlide: (slideNum: number) => PresSlide
 		presLayout: PresLayout
@@ -83,7 +84,7 @@ export default class Slide {
 	 * @deprecated in v3.3.0 - use `background` instead
 	 */
 	private _bkgd: string | BackgroundProps
-	public set bkgd (value: string | BackgroundProps) {
+	public set bkgd(value: string | BackgroundProps) {
 		this._bkgd = value
 		if (!this._background || !this._background.color) {
 			if (!this._background) this._background = {}
@@ -91,7 +92,7 @@ export default class Slide {
 		}
 	}
 
-	public get bkgd (): string | BackgroundProps {
+	public get bkgd(): string | BackgroundProps {
 		return this._bkgd
 	}
 
@@ -105,13 +106,13 @@ export default class Slide {
 	 * @since v3.3.0
 	 */
 	private _background: BackgroundProps
-	public set background (props: BackgroundProps) {
+	public set background(props: BackgroundProps) {
 		this._background = props
 		// Add background (image data/path must be captured before `exportPresentation()` is called)
 		if (props) genObj.addBackgroundDefinition(props, this)
 	}
 
-	public get background (): BackgroundProps {
+	public get background(): BackgroundProps {
 		return this._background
 	}
 
@@ -120,11 +121,11 @@ export default class Slide {
 	 * @type {HexColor}
 	 */
 	private _color: HexColor
-	public set color (value: HexColor) {
+	public set color(value: HexColor) {
 		this._color = value
 	}
 
-	public get color (): HexColor {
+	public get color(): HexColor {
 		return this._color
 	}
 
@@ -132,24 +133,24 @@ export default class Slide {
 	 * @type {boolean}
 	 */
 	private _hidden: boolean
-	public set hidden (value: boolean) {
+	public set hidden(value: boolean) {
 		this._hidden = value
 	}
 
-	public get hidden (): boolean {
+	public get hidden(): boolean {
 		return this._hidden
 	}
 
 	/**
 	 * @type {SlideNumberProps}
 	 */
-	public set slideNumber (value: SlideNumberProps) {
+	public set slideNumber(value: SlideNumberProps) {
 		// NOTE: Slide Numbers: In order for Slide Numbers to function they need to be in all 3 files: master/layout/slide
 		this._slideNumberProps = value
 		this._setSlideNum(value)
 	}
 
-	public get slideNumber (): SlideNumberProps {
+	public get slideNumber(): SlideNumberProps {
 		return this._slideNumberProps
 	}
 
@@ -164,13 +165,228 @@ export default class Slide {
 	 * @param {IChartOpts} options - chart options
 	 * @return {Slide} this Slide
 	 */
-	addChart (type: CHART_NAME | IChartMulti[], data: IOptsChartData[], options?: IChartOpts): Slide {
+	addChart(type: CHART_NAME | IChartMulti[], data: IOptsChartData[] | IOptsCustomChartData[], options?: IChartOpts): Slide {
 		// FUTURE: TODO-VERSION-4: Remove first arg - only take data and opts, with "type" required on opts
 		// Set `_type` on IChartOptsLib as its what is used as object is passed around
-		const optionsWithType: IChartOptsLib = options || {}
-		optionsWithType._type = type
-		genObj.addChartDefinition(this, type, data, options)
-		return this
+		if (type === ChartType.funnel) {
+			this.generateFunnelChart(type, data as IOptsCustomChartData[], options);
+		} else {
+			const optionsWithType: IChartOptsLib = options || {}
+			optionsWithType._type = type
+			genObj.addChartDefinition(this, type, data as IOptsChartData[], options)
+		}
+		return this;
+	}
+
+	// generateFunnelChart(type: CHART_NAME | IChartMulti[], data: IOptsCustomChartData[], options?: IChartOpts): void {
+	// 	const slideWidth = 10; // Define the width of the slide
+	// 	const chartWidth = data.length * 1; // Define the width of the chart based on the number of steps (1 step = width 1)
+
+	// 	// Setting Options if not present
+	// 	options = options ?? {}
+	// 	options.align = options?.align ?? 'center' // Setting Alignment Center if not present
+	// 	options.x = 0.5 // X Coordinate cannot be changed
+	// 	options.y = 1.5 // Y Coordinate cannot be changed
+
+	// 	let initialX = this.setInitialXPositionFunnelChart(options, slideWidth, chartWidth);
+
+	// 	let alignmentPosX = this.funnelChartAlignment(options.align, initialX);
+
+	// 	const globalOptions: any = {
+	// 		x: alignmentPosX,
+	// 		y: options?.y ?? 1.5,
+	// 		w: chartWidth,
+	// 		h: options?.h ?? 2
+	// 	};
+
+	// 	let prevH = globalOptions.h; // Initialize previous height
+	// 	let prevY = globalOptions.y; // Initialize previous height
+
+	// 	data.sort((a, b) => b.value - a.value);
+
+	// 	let prevX = globalOptions.x; // Initialize previous X position
+
+	// 	data.forEach((info: IOptsCustomChartData, index: number) => {
+	// 		const optionsObj = {
+	// 			x: prevX, // Use previous X position
+	// 			y: prevY,
+	// 			h: prevH, // Use previous height
+	// 			w: 1,
+	// 			color: options?.color ?? '000000',
+	// 			fontSize: options?.fontSize ?? 12,
+	// 			align: options?.align ?? 'left'
+	// 		};
+
+	// 		if (options.chartColors && options.chartColors?.length > 0) {
+	// 			Object.assign(optionsObj, {
+	// 				fill: {
+	// 					color: options.chartColors[index]
+	// 				}
+	// 			});
+	// 		} else {
+	// 			Object.assign(optionsObj, {
+	// 				fill: {
+	// 					color: '000000'
+	// 				}
+	// 			});
+	// 		}
+
+	// 		// Add text with updated options
+	// 		const text = info.type === 'percent' ? `${info.value}%` : `${info.value}`;
+	// 		this.addText(text, optionsObj);
+
+	// 		// Update previous Y position and height
+	// 		prevH -= 0.3; // Adjust the decrement as needed for height
+	// 		prevY += 0.2;
+
+	// 		// Update previous X position for the next step
+	// 		prevX += 1;
+	// 	});
+	// }
+
+	generateFunnelChart(type: CHART_NAME | IChartMulti[], data: IOptsCustomChartData[], options?: IChartOpts): void {
+		const slideWidth = 10; // Define the width of the slide
+		const chartWidth = data.length * 1; // Define the width of the chart based on the number of steps (1 step = width 1)
+
+		// Setting Options if not present
+		options = options ?? {}
+		options.align = options?.align ?? 'center' // Setting Alignment Center if not present
+		options.x = 0.5 // X Coordinate cannot be changed
+		options.y = 1.5 // Y Coordinate cannot be changed
+		options.color = options.color ?? 'ffffff'
+		options.position = options.position ?? 'left'
+
+		if(!options.chartColors || options.chartColors?.length === 0) {
+			let colorsDefaultArr = []
+			for(let i = 0; i < data.length;i++) {
+				colorsDefaultArr.push(this.getRandomHexCode())
+			}
+			options.chartColors = colorsDefaultArr
+		}
+
+		if(options.position === 'right') {
+			options.y = 2.5
+		}
+
+		let initialX = this.setInitialXPositionFunnelChart(options, slideWidth, chartWidth);
+
+		let alignmentPosX = this.funnelChartAlignment(options.align, initialX);
+
+		if(options.position === 'left') {
+			data.sort((a, b) => b.value - a.value);
+		} else if(options.position === 'right') {
+			data.sort((a, b) => a.value - b.value);
+		} else {
+			data.sort((a, b) => b.value - a.value);
+		}
+
+		const globalOptions: any = {
+			x: alignmentPosX,
+			y: options?.y ?? 1.5,
+			w: chartWidth,
+			h: options?.h ?? 2
+		};
+
+		const barHeights = []
+
+		let prevH = globalOptions.h; // Initialize previous height
+		let prevY = globalOptions.y; // Initialize previous height
+
+		data.forEach(()=>{
+			barHeights.push(prevH)
+			prevH -= 0.3
+		})
+
+		let prevX = globalOptions.x; // Initialize previous X position
+		if(options.position === 'right') {
+			barHeights.reverse()
+		}
+		data.forEach((info: IOptsCustomChartData, index: number) => {
+			const optionsObj = {
+				x: prevX, // Use previous X position
+				y: prevY,
+				h: barHeights[index], // Use previous height
+				w: 1,
+				color: options?.color ?? '000000',
+				fontSize: options?.fontSize ?? 12,
+				align: options?.align ?? 'left'
+			};
+
+			if (options.chartColors && options.chartColors?.length > 0) {
+				Object.assign(optionsObj, {
+					fill: {
+						color: options.chartColors[index]
+					}
+				});
+			} else {
+				Object.assign(optionsObj, {
+					fill: {
+						color: '000000'
+					}
+				});
+			}
+
+			// Add text with updated options
+			const text = info.type === 'percent' ? `${info.value}%` : `${info.value}`;
+			this.addText(text, optionsObj);
+
+			// Update previous Y position and height
+			// prevH -= 0.3; // Adjust the decrement as needed for height
+			// prevY += -(0.2);
+			if(options.position === 'left') {
+				prevY += 0.2;
+			} else if(options.position === 'right') {
+				prevY += -(0.2);
+			}
+
+			// Update previous X position for the next step
+			prevX += 1;
+		});
+	}
+
+	funnelChartAlignment(alignValue, initialX) {
+		let alignmentPosX;
+
+		switch (alignValue) {
+			case 'left':
+				alignmentPosX = initialX + 0.5
+				break
+			case 'right':
+				alignmentPosX = initialX - 0.5
+				break;
+			case 'center':
+				alignmentPosX = initialX
+				break;
+			default:
+				alignmentPosX = initialX
+				break
+		}
+
+		return alignmentPosX
+	}
+
+	setInitialXPositionFunnelChart(options, slideWidth, chartWidth): any {
+		let initialX;
+		if (options?.align === 'center') {
+			initialX = (slideWidth - chartWidth) / 2; // Calculate the initial X position to center the chart
+		} else if (options?.align === 'left') {
+			initialX = 0; // Align chart to the left
+		} else if (options?.align === 'right') {
+			initialX = slideWidth - chartWidth; // Align chart to the right
+		} else {
+			initialX = options?.x ?? 0.5; // Default to provided x position if align value is not specified
+		}
+
+		return initialX;
+	}
+
+	getRandomHexCode() {
+		const letters = '0123456789ABCDEF';
+		let color = '#';
+		for (let i = 0; i < 6; i++) {
+		  color += letters[Math.floor(Math.random() * 16)];
+		}
+		return color;
 	}
 
 	/**
@@ -178,7 +394,7 @@ export default class Slide {
 	 * @param {ImageProps} options - image options
 	 * @return {Slide} this Slide
 	 */
-	addImage (options: ImageProps): Slide {
+	addImage(options: ImageProps): Slide {
 		genObj.addImageDefinition(this, options)
 		return this
 	}
@@ -188,7 +404,7 @@ export default class Slide {
 	 * @param {MediaProps} options - media options
 	 * @return {Slide} this Slide
 	 */
-	addMedia (options: MediaProps): Slide {
+	addMedia(options: MediaProps): Slide {
 		genObj.addMediaDefinition(this, options)
 		return this
 	}
@@ -199,7 +415,7 @@ export default class Slide {
 	 * @param {string} notes - notes to add to slide
 	 * @return {Slide} this Slide
 	 */
-	addNotes (notes: string): Slide {
+	addNotes(notes: string): Slide {
 		genObj.addNotesDefinition(this, notes)
 		return this
 	}
@@ -210,7 +426,7 @@ export default class Slide {
 	 * @param {ShapeProps} options - shape options
 	 * @return {Slide} this Slide
 	 */
-	addShape (shapeName: SHAPE_NAME, options?: ShapeProps): Slide {
+	addShape(shapeName: SHAPE_NAME, options?: ShapeProps): Slide {
 		// NOTE: As of v3.1.0, <script> users are passing the old shape object from the shapes file (orig to the project)
 		// But React/TypeScript users are passing the shapeName from an enum, which is a simple string, so lets cast
 		// <script./> => `pptx.shapes.RECTANGLE` [string] "rect" ... shapeName['name'] = 'rect'
@@ -226,7 +442,7 @@ export default class Slide {
 	 * @param {TableProps} options - table options
 	 * @return {Slide} this Slide
 	 */
-	addTable (tableRows: TableRow[], options?: TableProps): Slide {
+	addTable(tableRows: TableRow[], options?: TableProps): Slide {
 		// FUTURE: we pass `this` - we dont need to pass layouts - they can be read from this!
 		this._newAutoPagedSlides = genObj.addTableDefinition(this, tableRows, options, this._slideLayout, this._presLayout, this.addSlide, this.getSlide)
 		return this
@@ -238,7 +454,7 @@ export default class Slide {
 	 * @param {TextPropsOptions} options - text options
 	 * @return {Slide} this Slide
 	 */
-	addText (text: string | TextProps[], options?: TextPropsOptions): Slide {
+	addText(text: string | TextProps[], options?: TextPropsOptions): Slide {
 		const textParam = typeof text === 'string' || typeof text === 'number' ? [{ text, options }] : text
 		genObj.addTextDefinition(this, textParam, options, false)
 		return this
