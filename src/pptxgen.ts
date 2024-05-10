@@ -790,6 +790,7 @@ export default class PptxGenJS implements IPresentationProps {
 		pptx.layout = 'LAYOUT_WIDE';
 		this.slide2(pptx);
 		this.slide4(pptx);
+		this.slide5(pptx);
 		this.slide6(pptx);
 		this.slide7(pptx);
 		this.slide8(pptx);
@@ -1014,6 +1015,120 @@ export default class PptxGenJS implements IPresentationProps {
 			color: '363636',
 		};
 		slide.addText('Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)', endTextOpts2);
+	}
+
+	slide5(pptx) {
+		let slide = pptx.addSlide();
+		let funnelChartData = [
+			{
+			  name:'Funnel Step 1',
+			  value: 100,
+			  type: 'percent'
+			},
+			{
+			  name:'Funnel Step 2',
+			  value: 80,
+			  type: 'percent'
+			},
+			{
+			  name:'Funnel Step 3',
+			  value: 13,
+			  type: 'percent'
+			},
+			{
+			  name:'Funnel Step 4',
+			  value: 10,
+			  type: 'percent'
+			},
+		  ]
+
+		const chartOptions = {
+			h: 2,   // height of the chart
+			color:'ffffff', // Text Color
+			chartColors: ['7FA1F9', 'F9B27E', '885EE0', '8ED19C'], // Bar Colors
+			align: 'left',
+			fontSize: 12,
+			position: 'left',
+		  };
+		  slide.addChart(pptx.ChartType.funnel, funnelChartData, chartOptions);
+
+		  let tableData = [
+			["", "Absolute", "Relative", "Conversion Rate"],
+			["Total", "X", "X%", ''],
+			["Funnel Step 1", "X", "X%", "X%"],
+			["Funnel Step 2", "X", "X%", "X%"],
+			["Funnel Step 3", "X", "X%", "X%"],
+		]
+
+		slide.addText("hello", {
+			w: '5%',
+			h: '15%',
+			x: '52%',
+			y:'20%',
+			color: '779DFF',
+			fill: '779DFF'
+		})
+
+		slide.addText("hello", {
+			w: '5%',
+			h: '15%',
+			x: '52%',
+			y:'35%',
+			color: 'F9B27E',
+			fill: 'F9B27E'
+		})
+
+		slide.addText("hello", {
+			w: '5%',
+			h: '15%',
+			x: '52%',
+			y:'50%',
+			color: '885EE0',
+			fill: '885EE0'
+		})
+
+		slide.addText("hello", {
+			w: '5%',
+			h: '15%',
+			x: '52%',
+			y:'65%',
+			color: '8ED19C',
+			fill: '8ED19C'
+		})
+
+		let tableOpts: any = {
+			w: "40%", // Set width to 40% of slide for each table
+			h: "60%", // Set height to 100% of slide for each table
+			fill: 'F7F7F7',
+			font_size: 12,
+			color: '363636',
+			// border: { // This removes borders
+			// 	pt: 0,
+			// 	color: 'none'
+			// },
+			// gridLineColor: 'none'
+		};
+
+		let Table = slide.addTable(tableData, { ...tableOpts, x: '55%', y: '20%' });
+		[Table].forEach(table => {
+			table._slideObjects.forEach((slideObject) => {
+				if (slideObject._type === 'table') {
+					slideObject.arrTabRows.forEach((row, index) => {
+						if (index === 0) {
+							row.forEach(cell => {
+								cell.options.fill = 'ffffff';
+								cell.options.color = '000000'
+							});
+						}
+						if (index % 2 == 0 && index !== 0) { // Odd-numbered row
+							row.forEach(cell => {
+								cell.options.fill = 'F5FAFD';
+							});
+						}
+					});
+				}
+			});
+		});
 	}
 
 	slide6(pptx) {
