@@ -1221,6 +1221,14 @@ export interface IOptsCustomChartData {
 	value: number
 	type?: string
 }
+
+export interface IOptsCustomChartWaterfallData {
+	labelsY: string[] | number[]
+	labelsX: string[] | number[]
+	values: string[] | number[]
+	type?: string,
+	fill: string
+}
 export interface IChartPropsFillLine {
 	/**
 	 * PowerPoint: Format Chart Area/Plot > Border ["Line"]

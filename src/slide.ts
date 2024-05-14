@@ -2,7 +2,7 @@
  * PptxGenJS: Slide Class
  */
 
-import { CHART_NAME, ChartType, SHAPE_NAME } from './core-enums'
+import { CHART_NAME, ChartType, SHAPE_NAME, ShapeType } from './core-enums'
 import {
 	AddSlideProps,
 	BackgroundProps,
@@ -12,6 +12,7 @@ import {
 	IChartOptsLib,
 	IOptsChartData,
 	IOptsCustomChartData,
+	IOptsCustomChartWaterfallData,
 	ISlideObject,
 	ISlideRel,
 	ISlideRelChart,
@@ -165,11 +166,13 @@ export default class Slide {
 	 * @param {IChartOpts} options - chart options
 	 * @return {Slide} this Slide
 	 */
-	addChart(type: CHART_NAME | IChartMulti[], data: IOptsChartData[] | IOptsCustomChartData[], options?: IChartOpts): Slide {
+	addChart(type: CHART_NAME | IChartMulti[], data: IOptsChartData[] | IOptsCustomChartData[] | IOptsCustomChartWaterfallData, options?: IChartOpts): Slide {
 		// FUTURE: TODO-VERSION-4: Remove first arg - only take data and opts, with "type" required on opts
 		// Set `_type` on IChartOptsLib as its what is used as object is passed around
 		if (type === ChartType.funnel) {
 			this.generateFunnelChart(type, data as IOptsCustomChartData[], options);
+		} else if(type === ChartType.waterfall) {
+			this.generateWaterfallChart(data as IOptsCustomChartWaterfallData, options)
 		} else {
 			const optionsWithType: IChartOptsLib = options || {}
 			optionsWithType._type = type
@@ -177,6 +180,101 @@ export default class Slide {
 		}
 		return this;
 	}
+
+	generateWaterfallChart(data: IOptsCustomChartWaterfallData, options: any = {}): void {
+        options.x = 0.5;
+        options.y = 0.5;
+        options.color = options.color ?? '000000';
+    
+        let labelYyAxisPos = 0.5;
+        let labelYxAxisPos = 0.5;
+    
+        const labelsY = data[0].labelsY.sort((a, b) => b - a);
+        const labelsX = data[0]?.labelsX;
+        const values = data[0]?.values;
+    
+        const minY = Math.min(...labelsY);
+        const maxY = Math.max(...labelsY);
+    
+        // Adjust Y position to account for negative values
+        const yAxisZeroPos = labelYyAxisPos + (maxY / (maxY - minY)) * (labelsY.length - 1) * 0.4;
+    
+        // Y Axis Line & Text
+        labelsY.forEach((labelY, index) => {
+            this.addText(`${labelY}`, {
+                x: labelYxAxisPos,
+                y: labelYyAxisPos,
+                color: '000000',
+                fontSize: options?.fontSize ?? 12,
+            });
+            if (index !== labelsY?.length - 1) {
+                labelYyAxisPos += 0.4;
+            }
+        });
+    
+        this.addShape(ShapeType.line, {
+            x: options.x + 1,
+            y: labelYxAxisPos - 0.2,
+            h: labelYyAxisPos,
+            w: 0.02,
+            fill: { color: '000000' },
+            line: { color: '000000' },
+        });
+    
+        // X Axis Line & Text
+        let labelXAxisPos = yAxisZeroPos;
+        let labelXxAxisPos = 2;
+        let xAxisLineY = yAxisZeroPos + 0.3;
+        let xAxisLineWidth = labelXxAxisPos;
+        const valuesXpos = [];
+    
+        labelsX.forEach((labelX, index) => {
+            valuesXpos.push(labelXxAxisPos);
+            this.addText(`${labelX}`, {
+                x: labelXxAxisPos,
+                y: xAxisLineY + 0.5,
+                color: '000000',
+                fontSize: options?.fontSize ?? 12,
+            });
+            if (index !== data[0]?.labelsX.length - 1) {
+                labelXxAxisPos += 2;
+                xAxisLineWidth += 2;
+            }
+        });
+    
+        this.addShape(ShapeType.line, {
+            x: 1.5,
+            y: xAxisLineY,
+            h: 0.02,
+            w: labelXxAxisPos - 0.5,
+            line: { color: '000000' },
+        });
+    
+        // Values Mapping & Boxes
+        let cumulativeValue = 0;
+        const yUnit = (labelsY[0] - labelsY[1]) / 0.4; // Calculate the unit height for the bars
+    
+        values.forEach((value, index) => {
+            value = value;
+            const difference = value - cumulativeValue;
+            const boxHeight = (Math.abs(difference) / yUnit);
+            const boxYpos = difference >= 0
+                ? yAxisZeroPos - cumulativeValue / yUnit - boxHeight
+                : yAxisZeroPos - cumulativeValue / yUnit;
+    
+            this.addShape(ShapeType.rect, {
+                x: valuesXpos[index],
+                y: boxYpos,
+                w: 1, // Width of the bar
+                h: boxHeight, // Height of the bar
+                fill: { color: options.color },
+                line: { color: '000000' },
+            });
+    
+            // Update cumulative value
+            cumulativeValue += difference;
+        });
+    }
 
 	generateFunnelChart(type: CHART_NAME | IChartMulti[], data: IOptsCustomChartData[], options?: IChartOpts): void {
 		const slideWidth = 10; // Define the width of the slide
@@ -186,7 +284,7 @@ export default class Slide {
 		options = options ?? {}
 		options.align = options?.align ?? 'center' // Setting Alignment Center if not present
 		options.x = 0.5 // X Coordinate cannot be changed
-		options.y = 1.5 // Y Coordinate cannot be changed
+		options.y = Number(options.y ?? 1.5) // Y Coordinate cannot be changed
 		options.color = options.color ?? 'ffffff'
 		options.position = options.position ?? 'left'
 
@@ -197,9 +295,8 @@ export default class Slide {
 			}
 			options.chartColors = colorsDefaultArr
 		}
-
 		if(options.position === 'right') {
-			options.y = 2.5
+			options.y= options.y + 1
 		}
 
 		let initialX = this.setInitialXPositionFunnelChart(options, slideWidth, chartWidth);

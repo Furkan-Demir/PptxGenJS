@@ -168,7 +168,8 @@ declare namespace PptxGenJS {
 		'pie' = 'pie',
 		'radar' = 'radar',
 		'scatter' = 'scatter',
-		'funnel' = 'funnel'
+		'funnel' = 'funnel',
+		'waterfall' = 'waterfall'
 	}
 	export enum OutputType {
 		'arraybuffer' = 'arraybuffer',
@@ -402,7 +403,8 @@ declare namespace PptxGenJS {
 		'PIE' = 'pie',
 		'RADAR' = 'radar',
 		'SCATTER' = 'scatter',
-		'FUNNEL' = 'funnel'
+		'FUNNEL' = 'funnel',
+		'WATERFALL'= 'waterfall'
 	}
 	export enum shapes {
 		ACTION_BUTTON_BACK_OR_PREVIOUS = 'actionButtonBackPrevious',
@@ -603,7 +605,8 @@ declare namespace PptxGenJS {
 		'PIE' = 'pie',
 		'RADAR' = 'radar',
 		'SCATTER' = 'scatter',
-		'FUNNEL' = 'funnel'
+		'FUNNEL' = 'funnel',
+		'WATERFALL' = 'waterfall'
 	}
 	export enum SCHEME_COLOR_NAMES {
 		'TEXT1' = 'tx1',

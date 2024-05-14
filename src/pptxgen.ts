@@ -789,6 +789,7 @@ export default class PptxGenJS implements IPresentationProps {
 		let pptx = this
 		pptx.layout = 'LAYOUT_WIDE';
 		this.slide2(pptx);
+		this.slide3(pptx);
 		this.slide4(pptx);
 		this.slide5(pptx);
 		this.slide6(pptx);
@@ -821,9 +822,14 @@ export default class PptxGenJS implements IPresentationProps {
 		  };
 		  slide.addText('Vertical Text', verticalTextOpts); */
 		let tableData = [
-			["1", "Item", "Positive", "Negative", "Score"],
-			["2", "Item", "47.19%", "-10.59%", "36.60%"],
-			["3", "Item", "45.22%", "-8.97%", "36.25%"],
+			["", "", "Positive", "Negative", "Score"],
+			["1", "Item", "47.19%", "-10.59%", "36.60%"],
+			["2", "Item", "45.22%", "-8.97%", "36.25%"],
+			["3", "Item", "37.87%", "-8.56%", "29.31%"],
+			["4", "Item", "34.48%", "-16.53%", "17.95%"],
+			["5", "Item", "23.95%", "-19.22%", "4.73%"],
+			["6", "Item", "25.18%", "-25.54%", "-0.36%"],
+			["7", "Item", "24.17%", "-25.11%", "-0.94%"],
 			// ... add data for other rows
 		];
 
@@ -836,10 +842,10 @@ export default class PptxGenJS implements IPresentationProps {
 			fill: 'F7F7F7',
 			font_size: 12,
 			color: '363636',
-			border: {
-				pt: 0,
-				color: 'none'
-			}
+			// border: {
+			// 	pt: 0,
+			// 	color: 'none'
+			// }
 		};
 		//slide.addTable(tableData, tableOpts);
 		let table = slide.addTable(tableData, tableOpts);
@@ -880,7 +886,7 @@ export default class PptxGenJS implements IPresentationProps {
 		let marginTop = (marginTopPercent / 100) * tableOpts.h;
 		let endTextOpts = {
 			x: '5%', // Left align with the table
-			y: tableOpts.y + tableOpts.h + marginTop, // Adjust position below the tabl
+			y: '90%', // Adjust position below the tabl
 			align: 'left', // Left align the text
 			font_size: 12,
 			color: '363636',
@@ -890,13 +896,31 @@ export default class PptxGenJS implements IPresentationProps {
 
 		let endTextOpts2 = {
 			x: '30%', // Left align with the table
-			y: tableOpts.y + tableOpts.h + marginTop, // Adjust position below the tabl
+			y: '90%', // Adjust position below the tabl
 			align: 'left', // Left align the text
 			fontSize: 8,
 			color: '363636',
 		};
 
 		slide.addText('Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)', endTextOpts2);
+	}
+
+	slide3(pptx) {
+		let slide = pptx.addSlide();
+
+		let waterfallData = [
+		  {
+			labelsY: [0,10,20,30,40,50,60,70,80,90,100],
+			labelsX: [1, 2, 3], // Category labels for X-axis
+			values: [55, 80,90], // Data values for each category
+		  },
+		];
+	  
+		const waterFallOptions = {
+		  color: '7fa1f9',
+		}
+	  
+		slide.addChart(pptx.ChartType.waterfall, waterfallData, waterFallOptions);
 	}
 
 	slide4(pptx) {
@@ -930,15 +954,14 @@ export default class PptxGenJS implements IPresentationProps {
 			fill: 'F7F7F7',
 			font_size: 12,
 			color: '363636',
-			border: { // This removes borders
-				pt: 0,
-				color: 'none'
-			},
+			// border: { // This removes borders
+			// 	pt: 0,
+			// 	color: 'none'
+			// },
 			gridLineColor: 'none'
 		};
 
 		let marginTopPercent = 5; // Adjust the percentage as needed
-		let marginTop = (marginTopPercent / 100) * tableOpts.h;
 
 		// First Row
 		slide.addText('Portfolio Size: 1 Flavour', { ...headingTextOpts, x: '15%', y: '17%', });
@@ -963,10 +986,9 @@ export default class PptxGenJS implements IPresentationProps {
 								cell.options.fill = '444790';
 								cell.options.color = 'FFFFFF'
 							});
-						}
-						if (index % 2 == 0 && index !== 0) { // Odd-numbered row
+						} else {
 							row.forEach(cell => {
-								cell.options.fill = 'F5FAFD';
+								cell.options.fill = 'f3f7fc';
 							});
 						}
 					});
@@ -1049,6 +1071,7 @@ export default class PptxGenJS implements IPresentationProps {
 			align: 'left',
 			fontSize: 12,
 			position: 'left',
+			y: 2.5
 		  };
 		  slide.addChart(pptx.ChartType.funnel, funnelChartData, chartOptions);
 
@@ -1144,11 +1167,11 @@ export default class PptxGenJS implements IPresentationProps {
 
 		slide.addText('Project Name', { ...headingTextOpts, y: '50%', fontSize: 45, color: '0270C0' });
 
-		slide.addText('Date', { ...headingTextOpts, y: '55%', fontSize: 35 });
+		slide.addText('Date', { ...headingTextOpts, y: '60%', fontSize: 35 });
 
 		slide.addText('appinio', { ...headingTextOpts, y: '85%', fontSize: 30, fontFamily: 'Aeonik Light' });
 
-		slide.addText('Month Year', { ...headingTextOpts, x: '10%', y: '85%', fontSize: 25 });
+		slide.addText('Month Year', { ...headingTextOpts, x: '25%', y: '85%', fontSize: 25 });
 	}
 
 	slide7(pptx) {
@@ -1314,7 +1337,7 @@ export default class PptxGenJS implements IPresentationProps {
 			fontSize: 20,
 		};
 
-		slide.addText("Sample Overview", { y: '10%', fontSize: 20 });
+		slide.addText("Sample Overview", { y: '10%', x: '5%', fontSize: 20 });
 		slide.addText("1000", { y: '25%', x: '5%', fontSize: 50 });
 		slide.addText("Participants", { y: '30%', x: '5%', fontSize: 10, color: '777777' });
 
@@ -1376,6 +1399,7 @@ export default class PptxGenJS implements IPresentationProps {
 		slide.addText("34", { y: '90%', x: "75%", fontSize: 16 })
 		slide.addText("Number of Questions", { y: '93%', x: "75%", fontSize: 8, color: '777777' })
 
+		slide.addText("appinio", { y: '95%', x: "5%", fontSize: 14 })
 
 	}
 
@@ -1531,8 +1555,8 @@ export default class PptxGenJS implements IPresentationProps {
 		})
 
 		slide.addText("Are you planning to go on vacation this year?: N =1000", {
-			y: '95%',
-			x: '20%',
+			y: '93%',
+			x: '15%',
 			fontSize: 8,
 		})
 	}
@@ -1610,8 +1634,8 @@ export default class PptxGenJS implements IPresentationProps {
 		})
 
 		slide.addText("Are you planning to go on vacation this year?: N =1000", {
-			y: '95%',
-			x: '20%',
+			y: '93%',
+			x: '15%',
 			fontSize: 8,
 		})
 
@@ -1787,8 +1811,8 @@ export default class PptxGenJS implements IPresentationProps {
 		})
 
 		slide.addText("Are you planning to go on vacation this year?: N =1000", {
-			y: '95%',
-			x: '20%',
+			y: '93%',
+			x: '15%',
 			fontSize: 8,
 		})
 
