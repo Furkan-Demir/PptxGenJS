@@ -1203,7 +1203,6 @@ export default class PptxGenJS implements IPresentationProps {
 		slide.addChart(pptx.ChartType.funnel, funnelChartData, chartOptions);
 
 		let tableData = [
-			["", "Absolute", "Relative", "Conversion Rate"],
 			["Total", "X", "X%", ''],
 			["Funnel Step 1", "X", "X%", "X%"],
 			["Funnel Step 2", "X", "X%", "X%"],
@@ -1258,7 +1257,17 @@ export default class PptxGenJS implements IPresentationProps {
 			// },
 			// gridLineColor: 'none'
 		};
+		slide.addText("Absolute", {
+			x: '65%', y: '16%', fontSize:12
+		})
 
+		slide.addText("Relative", {
+			x: '75%', y: '16%', fontSize:12
+		})
+
+		slide.addText("Conversion Rate", {
+			x: '85%', y: '16%', fontSize:12
+		})
 		let Table = slide.addTable(tableData, { ...tableOpts, x: '55%', y: '20%' });
 		[Table].forEach(table => {
 			table._slideObjects.forEach((slideObject) => {
@@ -1266,7 +1275,7 @@ export default class PptxGenJS implements IPresentationProps {
 					slideObject.arrTabRows.forEach((row, index) => {
 						if (index === 0) {
 							row.forEach(cell => {
-								cell.options.fill = 'ffffff';
+								cell.options.fill = 'F5FAFD';
 								cell.options.color = '000000'
 							});
 						}
