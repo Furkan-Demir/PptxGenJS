@@ -804,7 +804,6 @@ export default class PptxGenJS implements IPresentationProps {
 		this.slide15(pptx);
 
 		const fileName = 'custom_slides.pptx';
-		pptx.writeFile({ fileName })
 		return fileName
 	}
 
@@ -1272,7 +1271,6 @@ export default class PptxGenJS implements IPresentationProps {
 		});
 
 		contentText.forEach((text, index) => {
-			console.log('text', text, yPosition)
 			if (index === 0) {
 				slide.addText(text, { ...textopt, y: '-45%', x: '5%', fontSize: 12 });
 			} else {
@@ -1454,7 +1452,6 @@ export default class PptxGenJS implements IPresentationProps {
 					path: card.image,
 					...card.options
 				}
-				console.log('imageOptions', imageOptions)
 				slide.addImage(imageOptions)
 			}
 		})
