@@ -833,6 +833,54 @@ export default class PptxGenJS implements IPresentationProps {
 			// ... add data for other rows
 		];
 
+		const headingTexts = [
+			{
+				title: 'Subheadline: Splitname and Total (N=)',
+				options: {
+					x: '5%', // Set x position to 5% from the left
+					y: '12%', // Set y position to 5% from the top
+					w: '100%', // Set width to 40% of slide width
+					align: 'left', // Align text to the left
+					fontSize: 14,
+					font_weight: '300',
+					color: '000000', // Black color
+					marginBottom: '15px'
+				}
+			},
+			{
+				title: 'Max Diff Table',
+				options: {
+					x: '5%', // Set x position to 5% from the left
+					y: '5%', // Set y position to 5% from the top
+					w: '40%', // Set width to 40% of slide width
+					align: 'left', // Align text to the left
+					fontSize: 20,
+					font_weight: 'bold',
+					color: '000000', // Black color
+				}
+			},
+			{
+				title: 'appinio',
+				options: {
+					x: '5%', // Left align with the table
+					y: '90%', // Adjust position below the tabl
+					align: 'left', // Left align the text
+					font_size: 12,
+					color: '363636',
+				}
+			},
+			{
+				title: 'Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)',
+				options: {
+					x: '30%', // Left align with the table
+					y: '90%', // Adjust position below the tabl
+					align: 'left', // Left align the text
+					fontSize: 8,
+					color: '363636',
+				}
+			}
+		]
+
 		// Table Options (customize these to match your design)
 		let tableOpts: any = {
 			x: '10%', // Set x position to 0
@@ -861,65 +909,27 @@ export default class PptxGenJS implements IPresentationProps {
 				});
 			}
 		});
-		let textOpts = {
-			x: '5%', // Set x position to 5% from the left
-			y: '12%', // Set y position to 5% from the top
-			w: '100%', // Set width to 40% of slide width
-			align: 'left', // Align text to the left
-			fontSize: 14,
-			font_weight: '300',
-			color: '000000', // Black color
-			marginBottom: '15px'
-		};
-		slide.addText('Subheadline: Splitname and Total (N=)', textOpts);
-		let textOpts2 = {
-			x: '5%', // Set x position to 5% from the left
-			y: '5%', // Set y position to 5% from the top
-			w: '40%', // Set width to 40% of slide width
-			align: 'left', // Align text to the left
-			fontSize: 20,
-			font_weight: 'bold',
-			color: '000000', // Black color
-		};
-		slide.addText('Max Diff Table', textOpts2);
-		let marginTopPercent = 20; // Adjust the percentage as needed
-		let marginTop = (marginTopPercent / 100) * tableOpts.h;
-		let endTextOpts = {
-			x: '5%', // Left align with the table
-			y: '90%', // Adjust position below the tabl
-			align: 'left', // Left align the text
-			font_size: 12,
-			color: '363636',
-		};
 
-		slide.addText('appinio', endTextOpts);
-
-		let endTextOpts2 = {
-			x: '30%', // Left align with the table
-			y: '90%', // Adjust position below the tabl
-			align: 'left', // Left align the text
-			fontSize: 8,
-			color: '363636',
-		};
-
-		slide.addText('Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)', endTextOpts2);
+		headingTexts.forEach((heading) => {
+			slide.addText(heading.title, heading.options);
+		})
 	}
 
 	slide3(pptx) {
 		let slide = pptx.addSlide();
 
 		let waterfallData = [
-		  {
-			labelsY: [0,10,20,30,40,50,60,70,80,90,100],
-			labelsX: [1, 2, 3], // Category labels for X-axis
-			values: [55, 80,90], // Data values for each category
-		  },
+			{
+				labelsY: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+				labelsX: [1, 2, 3], // Category labels for X-axis
+				values: [55, 80, 90], // Data values for each category
+			},
 		];
-	  
+
 		const waterFallOptions = {
-		  color: '7fa1f9',
+			color: '7fa1f9',
 		}
-	  
+
 		slide.addChart(pptx.ChartType.waterfall, waterfallData, waterFallOptions);
 	}
 
@@ -961,19 +971,76 @@ export default class PptxGenJS implements IPresentationProps {
 			gridLineColor: 'none'
 		};
 
-		let marginTopPercent = 5; // Adjust the percentage as needed
+		const headingTexts = [
+			{
+				title: 'Portfolio Size: 1 Flavour',
+				options: { ...headingTextOpts, x: '15%', y: '17%', }
+			},
+			{
+				title: 'Portfolio Size: 2 Flavours',
+				options: { ...headingTextOpts, x: '65%', y: '17%', }
+			},
+			{
+				title: 'Portfolio Size: 3 Flavours',
+				options: { ...headingTextOpts, x: '15%', y: '51%', }
+			},
+			{
+				title: 'Portfolio Size: 4 Flavours',
+				options: { ...headingTextOpts, x: '65%', y: '51%', }
+			},
+			{
+				title: 'Subheadline: Splitname and Total (N=)',
+				options: {
+					x: '5%',
+					y: '12%',
+					w: '100%',
+					align: 'left',
+					fontSize: 14,
+					font_weight: '300',
+					color: '000000',
+					marginBottom: '15px'
+				}
+			},
+			{
+				title: 'TURF Analysis (Optimal number of flavor combinations',
+				options: {
+					x: '5%',
+					y: '5%',
+					w: '100%',
+					align: 'left',
+					fontSize: 20,
+					font_weight: 'bold',
+					color: '000000',
+				}
+			},
+			{
+				title: 'appinio',
+				options: {
+					x: '5%',
+					y: '85%', // Adjust position below the tables
+					align: 'left',
+					font_size: 12,
+					color: '363636',
+				}
+			},
+			{
+				title: 'Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)',
+				options: {
+					x: '55%',
+					y: '85%', // Adjust position below the tables
+					align: 'left',
+					fontSize: 8,
+					color: '363636',
+				}
+			}
+		]
 
-		// First Row
-		slide.addText('Portfolio Size: 1 Flavour', { ...headingTextOpts, x: '15%', y: '17%', });
+		// First Col
 		let table1 = slide.addTable(tableData1, { ...tableOpts, x: '5%', y: '20%' });
-		slide.addText('Portfolio Size: 2 Flavours', { ...headingTextOpts, x: '65%', y: '17%', });
 		let table2 = slide.addTable(tableData2, { ...tableOpts, x: '55%', y: '20%' });
 
-		// Second Row
-		slide.addText('Portfolio Size: 3 Flavours', { ...headingTextOpts, x: '15%', y: '51%', });
+		// Second Col
 		let table3 = slide.addTable(tableData1, { ...tableOpts, x: '5%', y: '55%' });
-
-		slide.addText('Portfolio Size: 4 Flavours', { ...headingTextOpts, x: '65%', y: '51%', });
 		let table4 = slide.addTable(tableData2, { ...tableOpts, x: '55%', y: '55%' });
 
 		// Change color of odd-numbered rows for all tables
@@ -996,86 +1063,48 @@ export default class PptxGenJS implements IPresentationProps {
 			});
 		});
 
-		// Texts
-		let textOpts = {
-			x: '5%',
-			y: '12%',
-			w: '100%',
-			align: 'left',
-			fontSize: 14,
-			font_weight: '300',
-			color: '000000',
-			marginBottom: '15px'
-		};
-		slide.addText('Subheadline: Splitname and Total (N=)', textOpts);
-
-		let textOpts2 = {
-			x: '5%',
-			y: '5%',
-			w: '100%',
-			align: 'left',
-			fontSize: 20,
-			font_weight: 'bold',
-			color: '000000',
-		};
-		slide.addText('TURF Analysis (Optimal number of flavor combinations)​', textOpts2);
-
-		let endTextOpts = {
-			x: '5%',
-			y: '85%', // Adjust position below the tables
-			align: 'left',
-			font_size: 12,
-			color: '363636',
-		};
-		slide.addText('appinio', endTextOpts);
-
-		let endTextOpts2 = {
-			x: '55%',
-			y: '85%', // Adjust position below the tables
-			align: 'left',
-			fontSize: 8,
-			color: '363636',
-		};
-		slide.addText('Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)', endTextOpts2);
+		headingTexts.forEach((heading) => {
+			slide.addText(heading.title, heading.options)
+		})
 	}
 
 	slide5(pptx) {
 		let slide = pptx.addSlide();
 		let funnelChartData = [
 			{
-			  name:'Funnel Step 1',
-			  value: 100,
-			  type: 'percent'
+				name: 'Funnel Step 1',
+				value: 100,
+				type: 'percent'
 			},
 			{
-			  name:'Funnel Step 2',
-			  value: 80,
-			  type: 'percent'
+				name: 'Funnel Step 2',
+				value: 80,
+				type: 'percent'
 			},
 			{
-			  name:'Funnel Step 3',
-			  value: 13,
-			  type: 'percent'
+				name: 'Funnel Step 3',
+				value: 13,
+				type: 'percent'
 			},
 			{
-			  name:'Funnel Step 4',
-			  value: 10,
-			  type: 'percent'
+				name: 'Funnel Step 4',
+				value: 10,
+				type: 'percent'
 			},
-		  ]
+		]
 
 		const chartOptions = {
 			h: 2,   // height of the chart
-			color:'ffffff', // Text Color
+			color: 'ffffff', // Text Color
 			chartColors: ['7FA1F9', 'F9B27E', '885EE0', '8ED19C'], // Bar Colors
 			align: 'left',
 			fontSize: 12,
 			position: 'left',
 			y: 2.5
-		  };
-		  slide.addChart(pptx.ChartType.funnel, funnelChartData, chartOptions);
+		};
+		slide.addChart(pptx.ChartType.funnel, funnelChartData, chartOptions);
 
-		  let tableData = [
+		let tableData = [
 			["", "Absolute", "Relative", "Conversion Rate"],
 			["Total", "X", "X%", ''],
 			["Funnel Step 1", "X", "X%", "X%"],
@@ -1087,7 +1116,7 @@ export default class PptxGenJS implements IPresentationProps {
 			w: '5%',
 			h: '15%',
 			x: '52%',
-			y:'20%',
+			y: '20%',
 			color: '779DFF',
 			fill: '779DFF'
 		})
@@ -1096,7 +1125,7 @@ export default class PptxGenJS implements IPresentationProps {
 			w: '5%',
 			h: '15%',
 			x: '52%',
-			y:'35%',
+			y: '35%',
 			color: 'F9B27E',
 			fill: 'F9B27E'
 		})
@@ -1105,7 +1134,7 @@ export default class PptxGenJS implements IPresentationProps {
 			w: '5%',
 			h: '15%',
 			x: '52%',
-			y:'50%',
+			y: '50%',
 			color: '885EE0',
 			fill: '885EE0'
 		})
@@ -1114,7 +1143,7 @@ export default class PptxGenJS implements IPresentationProps {
 			w: '5%',
 			h: '15%',
 			x: '52%',
-			y:'65%',
+			y: '65%',
 			color: '8ED19C',
 			fill: '8ED19C'
 		})
@@ -1163,15 +1192,32 @@ export default class PptxGenJS implements IPresentationProps {
 			marginBottom: '15px'
 		};
 
-		slide.addText('INSIGHT REPORT', { ...headingTextOpts, y: '20%', fontSize: 70 });
+		const headingsText = [
+			{
+				title: 'INSIGHT REPORT',
+				options: { ...headingTextOpts, y: '20%', fontSize: 70 }
+			},
+			{
+				title: 'Project Name',
+				options: { ...headingTextOpts, y: '50%', fontSize: 45, color: '0270C0' }
+			},
+			{
+				title: 'Date',
+				options: { ...headingTextOpts, y: '60%', fontSize: 35 }
+			},
+			{
+				title: 'appinio',
+				options: { ...headingTextOpts, y: '85%', fontSize: 30, fontFamily: 'Aeonik Light' }
+			},
+			{
+				title: 'Month Year',
+				options: { ...headingTextOpts, x: '25%', y: '85%', fontSize: 25 }
+			}
+		]
 
-		slide.addText('Project Name', { ...headingTextOpts, y: '50%', fontSize: 45, color: '0270C0' });
-
-		slide.addText('Date', { ...headingTextOpts, y: '60%', fontSize: 35 });
-
-		slide.addText('appinio', { ...headingTextOpts, y: '85%', fontSize: 30, fontFamily: 'Aeonik Light' });
-
-		slide.addText('Month Year', { ...headingTextOpts, x: '25%', y: '85%', fontSize: 25 });
+		headingsText.forEach((heading) => {
+			slide.addText(heading.title, heading.options)
+		})
 	}
 
 	slide7(pptx) {
@@ -1259,16 +1305,29 @@ export default class PptxGenJS implements IPresentationProps {
 			x: '5%',
 		}
 
-		slide.addText('01', {
-			...textopt, y: '10%', fontSize: 70,
-		})
+		const headingsText = [
+			{
+				title: '01',
+				options: {
+					...textopt, y: '10%', fontSize: 70
+				}
+			},
+			{
+				title: 'Chapter Slide',
+				options: {
+					...textopt, y: '30%', fontSize: 70
+				}
+			},
+			{
+				title: 'appinio',
+				options: {
+					...textopt, y: '90%', fontSize: 24,
+				}
+			}
+		]
 
-		slide.addText('Chapter Slide', {
-			...textopt, y: '30%', fontSize: 70,
-		})
-
-		slide.addText('appinio', {
-			...textopt, y: '90%', fontSize: 24,
+		headingsText.forEach((heading) => {
+			slide.addText(heading.title, heading.options)
 		})
 	}
 
@@ -1279,72 +1338,206 @@ export default class PptxGenJS implements IPresentationProps {
 			fontSize: 20,
 		};
 
-		// Title
-		slide.addText("Study Design", { y: '10%', fontSize: 20 });
+		const card1 = [
+			{
+				title: 'Study Design',
+				options: { y: '10%', fontSize: 20 }
+			},
+			{
+				title: 'Method & Data Collection',
+				options: {
+					...textopt, x: '10%', w: '15%', fill: "F5FAFD", y: '22%', h: '10%'
+				}
+			},
+			{
+				image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060877/Qibble%20App/d7orwyzdkyxgtemc2pdp.png',
+				options: {
+					h: '10%', y: '22%', x: '25%', w: '10%'
+				}
+			},
+			{
+				title: 'Objective of the survey/General method used. Mobile questionnaire played out via the Appinio app',
+				options: { ...textopt, y: '31%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
+			},
+			{
+				title: 'Number of Questions',
+				options: { ...textopt, y: '40%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
+			},
+			{
+				title: 'The survey took place from January 9th, 2023 to January 17th, 2023',
+				options: { ...textopt, y: '49%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
+			},
+			{
+				title: 'The survey took place from January 9th, 2023 to January 17th, 2023',
+				options: { ...textopt, y: '49%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
+			}
+		]
 
-		// Card 1 (already added)
-		slide.addText("Method & Data Collection", {
-			...textopt, x: '10%', w: '15%', fill: "F5FAFD", y: '22%', h: '10%'
-		});
+		const card2 = [
+			{
+				title: 'Sample',
+				options: { ...textopt, x: '40%', w: '15%', fill: "F5FAFD", y: '22%', h: '10%' }
+			},
+			{
+				image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060842/Qibble%20App/kf5rpwcom9yiyaranevn.png',
+				options: { h: '10%', y: '22%', x: '55%', w: '10%' }
+			},
+			{
+				title: 'Country/Location details',
+				options: { ...textopt, y: '31%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
+			},
+			{
+				title: 'Details on the total N (Age/Sample)',
+				options: { ...textopt, y: '40%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
+			},
+			{
+				title: 'Quota Specifics/distribution',
+				options: { ...textopt, y: '49%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
+			}
+		]
 
-		slide.addImage({ path: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060877/Qibble%20App/d7orwyzdkyxgtemc2pdp.png', h: '10%', y: '22%', x: '25%', w: '10%' })
+		const card3 = [
+			{
+				title: 'Questionnaire',
+				options: { ...textopt, x: '70%', w: '15%', fill: "F5FAFD", y: '22%', h: '10%' }
+			},
+			{
+				image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060808/Qibble%20App/xi1l9dycmj7k3hkkxxct.png',
+				options: { h: '12%', y: '22%', x: '85%', w: '10%' }
+			},
+			{
+				title: 'First goal of questionnair',
+				options: { ...textopt, y: '31%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 }
+			},
+			{
+				title: 'Second goal of questionnair',
+				options: { ...textopt, y: '40%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 }
+			},
+			{
+				title: 'Third goal of questionnair',
+				options: { ...textopt, y: '49%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 }
+			}, {
+				title: 'appinio',
+				options: { ...textopt, y: '90%', fontSize: 24 }
+			}
+		]
 
-		slide.addText("Objective of the survey/General method used. Mobile questionnaire played out via the Appinio app", { ...textopt, y: '31%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' });
+		card1.forEach((card) => {
+			if (card.title) {
+				slide.addText(card.title, card.options)
+			} else if (card.image) {
+				const imageOptions = {
+					path: card.image,
+					...card.options
+				}
+				slide.addImage(imageOptions)
+			}
+		})
 
-		slide.addText("Number of Questions", { ...textopt, y: '40%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' });
+		card2.forEach((card) => {
+			if (card.title) {
+				slide.addText(card.title, card.options)
+			} else if (card.image) {
+				const imageOptions = {
+					path: card.image,
+					...card.options
+				}
+				slide.addImage(imageOptions)
+			}
+		})
 
-		slide.addText("The survey took place from January 9th, 2023 to January 17th, 2023", { ...textopt, y: '49%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' });
-
-
-
-		// Card 2 (already added)
-		slide.addText("Sample", { ...textopt, x: '40%', w: '15%', fill: "F5FAFD", y: '22%', h: '10%' });
-
-		slide.addImage({ path: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060842/Qibble%20App/kf5rpwcom9yiyaranevn.png', h: '10%', y: '22%', x: '55%', w: '10%' })
-
-		slide.addText("Country/Location details", { ...textopt, y: '31%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' });
-
-		slide.addText("Details on the total N (Age/Sample)", { ...textopt, y: '40%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' });
-
-		slide.addText("Quota Specifics/distribution", { ...textopt, y: '49%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' });
-
-
-		// Card 3 (already added)
-		slide.addText("Questionnaire", { ...textopt, x: '70%', w: '15%', fill: "F5FAFD", y: '22%', h: '10%' });
-
-		slide.addImage({ path: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060808/Qibble%20App/xi1l9dycmj7k3hkkxxct.png', h: '12%', y: '22%', x: '85%', w: '10%' })
-
-		slide.addText("First goal of questionnair", { ...textopt, y: '31%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 });
-
-		slide.addText("Second goal of questionnaire", { ...textopt, y: '40%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 });
-
-		slide.addText("Third goal of questionnaire", { ...textopt, y: '49%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 });
-
-		/* slide.addText("Fourth goal of questionnaire", { ...textopt, y: '43%',x: '70%', fontSize: 12,w:'25%', fill: "F5FAFD",h: '8%', margin:5 }); 
-		
-		slide.addText("Fifth goal of questionnaire", { ...textopt, y: '48%',x: '70%', fontSize: 12,w:'25%', fill: "F5FAFD",h: '8%', margin:5 });  */
-
-
-		// Appinio Logo (already added)
-		slide.addText('appinio', { ...textopt, y: '90%', fontSize: 24 });
+		card3.forEach((card) => {
+			if (card.title) {
+				slide.addText(card.title, card.options)
+			} else if (card.image) {
+				const imageOptions = {
+					path: card.image,
+					...card.options
+				}
+				console.log('imageOptions', imageOptions)
+				slide.addImage(imageOptions)
+			}
+		})
 
 	}
 
 	slide10(pptx) {
 		let slide = pptx.addSlide();
+		const headingsText = [
+			{
+				title: 'Sample Overview',
+				options: { y: '10%', x: '5%', fontSize: 20 }
+			},
+			{
+				title: '1000',
+				options: { y: '25%', x: '5%', fontSize: 50 }
+			},
+			{
+				title: 'Participants',
+				options: { y: '30%', x: '5%', fontSize: 10, color: '777777' }
+			},
+			{
+				title: '39.5',
+				options: { y: '25%', x: '20%', fontSize: 50 }
+			},
+			{
+				title: 'Average Ages in years',
+				options: { y: '30%', x: '20%', fontSize: 10, color: '777777' }
+			},
+			{
+				title: 'Age & Gender',
+				options: { y: '40%', x: '5%', fontSize: 20 }
+			},
+			{
+				title: 'United States',
+				options: { y: '75%', x: "55%", fontSize: 50 }
+			},
+			{
+				title: 'United States',
+				options: { y: '75%', x: "55%", fontSize: 50 }
+			},
+			{
+				title: '10.04.22',
+				options: { y: '90%', x: "55%", fontSize: 16 }
+			},
+			{
+				title: 'Start Date',
+				options: { y: '93%', x: "55%", fontSize: 8, color: '777777' }
+			},
+			{
+				title: '7 Days',
+				options: { y: '90%', x: "65%", fontSize: 16 }
+			},
+			{
+				title: 'Field Time',
+				options: { y: '93%', x: "65%", fontSize: 8, color: '777777' }
+			},
+			{
+				title: '34',
+				options: { y: '90%', x: "75%", fontSize: 16 }
+			},
+			{
+				title: 'Number of Questions',
+				options: { y: '93%', x: "75%", fontSize: 8, color: '777777' }
+			},
+			{
+				title: 'appinio',
+				options: { y: '95%', x: "5%", fontSize: 14 }
+			},
+			{
+				image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715068058/Qibble%20App/c5xay6vcb96euuryamp7.png',
+				options: { y: '10%', x: '50%', h: '60%', w: '50%' }
+			}
+		]
 
-		const textopt = {
-			fontSize: 20,
-		};
+		headingsText.forEach((heading) => {
+			if (heading.title) {
+				slide.addText(heading.title, heading.options)
+			} else if (heading.image) {
+				slide.addImage({ path: heading.image, ...heading.options })
+			}
+		})
 
-		slide.addText("Sample Overview", { y: '10%', x: '5%', fontSize: 20 });
-		slide.addText("1000", { y: '25%', x: '5%', fontSize: 50 });
-		slide.addText("Participants", { y: '30%', x: '5%', fontSize: 10, color: '777777' });
-
-		slide.addText("39.5", { y: '25%', x: '20%', fontSize: 50 });
-		slide.addText("Average Ages in years", { y: '30%', x: '20%', fontSize: 10, color: '777777' });
-
-		slide.addText("Age & Gender", { y: '40%', x: '5%', fontSize: 20 });
 		const chartData =
 		{
 			names: ['16-24', '25-34', '35-44', '45-54', '55-65'],
@@ -1382,25 +1575,7 @@ export default class PptxGenJS implements IPresentationProps {
 		chartData.labels.map((label) => {
 			slide.addText(label, { y: `${labelsYpos}%`, x: `${labelsXpos}%`, fontSize: 12, h: '5%', w: '15%', align: 'center' })
 			labelsXpos = labelsXpos + 15
-			console.log('labelsXpos', labelsXpos)
 		})
-
-		slide.addImage({ path: 'https://res.cloudinary.com/drascgtap/image/upload/v1715068058/Qibble%20App/c5xay6vcb96euuryamp7.png', y: '10%', x: '50%', h: '60%', w: '50%' })
-
-		slide.addText("United States", { y: '75%', x: "55%", fontSize: 50 })
-		slide.addText("Survived Country", { y: '80%', x: "55%", fontSize: 8, color: '777777' })
-
-		slide.addText("10.04.22", { y: '90%', x: "55%", fontSize: 16 })
-		slide.addText("Start Date", { y: '93%', x: "55%", fontSize: 8, color: '777777' })
-
-		slide.addText("7 Days", { y: '90%', x: "65%", fontSize: 16 })
-		slide.addText("Field Time", { y: '93%', x: "65%", fontSize: 8, color: '777777' })
-
-		slide.addText("34", { y: '90%', x: "75%", fontSize: 16 })
-		slide.addText("Number of Questions", { y: '93%', x: "75%", fontSize: 8, color: '777777' })
-
-		slide.addText("appinio", { y: '95%', x: "5%", fontSize: 14 })
-
 	}
 
 	slide11(pptx) {
@@ -1415,80 +1590,205 @@ export default class PptxGenJS implements IPresentationProps {
 			color: '000000'
 		};
 
-		slide.addText('Executive Summary', {
-			x: 0, y: '10%', fontSize: 20,
-		})
+		const headingsText = [
+			{
+				title: 'Executive Summary',
+				options: {
+					x: 0, y: '10%', fontSize: 20,
+				}
+			},
+			{
+				title: 'Only have one big key insight in the summary? This is a nice space to highlight the main insight or just introduce the insight summary.',
+				options: {
+					...textopt, y: '30%', fontSize: 20, w: '50%',
+				}
+			},
+			{
+				title: 'This is dummy text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At imperdiet dui accumsan sit amet nulla. Bibendum at varius vel pharetra vel turpis nunc eget. Sagittis purus sit amet volutpat consequat mauris nunc congue. Eu facilisis sed odio morbi quis commodo odio aenean. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et netus. Enim eu turpis egestas pretium aenean pharetra magna ac. Tincidunt ornare massa eget egestas. In fermentum posuere urna nec tincidunt praesent. Lorem mollis aliquam ut porttitor leo a. Nibh mauris cursus mattis molestie a iaculis at erat pellentesque. Facilisis magna etiam tempor orci eu lobortis elementum nibh tellus. Porttitor rhoncus dolor purus non enim praesent elementum. Aenean pharetra magna ac placerat',
+				options: { ...loremIpsumTextOpts, x: '5%', fontSize: 10, y: '55%', w: '30%' }
+			},
+			{
+				title: 'vestibulum lectus mauris ultrices eros. Elementum pulvinar etiam non quam lacus suspendisse faucibus interdum. Massa tincidunt dui ut ornare lectus sit. Vulputate sapien nec sagittis aliquam malesuada. Elementum sagittis vitae et leo duis ut diam. Nec feugiat in fermentum posuere urna nec tincidunt praesent semper.Est sit amet facilisis magna etiam tempor orci. Non consectetur a erat nam at. Tortor consequat id porta nibh venenatis cras. Et ligula ullamcorper malesuada proin libero nunc consequat. At tellus at urna condimentum mattis. Quis imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper.',
+				options: { ...loremIpsumTextOpts, x: '35%', fontSize: 10, y: '52%', w: '30%' }
+			},
+			{
+				title: 'Sed sed risus pretium quam. Suspendisse faucibus interdum posuere lorem ipsum. Ultricies mi eget mauris pharetra et ultrices neque ornare. Faucibus scelerisque eleifend donec pretium vulputate sapien. Scelerisque fermentum dui faucibus in ornare quam.',
+				options: { ...loremIpsumTextOpts, x: '5%', fontSize: 10, y: '82%', w: '30%' }
+			},
+			{
+				title: 'appinio',
+				options: {
+					x: 0, y: '95%', fontSize: 16,
+				}
+			}
+		]
 
-		slide.addText('Only have one big key insight in the summary? This is a nice space to highlight the main insight or just introduce the insight summary.', {
-			...textopt, y: '30%', fontSize: 20, w: '50%',
-		})
-
-		slide.addText('This is dummy text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At imperdiet dui accumsan sit amet nulla. Bibendum at varius vel pharetra vel turpis nunc eget. Sagittis purus sit amet volutpat consequat mauris nunc congue. Eu facilisis sed odio morbi quis commodo odio aenean. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et netus. Enim eu turpis egestas pretium aenean pharetra magna ac. Tincidunt ornare massa eget egestas. In fermentum posuere urna nec tincidunt praesent. Lorem mollis aliquam ut porttitor leo a. Nibh mauris cursus mattis molestie a iaculis at erat pellentesque. Facilisis magna etiam tempor orci eu lobortis elementum nibh tellus. Porttitor rhoncus dolor purus non enim praesent elementum. Aenean pharetra magna ac placerat', { ...loremIpsumTextOpts, x: '5%', fontSize: 10, y: '55%', w: '30%' })
-
-		slide.addText("vestibulum lectus mauris ultrices eros. Elementum pulvinar etiam non quam lacus suspendisse faucibus interdum. Massa tincidunt dui ut ornare lectus sit. Vulputate sapien nec sagittis aliquam malesuada. Elementum sagittis vitae et leo duis ut diam. Nec feugiat in fermentum posuere urna nec tincidunt praesent semper.Est sit amet facilisis magna etiam tempor orci. Non consectetur a erat nam at. Tortor consequat id porta nibh venenatis cras. Et ligula ullamcorper malesuada proin libero nunc consequat. At tellus at urna condimentum mattis. Quis imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper.", { ...loremIpsumTextOpts, x: '35%', fontSize: 10, y: '52%', w: '30%' })
-
-		slide.addText("Sed sed risus pretium quam. Suspendisse faucibus interdum posuere lorem ipsum. Ultricies mi eget mauris pharetra et ultrices neque ornare. Faucibus scelerisque eleifend donec pretium vulputate sapien. Scelerisque fermentum dui faucibus in ornare quam.", { ...loremIpsumTextOpts, x: '5%', fontSize: 10, y: '82%', w: '30%' })
-
-		slide.addText('appinio', {
-			x: 0, y: '95%', fontSize: 16,
+		headingsText.forEach((heading) => {
+			slide.addText(heading.title, heading.options)
 		})
 	}
 
 	slide12(pptx) {
 		let slide = pptx.addSlide();
 
-		slide.addText("Any questions? We are happy to help!", { fontSize: 20, y: '10%', x: '5%' })
+		const headingsText = [
+			{
+				title: 'Any questions? We are happy to help!',
+				options: { fontSize: 20, y: '10%', x: '5%' }
+			},
+			{
+				image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715070468/Qibble%20App/dvcpusdcg5jpnh4nvhlj.png',
+				options: { w: '10%', h: '20%', y: '20%', x: '10%' }
+			},
+			{
+				title: 'Name',
+				options: { fontSize: 40, y: '25%', x: '20%' }
+			},
+			{
+				title: 'Position',
+				options: { fontSize: 20, y: '30%', x: '20%' }
+			},
+			{
+				title: 'Office',
+				options: { fontSize: 8, y: '35%', x: '20%', color: '777777' }
+			},
+			{
+				title: '+49',
+				options: { fontSize: 8, y: '35%', x: '25%', color: '777777' }
+			},
+			{
+				title: 'Mail',
+				options: { fontSize: 8, y: '37%', x: '20%', color: '777777' }
+			},
+			{
+				title: 'Louise.leitsch@appinio.com',
+				options: { fontSize: 8, y: '37%', x: '25%', color: '777777' }
+			},
+			{
+				image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715070468/Qibble%20App/dvcpusdcg5jpnh4nvhlj.png',
+				options: { w: '10%', h: '20%', y: '50%', x: '10%' }
+			},
+			{
+				title: 'Name',
+				options: { fontSize: 40, y: '55%', x: '20%' }
+			},
+			{
+				title: 'Position',
+				options: { fontSize: 20, y: '60%', x: '20%' }
+			},
+			{
+				title: 'Office',
+				options: { fontSize: 8, y: '65%', x: '20%', color: '777777' }
+			},
+			{
+				title: '+49',
+				options: { fontSize: 8, y: '65%', x: '25%', color: '777777' }
+			},
+			{
+				title: 'Mail',
+				options: { fontSize: 8, y: '67%', x: '20%', color: '777777' }
+			},
+			{
+				title: 'Louise.leitsch@appinio.com',
+				options: { fontSize: 8, y: '67%', x: '25%', color: '777777' }
+			},
+			{
+				title: 'appinio',
+				options: { fontSize: 14, y: '90%', x: '5%' }
+			},
+			{
+				title: 'Appinio Germany Grobe Theaterstrabe 31 20354 Hamburg',
+				options: { fontSize: 10, y: '90%', x: '25%', w: '10%' }
+			},
+			{
+				title: 'Appinio Germany Grobe Theaterstrabe 31 20354 Hamburg',
+				options: { fontSize: 10, y: '90%', x: '65%', w: '10%' }
+			},
+			{
+				title: 'appinio.com',
+				options: { fontSize: 10, y: '90%', x: '85%', w: '10%' }
+			},
+		]
 
-		// 1st Part
-		slide.addImage({ path: 'https://res.cloudinary.com/drascgtap/image/upload/v1715070468/Qibble%20App/dvcpusdcg5jpnh4nvhlj.png', w: '10%', h: '20%', y: '20%', x: '10%' })
-
-		slide.addText("Name", { fontSize: 40, y: '25%', x: '20%' })
-		slide.addText("Position", { fontSize: 20, y: '30%', x: '20%' })
-
-		slide.addText("Office", { fontSize: 8, y: '35%', x: '20%', color: '777777' })
-		slide.addText("+49", { fontSize: 8, y: '35%', x: '25%', color: '777777' })
-
-		slide.addText("Mail", { fontSize: 8, y: '37%', x: '20%', color: '777777' })
-		slide.addText("Louise.leitsch@appinio.com", { fontSize: 8, y: '37%', x: '25%', color: '777777' })
-
-
-		// 2nd Part
-		slide.addImage({ path: 'https://res.cloudinary.com/drascgtap/image/upload/v1715070468/Qibble%20App/dvcpusdcg5jpnh4nvhlj.png', w: '10%', h: '20%', y: '50%', x: '10%' })
-
-		slide.addText("Name", { fontSize: 40, y: '55%', x: '20%' })
-		slide.addText("Position", { fontSize: 20, y: '60%', x: '20%' })
-
-		slide.addText("Office", { fontSize: 8, y: '65%', x: '20%', color: '777777' })
-		slide.addText("+49", { fontSize: 8, y: '65%', x: '25%', color: '777777' })
-
-		slide.addText("Mail", { fontSize: 8, y: '67%', x: '20%', color: '777777' })
-		slide.addText("Louise.leitsch@appinio.com", { fontSize: 8, y: '67%', x: '25%', color: '777777' })
-
-		//Footer
-		slide.addText("appinio", { fontSize: 14, y: '90%', x: '5%' })
-		slide.addText("Appinio Germany Grobe Theaterstrabe 31 20354 Hamburg", { fontSize: 10, y: '90%', x: '25%', w: '10%' })
-
-		slide.addText("Appinio Germany Grobe Theaterstrabe 31 20354 Hamburg", { fontSize: 10, y: '90%', x: '45%', w: '10%' })
-
-		slide.addText("Appinio Germany Grobe Theaterstrabe 31 20354 Hamburg", { fontSize: 10, y: '90%', x: '65%', w: '10%' })
-
-		slide.addText("appinio.com", { fontSize: 10, y: '90%', x: '85%', w: '10%' })
-
-
+		headingsText.forEach((heading) => {
+			if (heading.title) {
+				slide.addText(heading.title, heading.options)
+			} else if (heading.image) {
+				slide.addImage({ path: heading.image, ...heading.options })
+			}
+		})
 	}
 
 	slide13(pptx) {
 		let slide = pptx.addSlide();
-		slide.addText("Are you planning to go on vacation this year?", {
-			y: '10%',
-			x: '5%',
-			fontSize: 20
-		})
 
-		slide.addText("Total: (N = 1000)", {
-			y: '13%',
-			x: '5%',
-			fontSize: 10
+		const headingsText = [
+			{
+				title: 'Are you planning to go on vacation this year?',
+				options: {
+					y: '10%',
+					x: '5%',
+					fontSize: 20
+				}
+			},
+			{
+				title: 'Total: (N = 1000)',
+				options: {
+					y: '13%',
+					x: '5%',
+					fontSize: 10
+				}
+			},
+			{
+				title: 'Insights',
+				options: {
+					y: '18%',
+					x: '60%',
+					w: '100%',
+					fontSize: 8,
+					color: '777777',
+				}
+			},
+			{
+				title: 'Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
+				options: {
+					y: '30%',
+					x: '60%',
+					fontSize: 12,
+					w: '18%',
+					color: '777777',
+				}
+			},
+			{
+				title: 'Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
+				options: {
+					y: '52%',
+					x: '60%',
+					fontSize: 12,
+					w: '18%',
+					color: '777777',
+				}
+			},
+			{
+				title: 'appinio',
+				options: {
+					y: '95%',
+					x: '5%',
+					fontSize: 20,
+				}
+			},
+			{
+				title: 'Are you planning to go on vacation this year?: N =1000',
+				options: {
+					y: '93%',
+					x: '15%',
+					fontSize: 8,
+				}
+			}
+		]
+
+		headingsText.forEach((heading) => {
+			slide.addText(heading.title, heading.options)
 		})
 
 		let dataChartBar = [
@@ -1523,56 +1823,77 @@ export default class PptxGenJS implements IPresentationProps {
 		};
 
 		slide.addChart(pptx.ChartType.bar, dataChartBar, chartOptions);
-
-		slide.addText("Insights", {
-			y: '18%',
-			x: '60%',
-			w: '100%',
-			fontSize: 8,
-			color: '777777',
-		})
-
-		slide.addText("Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.", {
-			y: '30%',
-			x: '60%',
-			fontSize: 12,
-			w: '18%',
-			color: '777777',
-		})
-
-		slide.addText("Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.", {
-			y: '52%',
-			x: '60%',
-			fontSize: 12,
-			w: '18%',
-			color: '777777',
-		})
-
-		slide.addText("appinio", {
-			y: '95%',
-			x: '5%',
-			fontSize: 20,
-		})
-
-		slide.addText("Are you planning to go on vacation this year?: N =1000", {
-			y: '93%',
-			x: '15%',
-			fontSize: 8,
-		})
 	}
 
 	slide14(pptx) {
 		let slide = pptx.addSlide();
-		slide.addText("Are you planning to go on vacation this year?", {
-			y: '10%',
-			x: '5%',
-			fontSize: 20
-		})
+		const headingsText = [
+			{
+				title: 'Are you planning to go on vacation this year?',
+				options: {
+					y: '10%',
+					x: '5%',
+					fontSize: 20
+				}
+			},
+			{
+				title: 'Total: (N = 1000)',
+				options: {
+					y: '13%',
+					x: '5%',
+					fontSize: 10
+				}
+			},
+			{
+				title: 'Insights',
+				options: {
+					y: '18%',
+					x: '10%',
+					w: '100%',
+					fontSize: 8,
+					color: '777777',
+				}
+			},
+			{
+				title: 'Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
+				options: {
+					y: '30%',
+					x: '10%',
+					fontSize: 12,
+					w: '18%',
+					color: '777777',
+				}
+			},
+			{
+				title: 'Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
+				options: {
+					y: '52%',
+					x: '10%',
+					fontSize: 12,
+					w: '18%',
+					color: '777777',
+				}
+			},
+			{
+				title: 'appinio',
+				options: {
+					y: '95%',
+					x: '5%',
+					fontSize: 20,
+				}
+			},
+			{
+				title: 'Are you planning to go on vacation this year?: N =1000',
+				options: {
+					y: '93%',
+					x: '15%',
+					fontSize: 8,
+				}
+			}
+		]
 
-		slide.addText("Total: (N = 1000)", {
-			y: '13%',
-			x: '5%',
-			fontSize: 10
+		headingsText.forEach((heading) => {
+			slide.addText(heading.title, heading.options)
 		})
 
 		let dataChartBar = [
@@ -1600,59 +1921,179 @@ export default class PptxGenJS implements IPresentationProps {
 			x: 5
 		};
 
-		slide.addText("Insights", {
-			y: '18%',
-			x: '10%',
-			w: '100%',
-			fontSize: 8,
-			color: '777777',
-		})
-
-		slide.addText("Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.", {
-			y: '30%',
-			x: '10%',
-			fontSize: 12,
-			w: '18%',
-			color: '777777',
-		})
-
-		slide.addText("Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.", {
-			y: '52%',
-			x: '10%',
-			fontSize: 12,
-			w: '18%',
-			color: '777777',
-		})
-
 		slide.addChart(pptx.ChartType.bar, dataChartBar, chartOptions);
-
-
-		slide.addText("appinio", {
-			y: '95%',
-			x: '5%',
-			fontSize: 20,
-		})
-
-		slide.addText("Are you planning to go on vacation this year?: N =1000", {
-			y: '93%',
-			x: '15%',
-			fontSize: 8,
-		})
-
 	}
 
 	slide15(pptx) {
 		let slide = pptx.addSlide();
-		slide.addText("Are you planning to go on vacation this year?", {
-			y: '10%',
-			x: '5%',
-			fontSize: 20
-		})
 
-		slide.addText("Total: (N = 1000) / Split: Age Groups​", {
-			y: '13%',
-			x: '5%',
-			fontSize: 10
+		const headingsText = [
+			{
+				title: 'Are you planning to go on vacation this year?',
+				options: {
+					y: '10%',
+					x: '5%',
+					fontSize: 20
+				}
+			},
+			{
+				title: 'Total: (N = 1000) / Split: Age Groups',
+				options: {
+					y: '13%',
+					x: '5%',
+					fontSize: 10
+				}
+			},
+			{
+				title: 'Insights',
+				options: {
+					y: '20%',
+					x: '60%',
+					w: '100%',
+					fontSize: 8,
+					color: '777777',
+				}
+			},
+			{
+				title: 'Insight Headline in Aeonik Medium Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
+				options: {
+					y: '32%',
+					x: '60%',
+					fontSize: 12,
+					w: '18%',
+					color: '777777',
+				}
+			},
+			{
+				title: 'Insight Headline in Aeonik Medium Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
+				options: {
+					y: '54%',
+					x: '60%',
+					fontSize: 12,
+					w: '18%',
+					color: '777777',
+				}
+			},
+			{
+				title: '',
+				options: {
+					y: '80%',
+					x: '20%',
+					h: "3%",
+					w: "2%",
+					fill: {
+						color: 'B6C9FF'
+					},
+					color: 'FFFFFF'
+				}
+			},
+			{
+				title: '16-24',
+				options: {
+					y: '82%',
+					x: '23%',
+				}
+			},
+			{
+				title: '',
+				options: {
+					y: '80%',
+					x: '30%',
+					h: "3%",
+					w: "2%",
+					fill: {
+						color: '769DFF'
+					},
+					color: 'FFFFFF'
+				}
+			},
+			{
+				title: '25-34',
+				options: {
+					y: '82%',
+					x: '33%',
+				}
+			},
+			{
+				title: '',
+				options: {
+					y: '80%',
+					x: '40%',
+					h: "3%",
+					w: "2%",
+					fill: {
+						color: '3C6FFF'
+					},
+					color: 'FFFFFF'
+				}
+			},
+			{
+				title: '35-44',
+				options: {
+					y: '82%',
+					x: '43%',
+				}
+			},
+			{
+				title: '',
+				options: {
+					y: '80%',
+					x: '50%',
+					h: "3%",
+					w: "2%",
+					fill: {
+						color: '2D54C2'
+					},
+					color: 'FFFFFF'
+				}
+			},
+			{
+				title: '45-54',
+				options: {
+					y: '82%',
+					x: '53%',
+				}
+			},
+			{
+				title: '',
+				options: {
+					y: '80%',
+					x: '60%',
+					h: "3%",
+					w: "2%",
+					fill: {
+						color: '1E3A84'
+					},
+					color: 'FFFFFF'
+				}
+			},
+			{
+				title: '55-65',
+				options: {
+					y: '82%',
+					x: '63%',
+				}
+			},
+			{
+				title: 'appinfo',
+				options: {
+					y: '95%',
+					x: '5%',
+					fontSize: 20,
+				}
+			},
+			{
+				title: 'Are you planning to go on vacation this year?: N =1000',
+				options: {
+					y: '93%',
+					x: '15%',
+					fontSize: 8,
+				}
+			}
+		]
+
+		headingsText.forEach((heading) => {
+			slide.addText(heading.title, heading.options)
 		})
 
 		let dataChartBar = [
@@ -1698,123 +2139,5 @@ export default class PptxGenJS implements IPresentationProps {
 		};
 
 		slide.addChart(pptx.ChartType.bar, dataChartBar, chartOptions);
-
-
-		slide.addText("Insights", {
-			y: '20%',
-			x: '60%',
-			w: '100%',
-			fontSize: 8,
-			color: '777777',
-		})
-
-		slide.addText("Insight Headline in Aeonik Medium Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.", {
-			y: '32%',
-			x: '60%',
-			fontSize: 12,
-			w: '18%',
-			color: '777777',
-		})
-
-		slide.addText("Insight Headline in Aeonik Medium Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.", {
-			y: '54%',
-			x: '60%',
-			fontSize: 12,
-			w: '18%',
-			color: '777777',
-		})
-
-		slide.addText("", {
-			y: '80%',
-			x: '20%',
-			h: "3%",
-			w: "2%",
-			fill: {
-				color: 'B6C9FF'
-			},
-			color: 'FFFFFF'
-		})
-
-		slide.addText("16-24", {
-			y: '82%',
-			x: '23%',
-		})
-
-		slide.addText("", {
-			y: '80%',
-			x: '30%',
-			h: "3%",
-			w: "2%",
-			fill: {
-				color: '769DFF'
-			},
-			color: 'FFFFFF'
-		})
-
-		slide.addText("25-34", {
-			y: '82%',
-			x: '33%',
-		})
-
-		slide.addText("", {
-			y: '80%',
-			x: '40%',
-			h: "3%",
-			w: "2%",
-			fill: {
-				color: '3C6FFF'
-			},
-			color: 'FFFFFF'
-		})
-
-		slide.addText("35-44", {
-			y: '82%',
-			x: '43%',
-		})
-
-		slide.addText("", {
-			y: '80%',
-			x: '50%',
-			h: "3%",
-			w: "2%",
-			fill: {
-				color: '2D54C2'
-			},
-			color: 'FFFFFF'
-		})
-
-		slide.addText("45-54", {
-			y: '82%',
-			x: '53%',
-		})
-
-		slide.addText("", {
-			y: '80%',
-			x: '60%',
-			h: "3%",
-			w: "2%",
-			fill: {
-				color: '1E3A84'
-			},
-			color: 'FFFFFF'
-		})
-
-		slide.addText("55-65", {
-			y: '82%',
-			x: '63%',
-		})
-
-		slide.addText("appinio", {
-			y: '95%',
-			x: '5%',
-			fontSize: 20,
-		})
-
-		slide.addText("Are you planning to go on vacation this year?: N =1000", {
-			y: '93%',
-			x: '15%',
-			fontSize: 8,
-		})
-
 	}
 }
