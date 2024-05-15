@@ -979,7 +979,7 @@ export default class PptxGenJS implements IPresentationProps {
 			x: '10%', // Set x position to 0
 			y: '20%', // Set y position to 0
 			w: "80%", // Set width to 100% of slide
-			h: "20%", // Set height to 100% of slide
+			h: 4.5, // Set height to 100% of slide
 			fill: 'F7F7F7',
 			font_size: 12,
 			color: '363636',
@@ -990,6 +990,7 @@ export default class PptxGenJS implements IPresentationProps {
 		};
 		//slide.addTable(tableData, tableOpts);
 		let table = slide.addTable(tableData, tableOpts);
+		console.log('table',table)
 		// Change color of odd-numbered rows
 		table._slideObjects.forEach((slideObject) => {
 			if (slideObject._type === 'table') {
@@ -997,6 +998,10 @@ export default class PptxGenJS implements IPresentationProps {
 					if (index % 2 == 0) { // Odd-numbered row
 						row.forEach(cell => {
 							cell.options.fill = 'F5FAFD'; // Change fill color to light gray
+						});
+					} else {
+						row.forEach(cell => {
+							cell.options.fill = 'FFFFFF'; // Change fill color to light gray
 						});
 					}
 				});
@@ -1323,13 +1328,6 @@ export default class PptxGenJS implements IPresentationProps {
 		let leftSectionWidth = 40;
 
 		// Create left section background shape
-		let leftSection = slide.addShape('rect', {
-			x: 0,
-			y: 0,
-			w: slideWidth * (leftSectionWidth / 100),
-			h: slideHeight,
-			fill: '000000', // Adjust background color as needed
-		});
 
 		// Add content text on the left side
 		let contentText = [
@@ -1344,12 +1342,10 @@ export default class PptxGenJS implements IPresentationProps {
 			align: 'left',
 			fontWeight: 'bold',
 			marginBottom: '15px',
-			height: '100%',
 		};
 
 		const textopt = {
 			x: '5%',
-			h: '100%',
 			w: '25%',
 			fill: "F3F7FC",
 			fontSize: 24,
@@ -1358,7 +1354,7 @@ export default class PptxGenJS implements IPresentationProps {
 		let yPosition = 10; // Starting y position for text
 		slide.addText('', {
 			x: 0,
-			h: '200%',
+			h: '100%',
 			w: '33%',
 			fill: "F3F7FC",
 			fontSize: 24,
@@ -1366,7 +1362,7 @@ export default class PptxGenJS implements IPresentationProps {
 
 		contentText.forEach((text, index) => {
 			if (index === 0) {
-				slide.addText(text, { ...textopt, y: '-45%', x: '5%', fontSize: 12 });
+				slide.addText(text, { ...textopt, y: yPosition + '%', x: '5%', fontSize: 12 });
 			} else {
 				slide.addText(text, { ...textOpts, y: yPosition + '%', x: '5%' });
 			}
@@ -1650,11 +1646,11 @@ export default class PptxGenJS implements IPresentationProps {
 		chartData.values.map((value) => {
 			let valuesXpos = 20;
 
-			slide.addText(value.women, { y: `${valuesYpos}%`, x: `${valuesXpos}%`, fontSize: 12, h: '5%', w: '15%', fill: '8260D9', align: 'center' })
+			slide.addText(value.women, { y: `${valuesYpos}%`, x: `${valuesXpos}%`, fontSize: 12, h: '5%', w: '15%', fill: '8260D9', align: 'center', color:'FFFFFF' })
 
 			valuesXpos = valuesXpos + 15
 
-			slide.addText(value.men, { y: `${valuesYpos}%`, x: `${valuesXpos}%`, fontSize: 12, h: '5%', w: '15%', fill: 'EA8B54', align: 'center' })
+			slide.addText(value.men, { y: `${valuesYpos}%`, x: `${valuesXpos}%`, fontSize: 12, h: '5%', w: '15%', fill: 'EA8B54', align: 'center', color: 'FFFFFF' })
 
 			valuesYpos = valuesYpos + 7
 
@@ -1846,7 +1842,7 @@ export default class PptxGenJS implements IPresentationProps {
 					y: '30%',
 					x: '60%',
 					fontSize: 12,
-					w: '18%',
+					w: '25%',
 					color: '777777',
 				}
 			},
@@ -1856,7 +1852,7 @@ export default class PptxGenJS implements IPresentationProps {
 					y: '52%',
 					x: '60%',
 					fontSize: 12,
-					w: '18%',
+					w: '25%',
 					color: '777777',
 				}
 			},
@@ -1951,7 +1947,7 @@ export default class PptxGenJS implements IPresentationProps {
 					y: '30%',
 					x: '10%',
 					fontSize: 12,
-					w: '18%',
+					w: '25%',
 					color: '777777',
 				}
 			},
@@ -1961,7 +1957,7 @@ export default class PptxGenJS implements IPresentationProps {
 					y: '52%',
 					x: '10%',
 					fontSize: 12,
-					w: '18%',
+					w: '25%',
 					color: '777777',
 				}
 			},
@@ -2051,7 +2047,7 @@ export default class PptxGenJS implements IPresentationProps {
 					y: '32%',
 					x: '60%',
 					fontSize: 12,
-					w: '18%',
+					w: '25%',
 					color: '777777',
 				}
 			},
@@ -2061,7 +2057,7 @@ export default class PptxGenJS implements IPresentationProps {
 					y: '54%',
 					x: '60%',
 					fontSize: 12,
-					w: '18%',
+					w: '25%',
 					color: '777777',
 				}
 			},
