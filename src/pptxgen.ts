@@ -788,6 +788,7 @@ export default class PptxGenJS implements IPresentationProps {
 	generateSlides(): string {
 		let pptx = this
 		pptx.layout = 'LAYOUT_WIDE';
+		this.slide1(pptx);
 		this.slide2(pptx);
 		this.slide3(pptx);
 		this.slide4(pptx);
@@ -805,6 +806,99 @@ export default class PptxGenJS implements IPresentationProps {
 
 		const fileName = 'custom_slides.pptx';
 		return fileName
+	}
+
+	slide1(pptx) {
+		let slide = pptx.addSlide();
+		const headingTexts = [
+			{
+				title: 'Subheadline: Splitname and Total (N=)',
+			options: {
+				x: '5%', // Set x position to 5% from the left
+				y: '12%', // Set y position to 5% from the top
+				w: '100%', // Set width to 40% of slide width
+				align: 'left', // Align text to the left
+				fontSize: 14,
+				font_weight: '300',
+				color: '000000', // Black color
+				marginBottom: '15px'
+			}
+		},
+		{
+			title: 'Max Diff Table',
+			options: {
+				x: '5%', // Set x position to 5% from the left
+				y: '5%', // Set y position to 5% from the top
+				w: '40%', // Set width to 40% of slide width
+				align: 'left', // Align text to the left
+				fontSize: 20,
+				font_weight: 'bold',
+				color: '000000', // Black color
+			}
+		},
+		{
+			title: 'appinio',
+			options: {
+				x: '5%', // Left align with the table
+				y: '90%', // Adjust position below the tabl
+				align: 'left', // Left align the text
+				font_size: 12,
+				color: '363636',
+			}
+		},
+		]
+
+		headingTexts.forEach((heading)=>{
+			slide.addText(heading.title,heading.options)
+		})
+
+		let dataChartBar = [
+			{
+			  name: "Actual Sales",
+			  labels: [["Item 1","Item 2","Item 3","Item 4","Item 5","Item 6","Item 7"]],
+			  values: [80, 70, 60, 50, 43, 32, 24],
+			},
+			{
+			  name: "Projected Sales",
+			  labels: [["Item 1","Item 2","Item 3","Item 4","Item 5","Item 6","Item 7"]],      
+			  values: [80, 70, 60, 50, 43, 32, 24],
+			},
+		];
+		
+		  const top = [0,10,20,30,40,50,60,70,80,90,100]
+		  let topX = 3.6
+		
+		  top.forEach((txt)=>{
+			slide.addText(`${txt}`, { x: topX, y:1.5, fontSize: 14 })
+			topX+= 0.5
+		  })
+		
+		  const chartOptions: any = {
+			// Set grid and axis line colors to white (almost invisible)
+			gridLineColor: 'ffffff',
+			catAxisLineColor: 'ffffff',
+			valAxisLineColor: 'ffffff',
+			catGridLineColor: 'ffffff',
+			valGridLineColor: 'ffffff',
+			catGridLine: { style: 'none' },
+			valGridLine: { style: 'none' },
+			valAxisHidden: true,
+			barGapWidthPct: 20,
+			showValueAxis: true, // Show value axis
+			chartColors: ['a93b4c', '8ed19c'],
+			valAxis: {
+			  label: { // Configure value label properties
+				font: {
+				  size: 14, // Adjust font size as needed
+				  bold: true // Optionally make the text bold
+				},
+			  }
+			},
+			x: 3, y: 1.7, w: 8, h: 4, barDir: 'bar', barGrouping: 'stacked'
+		  };
+		
+		  // Add the chart to the slide
+		  slide.addChart(pptx.ChartType.bar, dataChartBar, chartOptions);
 	}
 
 	slide2(pptx) {
