@@ -255,8 +255,9 @@ export default class Slide {
 		const yUnit = (labelsY[0] - labelsY[1]) / 0.4; // Calculate the unit height for the bars
 
 		values.forEach((value, index) => {
-			const difference = value - cumulativeValue;
-			const boxHeight = (Math.abs(difference) / yUnit);
+			const difference = value - cumulativeValue; // y position
+			const boxHeight = (Math.abs(difference) / yUnit); // box height
+			// Calculating starting position of next box
 			const boxYpos = difference >= 0
 				? yAxisZeroPos - cumulativeValue / yUnit - boxHeight
 				: yAxisZeroPos - cumulativeValue / yUnit;
@@ -271,6 +272,7 @@ export default class Slide {
 			});
 
 			if (values[1] - values[2] < 0) {
+				// drawing line upward
 				if (index < values.length - 1) {
 					const nextValue = values[index + 1];
 					const nextDifference = nextValue - (cumulativeValue + difference);
@@ -293,6 +295,7 @@ export default class Slide {
 			cumulativeValue += difference;
 		});
 		if (values[1] - values[2] > 0) {
+			// line downwards
 			for (let index = 0; index < values.length - 1; index++) {
 
 				const value = values[index];
