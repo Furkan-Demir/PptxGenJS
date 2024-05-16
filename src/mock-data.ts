@@ -4,10 +4,10 @@ const slide1Data = {
             title: 'Subheadline: Splitname and Total (N=)',
             options: {
                 x: '5%', // Set x position to 5% from the left
-                y: '12%', // Set y position to 5% from the top
+                y: '9%', // Set y position to 5% from the top
                 w: '100%', // Set width to 40% of slide width
                 align: 'left', // Align text to the left
-                fontSize: 14,
+                fontSize: 11,
                 font_weight: '300',
                 color: '000000', // Black color
                 marginBottom: '15px'
@@ -20,7 +20,6 @@ const slide1Data = {
                 y: '5%', // Set y position to 5% from the top
                 w: '40%', // Set width to 40% of slide width
                 align: 'left', // Align text to the left
-                fontSize: 20,
                 font_weight: 'bold',
                 color: '000000', // Black color
             }
@@ -90,10 +89,10 @@ const slide2Data = {
             title: 'Subheadline: Splitname and Total (N=)',
             options: {
                 x: '5%', // Set x position to 5% from the left
-                y: '12%', // Set y position to 5% from the top
+                y: '9%', // Set y position to 5% from the top
                 w: '100%', // Set width to 40% of slide width
                 align: 'left', // Align text to the left
-                fontSize: 14,
+                fontSize: 11,
                 font_weight: '300',
                 color: '000000', // Black color
                 marginBottom: '15px'
@@ -106,7 +105,6 @@ const slide2Data = {
                 y: '5%', // Set y position to 5% from the top
                 w: '40%', // Set width to 40% of slide width
                 align: 'left', // Align text to the left
-                fontSize: 20,
                 font_weight: 'bold',
                 color: '000000', // Black color
             }
@@ -159,14 +157,14 @@ const slide3Data = {
 const slide4Data = {
     data: [[
         ["Rank", "Flavour Combination", "Reach", "Frequency"],
-        ["1", "Orange", "64%", "-10.59%", "1"],
-        ["2", "Apple", "62%", "-8.97%", "1"],
-        ["3", "Peach", "51%", "-8.97%", "1"],
+        ["1", "Orange", "64%", "1"],
+        ["2", "Apple", "62%", "1"],
+        ["3", "Peach", "51%", "1"],
     ], [
         ["Rank", "Flavour Combination", "Reach", "Frequency"],
-        ["1", "Orange", "64%", "-10.59%", "1"],
-        ["2", "Apple", "62%", "-8.97%", "1"],
-        ["3", "Peach", "51%", "-8.97%", "1"],
+        ["1", "Orange", "64%", "1"],
+        ["2", "Apple", "62%", "1"],
+        ["3", "Peach", "51%", "1"],
     ]],
     headingTextOpts: {
         align: 'left',
@@ -205,11 +203,11 @@ const slide4Data = {
                 title: 'Subheadline: Splitname and Total (N=)',
                 options: {
                     x: '5%',
-                    y: '12%',
+                    y: '8.5%',
                     w: '100%',
                     align: 'left',
-                    fontSize: 14,
                     font_weight: '300',
+                    fontSize: 11,
                     color: '000000',
                     marginBottom: '15px'
                 }
@@ -221,7 +219,6 @@ const slide4Data = {
                     y: '5%',
                     w: '100%',
                     align: 'left',
-                    fontSize: 20,
                     font_weight: 'bold',
                     color: '000000',
                 }
@@ -239,7 +236,7 @@ const slide4Data = {
             {
                 title: 'Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)',
                 options: {
-                    x: '55%',
+                    x: '30%',
                     y: '85%', // Adjust position below the tables
                     align: 'left',
                     fontSize: 8,
@@ -307,23 +304,23 @@ const slide6Data = {
         return [
             {
                 title: 'INSIGHT REPORT',
-                options: { ...this.options, y: '20%', fontSize: 70 }
+                options: { ...this.options, y: '27%',x: '5%', fontSize: 70 }
             },
             {
                 title: 'Project Name',
-                options: { ...this.options, y: '50%', fontSize: 45, color: '0270C0' }
+                options: { ...this.options, y: '52%',x: '5%', fontSize: 45, color: '0270C0' }
             },
             {
                 title: 'Date',
-                options: { ...this.options, y: '60%', fontSize: 35 }
+                options: { ...this.options, y: '62%',x: '5%', fontSize: 35 }
             },
             {
                 title: 'appinio',
-                options: { ...this.options, y: '85%', fontSize: 30, fontFamily: 'Aeonik Light' }
+                options: { ...this.options, y: '85%',x: '5%', fontSize: 30, fontFamily: 'Aeonik Light' }
             },
             {
                 title: 'Month Year',
-                options: { ...this.options, x: '25%', y: '85%', fontSize: 25 }
+                options: { ...this.options, x: '30%', y: '85%', fontSize: 25 }
             }
         ]
     }
@@ -348,7 +345,7 @@ const slide7Data = {
         fill: "F3F7FC",
         fontSize: 24,
     },
-    texts: ["This is dummy text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At imperdiet dui accumsan sit amet nulla. Bibendum at varius vel pharetra vel turpis nunc eget. Sagittis purus sit amet volutpat consequat mauris nunc congue. Eu facilisis sed odio morbi quis commodo odio aenean. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et netus. Enim eu turpis egestas pretium aenean pharetra magna ac. Tincidunt ornare massa eget egestas. In fermentum posuere urna nec tincidunt praesent. Lorem mollis aliquam ut porttitor leo a. Nibh mauris cursus mattis molestie a iaculis at erat pellentesque. Facilisis magna etiam tempor orci eu lobortis elementum nibh tellus. Porttitor rhoncus dolor purus non enim praesent elementum. Aenean pharetra magna ac placerat", "Non consectetur a erat nam at. Tortor consequat id porta nibh venenatis cras. Et ligula ullamcorper malesuada proin libero nunc consequat. At tellus at urna condimentum mattis. Quis imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper. Sed sed risus pretium quam. Suspendisse faucibus interdum posuere lorem ipsum. Ultricies mi eget mauris pharetra et ultrices neque ornare. Faucibus scelerisque eleifend donec pretium vulputate sapien. Scelerisque fermentum dui faucibus in ornare quam. Faucibus pulvinar elementum integer enim neque. Urna duis convallis convallis tellus id interdum velit laoreet id. Vehicula ipsum a arcu cursus vitae. Quam lacus suspendisse faucibus interdum posuere. Massa enim nec dui nunc. Ultrices tincidunt arcu non sodales. Tempus iaculis urna id volutpat lacus laoreet non. Ac turpis egestas integer eget aliquet. Cum sociis natoque penatibus et magnis dis."],
+    texts: ["This is dummy text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At imperdiet dui accumsan sit amet nulla. Bibendum at varius vel pharetra vel turpis nunc eget. Sagittis purus sit amet volutpat consequat mauris nunc congue. Eu facilisis sed odio morbi quis commodo odio aenean. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et netus. Enim eu turpis egestas pretium aenean pharetra magna ac. Tincidunt ornare massa eget egestas. In fermentum posuere urna nec tincidunt praesent. Lorem mollis aliquam ut porttitor leo a. Nibh mauris cursus mattis molestie a iaculis at erat pellentesque. Facilisis magna etiam tempor orci eu lobortis elementum nibh tellus. Porttitor rhoncus dolor purus non enim praesent elementum. Aenean pharetra magna ac placerat", "Non consectetur a erat nam at. Tortor consequat id porta nibh venenatis cras. Et ligula ullamcorper malesuada proin libero nunc consequat. At tellus at urna condimentum mattis. Quis imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper. Sed sed risus pretium quam. Suspendisse faucibus interdum posuere lorem ipsum. Ultricies mi eget mauris pharetra et ultrices neque ornare. Faucibus scelerisque eleifend donec pretium vulputate sapien. Scelerisque fermentum dui faucibus in ornare quam. Faucibus pulvinar elementum integer enim neque. Urna duis convallis convallis tellus id interdum velit laoreet id. Vehicula ipsum a arcu cursus vitae. Quam lacus suspendisse faucibus interdum posuere. Massa enim nec dui nunc. Ultrices tincidunt arcu non sodales. Tempus iaculis urna id volutpat lacus laoreet non. Ac turpis egestas integer eget aliquet. Cum sociis natoque penatibus et magnis dis.","Faucibus pulvinar elementum integer enim neque. Urna duis convallis convallis tellus id interdum velit laoreet id. Vehicula ipsum a arcu cursus vitae. Quam lacus suspendisse faucibus interdum posuere. Massa enim nec dui nunc. Ultrices tincidunt arcu non sodales."],
     textOptions: {
         align: 'left',
         color: '000000'
@@ -584,6 +581,10 @@ const slide11Data = {
                 options: { ...this.extraOptions, x: '5%', fontSize: 10, y: '82%', w: '30%' }
             },
             {
+                title: "vestibulum lectus mauris ultrices eros. Elementum pulvinar etiam non quam lacus suspendisse faucibus interdum. Massa tincidunt dui ut ornare lectus sit. Vulputate sapien nec sagittis aliquam malesuada. Elementum sagittis vitae et leo duis ut diam. Nec feugiat in fermentum posuere urna nec tincidunt praesent semper.Est sit amet facilisis magna etiam tempor orci.",
+                options: { ...this.extraOptions, x: '35%', fontSize: 10, y: '77%', w: '30%' }
+            },
+            {
                 title: 'appinio',
                 options: {
                     x: 0, y: '95%', fontSize: 16,
@@ -687,7 +688,7 @@ const slide13Data = {
         {
             title: 'Total: (N = 1000)',
             options: {
-                y: '13%',
+                y: '16%',
                 x: '5%',
                 fontSize: 10
             }
@@ -709,17 +710,17 @@ const slide13Data = {
                 x: '60%',
                 fontSize: 12,
                 w: '25%',
-                color: '777777',
+                color: '000000',
             }
         },
         {
             title: 'Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
             options: {
-                y: '52%',
+                y: '45%',
                 x: '60%',
                 fontSize: 12,
                 w: '25%',
-                color: '777777',
+                color: '000000',
             }
         },
         {
@@ -782,7 +783,7 @@ const slide14Data = {
         {
             title: 'Total: (N = 1000)',
             options: {
-                y: '13%',
+                y: '16%',
                 x: '5%',
                 fontSize: 10
             }
@@ -804,17 +805,17 @@ const slide14Data = {
                 x: '10%',
                 fontSize: 12,
                 w: '25%',
-                color: '777777',
+                color: '000000',
             }
         },
         {
             title: 'Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
             options: {
-                y: '52%',
+                y: '45%',
                 x: '10%',
                 fontSize: 12,
                 w: '25%',
-                color: '777777',
+                color: '000000',
             }
         },
         {
@@ -871,7 +872,7 @@ const slide15Data = {
         {
             title: 'Total: (N = 1000) / Split: Age Groups',
             options: {
-                y: '13%',
+                y: '16%',
                 x: '5%',
                 fontSize: 10
             }
@@ -893,17 +894,17 @@ const slide15Data = {
                 x: '60%',
                 fontSize: 12,
                 w: '25%',
-                color: '777777',
+                color: '000000',
             }
         },
         {
             title: 'Insight Headline in Aeonik Medium Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
             options: {
-                y: '54%',
+                y: '45%',
                 x: '60%',
                 fontSize: 12,
                 w: '25%',
-                color: '777777',
+                color: '000000',
             }
         },
         {
@@ -1026,23 +1027,23 @@ const slide15Data = {
     data: [
         {
             labels: [["Category 1", "Category 2", "Category 3"]],
-            values: [100, 100, 100, 100, 100, 100],
+            values: [100, 100, 100],
         },
         {
             labels: [["Category 1", "Category 2", "Category 3"]],
-            values: [100, 100, 100, 100, 100, 100],
+            values: [100, 100, 100],
         },
         {
             labels: [["Category 1", "Category 2", "Category 3"]],
-            values: [100, 100, 100, 100, 100, 100],
+            values: [100, 100, 100],
         },
         {
             labels: [["Category 1", "Category 2", "Category 3"]],
-            values: [100, 100, 100, 100, 100, 100],
+            values: [100, 100, 100],
         },
         {
             labels: [["Category 1", "Category 2", "Category 3"]],
-            values: [100, 100, 100, 100, 100, 100],
+            values: [100, 100, 100],
         },
         // ... add more categories if needed
     ],

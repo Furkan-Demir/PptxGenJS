@@ -23,6 +23,7 @@ function
     slide2(pptx) {
     let slide = pptx.addSlide();
     const headingTexts = slide2Data.headingTexts
+
     let table = slide.addTable(slide2Data.data, slide2Data.options);
     // Change color of odd-numbered rows
     table._slideObjects.forEach((slideObject) => {
@@ -37,6 +38,14 @@ function
                         cell.options.fill = 'FFFFFF'; // Change fill color to light gray
                     });
                 }
+
+                row.forEach((cell,ind) => {
+                    if(ind == row?.length - 1 && ind != 0) {
+                        let splitedText = cell?.text?.split("%")[0]
+                        console.log('ind', ind,splitedText)
+                        cell.options.color = splitedText == 'Score' ? '000000' : splitedText > 0 ? '008000' : 'FF0000'
+                    }
+                });
             });
         }
     });
@@ -101,6 +110,19 @@ function
     slide.addChart(pptx.ChartType.funnel, slide5Data.data[0], slide5Data.options);
     let tableData = slide5Data.data[1]
 
+    slide.addText("Brand Funnel", {
+        x: '5%',
+        y: '5%',
+        color: '000000',
+    })
+
+    slide.addText("Subheadline: Splitname and Total (N=)", {
+        x: '5%',
+        y: '9%',
+        color: '000000',
+        fontSize:11
+    })
+
     slide.addText("hello", {
         w: '5%',
         h: '15%',
@@ -137,6 +159,10 @@ function
         fill: '8ED19C'
     })
 
+    slide.addText("KPI", {
+        x: '10%', y: '16%', fontSize: 14
+    })
+
     slide.addText("Absolute", {
         x: '65%', y: '16%', fontSize: 12
     })
@@ -169,13 +195,32 @@ function
             }
         });
     });
+
+    slide.addText("appinio", {
+        x: '5%',
+        y: '95%', // Adjust position below the tables
+        align: 'left',
+        font_size: 12,
+        color: '363636',
+    })
+
+    slide.addText("Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)", {
+        x: '30%',
+        y: '95%', // Adjust position below the tables
+        align: 'left',
+        fontSize: 8,
+        color: '363636',
+    })
 }
 function
     slide6(pptx) {
     let slide = pptx.addSlide();
 
     const headingsText = slide6Data.headingsText()
-
+    slide.addImage({
+        path: 'https://res.cloudinary.com/drascgtap/image/upload/v1715864912/Qibble%20App/cfpt1xstecwgbmoupd17.png',
+        h: '10%', y: '10%',x:'5%', w: '15%'
+    })
     headingsText.forEach((heading) => {
         slide.addText(heading.title, heading.options)
     })
@@ -191,12 +236,14 @@ function
 
     // Add content text on the left side
     let contentText = slide7Data.data;
+    const numbers = [3,15,28,37]
 
     let textOpts = slide7Data.options;
 
     const textopt = slide7Data.extraOptions
 
     let yPosition = 10; // Starting y position for text
+    let yPagePosition = 20
     slide.addText('', {
         x: 0,
         h: '100%',
@@ -207,12 +254,16 @@ function
 
     contentText.forEach((text, index) => {
         if (index === 0) {
-            slide.addText(text, { ...textopt, y: yPosition + '%', x: '5%', fontSize: 12 });
+            slide.addText(text, { ...textopt, y: 5 + '%', x: '5%', fontSize: 12 });
         } else {
             slide.addText(text, { ...textOpts, y: yPosition + '%', x: '5%' });
         }
         yPosition += 10; // Update y position for next text
     });
+    numbers.forEach((page)=>{
+        slide.addText(`${page}`, { ...textopt, y: yPagePosition + '%', x: '30%', fontSize: 12 });
+        yPagePosition+= 10
+    })
 
     let loremIpsumTextOpts = slide7Data.textOptions;
 
@@ -221,6 +272,11 @@ function
     slide.addText(slide7Data.texts[0], { ...loremIpsumTextOpts, x: '35%', fontSize: 12, y: '40%', w: '30%' });
 
     slide.addText(slide7Data.texts[1], { ...loremIpsumTextOpts, x: '65%', fontSize: 12, y: '40%', w: '30%' });
+
+    slide.addText(slide7Data.texts[2], { ...loremIpsumTextOpts, x: '35%', fontSize: 12, y: '80%', w: '30%' });
+
+    slide.addImage({ path: 'https://res.cloudinary.com/drascgtap/image/upload/v1715866057/Qibble%20App/thlpiplo2h9n6h9fx83d.png',h: '10%', y: '80%',x:'65%', w: '25%' });
+
 }
 function
     slide8(pptx) {
@@ -302,7 +358,7 @@ function slide10(pptx) {
     });
 
     chartData.values.map((value) => {
-        let valuesXpos = 20;
+        let valuesXpos = 10;
 
         slide.addText(value.women, { y: `${valuesYpos}%`, x: `${valuesXpos}%`, fontSize: 12, h: '5%', w: '15%', fill: '8260D9', align: 'center', color: 'FFFFFF' })
 
@@ -315,7 +371,7 @@ function slide10(pptx) {
     })
 
     let labelsYpos = valuesYpos
-    let labelsXpos = 20
+    let labelsXpos = 10
 
     chartData.labels.map((label) => {
         slide.addText(label, { y: `${labelsYpos}%`, x: `${labelsXpos}%`, fontSize: 12, h: '5%', w: '15%', align: 'center' })
