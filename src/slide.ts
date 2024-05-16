@@ -49,7 +49,7 @@ export default class Slide {
 	public _slideObjects: ISlideObject[]
 	public _newAutoPagedSlides: PresSlide[]
 
-	constructor(params: {
+	constructor (params: {
 		addSlide: (options?: AddSlideProps) => PresSlide
 		getSlide: (slideNum: number) => PresSlide
 		presLayout: PresLayout
@@ -85,7 +85,7 @@ export default class Slide {
 	 * @deprecated in v3.3.0 - use `background` instead
 	 */
 	private _bkgd: string | BackgroundProps
-	public set bkgd(value: string | BackgroundProps) {
+	public set bkgd (value: string | BackgroundProps) {
 		this._bkgd = value
 		if (!this._background || !this._background.color) {
 			if (!this._background) this._background = {}
@@ -93,7 +93,7 @@ export default class Slide {
 		}
 	}
 
-	public get bkgd(): string | BackgroundProps {
+	public get bkgd (): string | BackgroundProps {
 		return this._bkgd
 	}
 
@@ -107,13 +107,13 @@ export default class Slide {
 	 * @since v3.3.0
 	 */
 	private _background: BackgroundProps
-	public set background(props: BackgroundProps) {
+	public set background (props: BackgroundProps) {
 		this._background = props
 		// Add background (image data/path must be captured before `exportPresentation()` is called)
 		if (props) genObj.addBackgroundDefinition(props, this)
 	}
 
-	public get background(): BackgroundProps {
+	public get background (): BackgroundProps {
 		return this._background
 	}
 
@@ -122,11 +122,11 @@ export default class Slide {
 	 * @type {HexColor}
 	 */
 	private _color: HexColor
-	public set color(value: HexColor) {
+	public set color (value: HexColor) {
 		this._color = value
 	}
 
-	public get color(): HexColor {
+	public get color (): HexColor {
 		return this._color
 	}
 
@@ -134,24 +134,24 @@ export default class Slide {
 	 * @type {boolean}
 	 */
 	private _hidden: boolean
-	public set hidden(value: boolean) {
+	public set hidden (value: boolean) {
 		this._hidden = value
 	}
 
-	public get hidden(): boolean {
+	public get hidden (): boolean {
 		return this._hidden
 	}
 
 	/**
 	 * @type {SlideNumberProps}
 	 */
-	public set slideNumber(value: SlideNumberProps) {
+	public set slideNumber (value: SlideNumberProps) {
 		// NOTE: Slide Numbers: In order for Slide Numbers to function they need to be in all 3 files: master/layout/slide
 		this._slideNumberProps = value
 		this._setSlideNum(value)
 	}
 
-	public get slideNumber(): SlideNumberProps {
+	public get slideNumber (): SlideNumberProps {
 		return this._slideNumberProps
 	}
 
@@ -180,7 +180,6 @@ export default class Slide {
 		}
 		return this;
 	}
-
 	generateWaterfallChart(data: IOptsCustomChartWaterfallData, options: any = {}): void {
 		options.x = 0.5;
 		options.y = 0.5;
@@ -466,7 +465,7 @@ export default class Slide {
 	 * @param {ImageProps} options - image options
 	 * @return {Slide} this Slide
 	 */
-	addImage(options: ImageProps): Slide {
+	addImage (options: ImageProps): Slide {
 		genObj.addImageDefinition(this, options)
 		return this
 	}
@@ -476,7 +475,7 @@ export default class Slide {
 	 * @param {MediaProps} options - media options
 	 * @return {Slide} this Slide
 	 */
-	addMedia(options: MediaProps): Slide {
+	addMedia (options: MediaProps): Slide {
 		genObj.addMediaDefinition(this, options)
 		return this
 	}
@@ -487,7 +486,7 @@ export default class Slide {
 	 * @param {string} notes - notes to add to slide
 	 * @return {Slide} this Slide
 	 */
-	addNotes(notes: string): Slide {
+	addNotes (notes: string): Slide {
 		genObj.addNotesDefinition(this, notes)
 		return this
 	}
@@ -498,7 +497,7 @@ export default class Slide {
 	 * @param {ShapeProps} options - shape options
 	 * @return {Slide} this Slide
 	 */
-	addShape(shapeName: SHAPE_NAME, options?: ShapeProps): Slide {
+	addShape (shapeName: SHAPE_NAME, options?: ShapeProps): Slide {
 		// NOTE: As of v3.1.0, <script> users are passing the old shape object from the shapes file (orig to the project)
 		// But React/TypeScript users are passing the shapeName from an enum, which is a simple string, so lets cast
 		// <script./> => `pptx.shapes.RECTANGLE` [string] "rect" ... shapeName['name'] = 'rect'
@@ -514,7 +513,7 @@ export default class Slide {
 	 * @param {TableProps} options - table options
 	 * @return {Slide} this Slide
 	 */
-	addTable(tableRows: TableRow[], options?: TableProps): Slide {
+	addTable (tableRows: TableRow[], options?: TableProps): Slide {
 		// FUTURE: we pass `this` - we dont need to pass layouts - they can be read from this!
 		this._newAutoPagedSlides = genObj.addTableDefinition(this, tableRows, options, this._slideLayout, this._presLayout, this.addSlide, this.getSlide)
 		return this
@@ -526,7 +525,7 @@ export default class Slide {
 	 * @param {TextPropsOptions} options - text options
 	 * @return {Slide} this Slide
 	 */
-	addText(text: string | TextProps[], options?: TextPropsOptions): Slide {
+	addText (text: string | TextProps[], options?: TextPropsOptions): Slide {
 		const textParam = typeof text === 'string' || typeof text === 'number' ? [{ text, options }] : text
 		genObj.addTextDefinition(this, textParam, options, false)
 		return this
