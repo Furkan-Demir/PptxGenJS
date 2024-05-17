@@ -42,7 +42,6 @@ function
                 row.forEach((cell,ind) => {
                     if(ind == row?.length - 1 && ind != 0) {
                         let splitedText = cell?.text?.split("%")[0]
-                        console.log('ind', ind,splitedText)
                         cell.options.color = splitedText == 'Score' ? '000000' : splitedText > 0 ? '008000' : 'FF0000'
                     }
                 });
@@ -111,13 +110,13 @@ function
     let tableData = slide5Data.data[1]
 
     slide.addText("Brand Funnel", {
-        x: '5%',
+        x: '3%',
         y: '5%',
         color: '000000',
     })
 
     slide.addText("Subheadline: Splitname and Total (N=)", {
-        x: '5%',
+        x: '3%',
         y: '9%',
         color: '000000',
         fontSize:11
@@ -160,7 +159,7 @@ function
     })
 
     slide.addText("KPI", {
-        x: '10%', y: '16%', fontSize: 14
+        x: '8%', y: '16%', fontSize: 14
     })
 
     slide.addText("Absolute", {
@@ -197,7 +196,7 @@ function
     });
 
     slide.addText("appinio", {
-        x: '5%',
+        x: '3%',
         y: '95%', // Adjust position below the tables
         align: 'left',
         font_size: 12,
@@ -254,9 +253,9 @@ function
 
     contentText.forEach((text, index) => {
         if (index === 0) {
-            slide.addText(text, { ...textopt, y: 5 + '%', x: '5%', fontSize: 12 });
+            slide.addText(text, { ...textopt, y: 5 + '%', x: '2%', fontSize: 12 });
         } else {
-            slide.addText(text, { ...textOpts, y: yPosition + '%', x: '5%' });
+            slide.addText(text, { ...textOpts, y: yPosition + '%', x: '2%' });
         }
         yPosition += 10; // Update y position for next text
     });
@@ -348,7 +347,7 @@ function slide10(pptx) {
     const chartData = slide10Data.data
 
     let namesYpos = 50;
-    let namesXpos = 5;
+    let namesXpos = 8;
 
     let valuesYpos = 48;
 
@@ -358,7 +357,7 @@ function slide10(pptx) {
     });
 
     chartData.values.map((value) => {
-        let valuesXpos = 10;
+        let valuesXpos = 13;
 
         slide.addText(value.women, { y: `${valuesYpos}%`, x: `${valuesXpos}%`, fontSize: 12, h: '5%', w: '15%', fill: '8260D9', align: 'center', color: 'FFFFFF' })
 
@@ -371,7 +370,7 @@ function slide10(pptx) {
     })
 
     let labelsYpos = valuesYpos
-    let labelsXpos = 10
+    let labelsXpos = 13
 
     chartData.labels.map((label) => {
         slide.addText(label, { y: `${labelsYpos}%`, x: `${labelsXpos}%`, fontSize: 12, h: '5%', w: '15%', align: 'center' })

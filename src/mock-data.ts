@@ -3,7 +3,7 @@ const slide1Data = {
         {
             title: 'Subheadline: Splitname and Total (N=)',
             options: {
-                x: '5%', // Set x position to 5% from the left
+                x: '3%', // Set x position to 5% from the left
                 y: '9%', // Set y position to 5% from the top
                 w: '100%', // Set width to 40% of slide width
                 align: 'left', // Align text to the left
@@ -16,7 +16,7 @@ const slide1Data = {
         {
             title: 'Max Diff Table',
             options: {
-                x: '5%', // Set x position to 5% from the left
+                x: '3%', // Set x position to 5% from the left
                 y: '5%', // Set y position to 5% from the top
                 w: '40%', // Set width to 40% of slide width
                 align: 'left', // Align text to the left
@@ -27,7 +27,7 @@ const slide1Data = {
         {
             title: 'appinio',
             options: {
-                x: '5%', // Left align with the table
+                x: '3%', // Left align with the table
                 y: '90%', // Adjust position below the tabl
                 align: 'left', // Left align the text
                 font_size: 12,
@@ -88,7 +88,7 @@ const slide2Data = {
         {
             title: 'Subheadline: Splitname and Total (N=)',
             options: {
-                x: '5%', // Set x position to 5% from the left
+                x: '3%', // Set x position to 5% from the left
                 y: '9%', // Set y position to 5% from the top
                 w: '100%', // Set width to 40% of slide width
                 align: 'left', // Align text to the left
@@ -101,7 +101,7 @@ const slide2Data = {
         {
             title: 'Max Diff Table',
             options: {
-                x: '5%', // Set x position to 5% from the left
+                x: '3%', // Set x position to 5% from the left
                 y: '5%', // Set y position to 5% from the top
                 w: '40%', // Set width to 40% of slide width
                 align: 'left', // Align text to the left
@@ -112,7 +112,7 @@ const slide2Data = {
         {
             title: 'appinio',
             options: {
-                x: '5%', // Left align with the table
+                x: '3%', // Left align with the table
                 y: '90%', // Adjust position below the tabl
                 align: 'left', // Left align the text
                 font_size: 12,
@@ -202,7 +202,7 @@ const slide4Data = {
             {
                 title: 'Subheadline: Splitname and Total (N=)',
                 options: {
-                    x: '5%',
+                    x: '3%',
                     y: '8.5%',
                     w: '100%',
                     align: 'left',
@@ -215,7 +215,7 @@ const slide4Data = {
             {
                 title: 'TURF Analysis (Optimal number of flavor combinations',
                 options: {
-                    x: '5%',
+                    x: '3%',
                     y: '5%',
                     w: '100%',
                     align: 'left',
@@ -226,7 +226,7 @@ const slide4Data = {
             {
                 title: 'appinio',
                 options: {
-                    x: '5%',
+                    x: '3%',
                     y: '85%', // Adjust position below the tables
                     align: 'left',
                     font_size: 12,
@@ -365,9 +365,9 @@ const slide8Data = {
                 }
             },
             {
-                title: 'Chapter Slide',
+                title: 'CHAPTER SLIDE',
                 options: {
-                    ...this.options, y: '30%', fontSize: 70
+                    ...this.options, y: '25%', fontSize: 70
                 }
             },
             {
@@ -475,27 +475,27 @@ const slide10Data = {
     headingsText: [
         {
             title: 'Sample Overview',
-            options: { y: '10%', x: '5%', fontSize: 20 }
+            options: { y: '10%', x: '3%', fontSize: 20 }
         },
         {
             title: '1000',
-            options: { y: '25%', x: '5%', fontSize: 50 }
+            options: { y: '25%', x: '8%', fontSize: 50 }
         },
         {
             title: 'Participants',
-            options: { y: '30%', x: '5%', fontSize: 10, color: '777777' }
+            options: { y: '30%', x: '8%', fontSize: 10, color: '777777' }
         },
         {
             title: '39.5',
-            options: { y: '25%', x: '20%', fontSize: 50 }
+            options: { y: '25%', x: '23%', fontSize: 50 }
         },
         {
             title: 'Average Ages in years',
-            options: { y: '30%', x: '20%', fontSize: 10, color: '777777' }
+            options: { y: '30%', x: '23%', fontSize: 10, color: '777777' }
         },
         {
             title: 'Age & Gender',
-            options: { y: '40%', x: '5%', fontSize: 20 }
+            options: { y: '40%', x: '8%', fontSize: 20 }
         },
         {
             title: 'United States',
@@ -531,7 +531,7 @@ const slide10Data = {
         },
         {
             title: 'appinio',
-            options: { y: '95%', x: "5%", fontSize: 14 }
+            options: { y: '95%', x: "3%", fontSize: 14 }
         },
         {
             image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715068058/Qibble%20App/c5xay6vcb96euuryamp7.png',
@@ -548,7 +548,7 @@ const slide10Data = {
 
 const slide11Data = {
     options: {
-        x: '5%',
+        x: '7%',
     },
     extraOptions: {
         align: 'left',
@@ -559,35 +559,35 @@ const slide11Data = {
             {
                 title: 'Executive Summary',
                 options: {
-                    x: 0, y: '10%', fontSize: 20,
+                    x: '2.5%', y: '10%', fontSize: 20,
                 }
             },
             {
                 title: 'Only have one big key insight in the summary? This is a nice space to highlight the main insight or just introduce the insight summary.',
                 options: {
-                    ...this.options, y: '30%', fontSize: 20, w: '50%',
+                    ...this.options, y: '25%', fontSize: 20, w: '55%',
                 }
             },
             {
                 title: 'This is dummy text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At imperdiet dui accumsan sit amet nulla. Bibendum at varius vel pharetra vel turpis nunc eget. Sagittis purus sit amet volutpat consequat mauris nunc congue. Eu facilisis sed odio morbi quis commodo odio aenean. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et netus. Enim eu turpis egestas pretium aenean pharetra magna ac. Tincidunt ornare massa eget egestas. In fermentum posuere urna nec tincidunt praesent. Lorem mollis aliquam ut porttitor leo a. Nibh mauris cursus mattis molestie a iaculis at erat pellentesque. Facilisis magna etiam tempor orci eu lobortis elementum nibh tellus. Porttitor rhoncus dolor purus non enim praesent elementum. Aenean pharetra magna ac placerat',
-                options: { ...this.extraOptions, x: '5%', fontSize: 10, y: '55%', w: '30%' }
+                options: { ...this.extraOptions, x: '7%', fontSize: 10, y: '50%', w: '30%' }
             },
             {
                 title: 'vestibulum lectus mauris ultrices eros. Elementum pulvinar etiam non quam lacus suspendisse faucibus interdum. Massa tincidunt dui ut ornare lectus sit. Vulputate sapien nec sagittis aliquam malesuada. Elementum sagittis vitae et leo duis ut diam. Nec feugiat in fermentum posuere urna nec tincidunt praesent semper.Est sit amet facilisis magna etiam tempor orci. Non consectetur a erat nam at. Tortor consequat id porta nibh venenatis cras. Et ligula ullamcorper malesuada proin libero nunc consequat. At tellus at urna condimentum mattis. Quis imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper.',
-                options: { ...this.extraOptions, x: '35%', fontSize: 10, y: '52%', w: '30%' }
+                options: { ...this.extraOptions, x: '37%', fontSize: 10, y: '45%', w: '30%' }
             },
             {
                 title: 'Sed sed risus pretium quam. Suspendisse faucibus interdum posuere lorem ipsum. Ultricies mi eget mauris pharetra et ultrices neque ornare. Faucibus scelerisque eleifend donec pretium vulputate sapien. Scelerisque fermentum dui faucibus in ornare quam.',
-                options: { ...this.extraOptions, x: '5%', fontSize: 10, y: '82%', w: '30%' }
+                options: { ...this.extraOptions, x: '7%', fontSize: 10, y: '75%', w: '30%' }
             },
             {
                 title: "vestibulum lectus mauris ultrices eros. Elementum pulvinar etiam non quam lacus suspendisse faucibus interdum. Massa tincidunt dui ut ornare lectus sit. Vulputate sapien nec sagittis aliquam malesuada. Elementum sagittis vitae et leo duis ut diam. Nec feugiat in fermentum posuere urna nec tincidunt praesent semper.Est sit amet facilisis magna etiam tempor orci.",
-                options: { ...this.extraOptions, x: '35%', fontSize: 10, y: '77%', w: '30%' }
+                options: { ...this.extraOptions, x: '37%', fontSize: 10, y: '68%', w: '30%' }
             },
             {
                 title: 'appinio',
                 options: {
-                    x: 0, y: '95%', fontSize: 16,
+                    x: '2.5%', y: '95%', fontSize: 16,
                 }
             }
         ]
@@ -598,79 +598,83 @@ const slide12Data = {
     headingsText: [
         {
             title: 'Any questions? We are happy to help!',
-            options: { fontSize: 20, y: '10%', x: '5%' }
+            options: { fontSize: 20, y: '10%', x: '2%' }
         },
         {
             image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715070468/Qibble%20App/dvcpusdcg5jpnh4nvhlj.png',
-            options: { w: '10%', h: '20%', y: '20%', x: '10%' }
+            options: { w: '10%', h: '20%', y: '20%', x: '8%' }
         },
         {
             title: 'Name',
-            options: { fontSize: 40, y: '25%', x: '20%' }
+            options: { fontSize: 40, y: '25%', x: '18%' }
         },
         {
             title: 'Position',
-            options: { fontSize: 20, y: '30%', x: '20%' }
+            options: { fontSize: 20, y: '30%', x: '18%' }
         },
         {
             title: 'Office',
-            options: { fontSize: 8, y: '35%', x: '20%', color: '777777' }
+            options: { fontSize: 8, y: '35%', x: '18%', color: '777777' }
         },
         {
             title: '+49',
-            options: { fontSize: 8, y: '35%', x: '25%', color: '777777' }
+            options: { fontSize: 8, y: '35%', x: '23%', color: '777777' }
         },
         {
             title: 'Mail',
-            options: { fontSize: 8, y: '37%', x: '20%', color: '777777' }
+            options: { fontSize: 8, y: '37%', x: '18%', color: '777777' }
         },
         {
             title: 'Louise.leitsch@appinio.com',
-            options: { fontSize: 8, y: '37%', x: '25%', color: '777777' }
+            options: { fontSize: 8, y: '37%', x: '23%', color: '777777' }
         },
         {
             image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715070468/Qibble%20App/dvcpusdcg5jpnh4nvhlj.png',
-            options: { w: '10%', h: '20%', y: '50%', x: '10%' }
+            options: { w: '10%', h: '20%', y: '50%', x: '8%' }
         },
         {
             title: 'Name',
-            options: { fontSize: 40, y: '55%', x: '20%' }
+            options: { fontSize: 40, y: '55%', x: '18%' }
         },
         {
             title: 'Position',
-            options: { fontSize: 20, y: '60%', x: '20%' }
+            options: { fontSize: 20, y: '60%', x: '18%' }
         },
         {
             title: 'Office',
-            options: { fontSize: 8, y: '65%', x: '20%', color: '777777' }
+            options: { fontSize: 8, y: '65%', x: '18%', color: '777777' }
         },
         {
             title: '+49',
-            options: { fontSize: 8, y: '65%', x: '25%', color: '777777' }
+            options: { fontSize: 8, y: '65%', x: '23%', color: '777777' }
         },
         {
             title: 'Mail',
-            options: { fontSize: 8, y: '67%', x: '20%', color: '777777' }
+            options: { fontSize: 8, y: '67%', x: '18%', color: '777777' }
         },
         {
             title: 'Louise.leitsch@appinio.com',
-            options: { fontSize: 8, y: '67%', x: '25%', color: '777777' }
+            options: { fontSize: 8, y: '67%', x: '23%', color: '777777' }
         },
         {
             title: 'appinio',
-            options: { fontSize: 14, y: '90%', x: '5%' }
+            options: { fontSize: 14, y: '90%', x: '2%' }
         },
         {
             title: 'Appinio Germany Grobe Theaterstrabe 31 20354 Hamburg',
-            options: { fontSize: 10, y: '90%', x: '25%', w: '10%' }
+            options: { fontSize: 10, y: '90%', x: '23%', w: '10%' }
         },
         {
-            title: 'Appinio Germany Grobe Theaterstrabe 31 20354 Hamburg',
-            options: { fontSize: 10, y: '90%', x: '65%', w: '10%' }
+            title: 'Appinio USA 1355 Market St 94301 San Francisco',
+            options: { fontSize: 10, y: '90%', x: '43%', w: '10%' }
+        },
+        {
+            title: 'Appinio UK Victoria House, Suite 41 38 Survey Quays Road, London UK',
+            options: { fontSize: 10, y: '90%', x: '63%', w: '10%' }
         },
         {
             title: 'appinio.com',
-            options: { fontSize: 10, y: '90%', x: '85%', w: '10%' }
+            options: { fontSize: 10, y: '90%', x: '83%', w: '10%' }
         },
     ]
 }
@@ -681,7 +685,7 @@ const slide13Data = {
             title: 'Are you planning to go on vacation this year?',
             options: {
                 y: '10%',
-                x: '5%',
+                x: '2%',
                 fontSize: 20
             }
         },
@@ -689,7 +693,7 @@ const slide13Data = {
             title: 'Total: (N = 1000)',
             options: {
                 y: '16%',
-                x: '5%',
+                x: '2%',
                 fontSize: 10
             }
         },
@@ -776,7 +780,7 @@ const slide14Data = {
             title: 'Are you planning to go on vacation this year?',
             options: {
                 y: '10%',
-                x: '5%',
+                x: '2%',
                 fontSize: 20
             }
         },
@@ -784,15 +788,15 @@ const slide14Data = {
             title: 'Total: (N = 1000)',
             options: {
                 y: '16%',
-                x: '5%',
+                x: '2%',
                 fontSize: 10
             }
         },
         {
             title: 'Insights',
             options: {
-                y: '18%',
-                x: '10%',
+                y: '20%',
+                x: '7%',
                 w: '100%',
                 fontSize: 8,
                 color: '777777',
@@ -802,7 +806,7 @@ const slide14Data = {
             title: 'Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
             options: {
                 y: '30%',
-                x: '10%',
+                x: '7%',
                 fontSize: 12,
                 w: '25%',
                 color: '000000',
@@ -812,7 +816,7 @@ const slide14Data = {
             title: 'Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
             options: {
                 y: '45%',
-                x: '10%',
+                x: '7%',
                 fontSize: 12,
                 w: '25%',
                 color: '000000',
@@ -865,7 +869,7 @@ const slide15Data = {
             title: 'Are you planning to go on vacation this year?',
             options: {
                 y: '10%',
-                x: '5%',
+                x: '2%',
                 fontSize: 20
             }
         },
@@ -873,7 +877,7 @@ const slide15Data = {
             title: 'Total: (N = 1000) / Split: Age Groups',
             options: {
                 y: '16%',
-                x: '5%',
+                x: '2%',
                 fontSize: 10
             }
         },
@@ -890,20 +894,20 @@ const slide15Data = {
         {
             title: 'Insight Headline in Aeonik Medium Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
             options: {
-                y: '32%',
+                y: '27%',
                 x: '60%',
                 fontSize: 12,
-                w: '25%',
+                w: '30%',
                 color: '000000',
             }
         },
         {
             title: 'Insight Headline in Aeonik Medium Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
             options: {
-                y: '45%',
+                y: '40%',
                 x: '60%',
                 fontSize: 12,
-                w: '25%',
+                w: '30%',
                 color: '000000',
             }
         },
@@ -911,9 +915,9 @@ const slide15Data = {
             title: '',
             options: {
                 y: '80%',
-                x: '20%',
-                h: "3%",
-                w: "2%",
+                x: '10%',
+                h: "2.5%",
+                w: "1.5%",
                 fill: {
                     color: 'B6C9FF'
                 },
@@ -921,19 +925,20 @@ const slide15Data = {
             }
         },
         {
-            title: '16-24',
+            title: '16 - 24',
             options: {
-                y: '82%',
-                x: '23%',
+                y: '81%',
+                x: '11%',
+                fontSize: 12
             }
         },
         {
             title: '',
             options: {
                 y: '80%',
-                x: '30%',
-                h: "3%",
-                w: "2%",
+                x: '20%',
+                h: "2.5%",
+                w: "1.5%",
                 fill: {
                     color: '769DFF'
                 },
@@ -941,19 +946,20 @@ const slide15Data = {
             }
         },
         {
-            title: '25-34',
+            title: '25 - 34',
             options: {
-                y: '82%',
-                x: '33%',
+                y: '81%',
+                x: '21%',
+                fontSize: 12
             }
         },
         {
             title: '',
             options: {
                 y: '80%',
-                x: '40%',
-                h: "3%",
-                w: "2%",
+                x: '30%',
+                h: "2.5%",
+                w: "1.5%",
                 fill: {
                     color: '3C6FFF'
                 },
@@ -961,19 +967,20 @@ const slide15Data = {
             }
         },
         {
-            title: '35-44',
+            title: '35 - 44',
             options: {
-                y: '82%',
-                x: '43%',
+                y: '81%',
+                x: '31%',
+                fontSize: 12
             }
         },
         {
             title: '',
             options: {
                 y: '80%',
-                x: '50%',
-                h: "3%",
-                w: "2%",
+                x: '40%',
+                h: "2.5%",
+                w: "1.5%",
                 fill: {
                     color: '2D54C2'
                 },
@@ -981,19 +988,20 @@ const slide15Data = {
             }
         },
         {
-            title: '45-54',
+            title: '45 - 54',
             options: {
-                y: '82%',
-                x: '53%',
+                y: '81%',
+                x: '41%',
+                fontSize: 12
             }
         },
         {
             title: '',
             options: {
                 y: '80%',
-                x: '60%',
-                h: "3%",
-                w: "2%",
+                x: '50%',
+                h: "2.5%",
+                w: "1.5%",
                 fill: {
                     color: '1E3A84'
                 },
@@ -1001,10 +1009,11 @@ const slide15Data = {
             }
         },
         {
-            title: '55-65',
+            title: '55 - 65',
             options: {
-                y: '82%',
-                x: '63%',
+                y: '81%',
+                x: '51%',
+                fontSize: 12
             }
         },
         {
