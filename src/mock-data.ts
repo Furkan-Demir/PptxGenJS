@@ -34,6 +34,24 @@ const slide1Data = {
                 color: '363636',
             }
         },
+        {
+            title: 'Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)',
+            options: {
+                x: '15%', // Adjust the x position as needed
+                y: '87%', // Adjust the y position as needed
+                w: '70%', // Adjust the width as needed
+                h: 0.3, // Adjust the height as needed (consider font size)
+                fontSize: 8,
+                color: '363636',
+                align: 'center', // Set the text alignment to left
+                body: 'Your Text Here', // Text content
+                fill: 'ffffff', // Set background color (optional, for better visibility)
+                line: { // Border properties
+                    color: '000000', // Border color
+                    size: 1, // Border line width
+                },
+            }
+        }
     ],
     data: [
         {
@@ -122,11 +140,19 @@ const slide2Data = {
         {
             title: 'Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)',
             options: {
-                x: '30%', // Left align with the table
-                y: '90%', // Adjust position below the tabl
-                align: 'left', // Left align the text
+                x: '15%', // Adjust the x position as needed
+                y: '87%', // Adjust the y position as needed
+                w: '70%', // Adjust the width as needed
+                h: 0.3, // Adjust the height as needed (consider font size)
                 fontSize: 8,
                 color: '363636',
+                align: 'center', // Set the text alignment to left
+                body: 'Your Text Here', // Text content
+                fill: 'ffffff', // Set background color (optional, for better visibility)
+                line: { // Border properties
+                    color: '000000', // Border color
+                    size: 1, // Border line width
+                },
             }
         }
     ],
@@ -227,7 +253,7 @@ const slide4Data = {
                 title: 'appinio',
                 options: {
                     x: '3%',
-                    y: '85%', // Adjust position below the tables
+                    y: '90%', // Adjust position below the tables
                     align: 'left',
                     font_size: 12,
                     color: '363636',
@@ -236,11 +262,19 @@ const slide4Data = {
             {
                 title: 'Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)',
                 options: {
-                    x: '30%',
-                    y: '85%', // Adjust position below the tables
-                    align: 'left',
+                    x: '15%', // Adjust the x position as needed
+                    y: '87%', // Adjust the y position as needed
+                    w: '70%', // Adjust the width as needed
+                    h: 0.3, // Adjust the height as needed (consider font size)
                     fontSize: 8,
                     color: '363636',
+                    align: 'center', // Set the text alignment to left
+                    body: 'Your Text Here', // Text content
+                    fill: 'ffffff', // Set background color (optional, for better visibility)
+                    line: { // Border properties
+                        color: '000000', // Border color
+                        size: 1, // Border line width
+                    },
                 }
             }
         ]
@@ -304,23 +338,28 @@ const slide6Data = {
         return [
             {
                 title: 'INSIGHT REPORT',
-                options: { ...this.options, y: '27%',x: '5%', fontSize: 70 }
+                options: { ...this.options, y: '27%', x: '5%', fontSize: 70 }
             },
             {
                 title: 'Project Name',
-                options: { ...this.options, y: '52%',x: '5%', fontSize: 45, color: '0270C0' }
+                options: { ...this.options, y: '52%', x: '5%', fontSize: 45, color: '0270C0' }
             },
             {
                 title: 'Date',
-                options: { ...this.options, y: '62%',x: '5%', fontSize: 35 }
+                options: { ...this.options, y: '62%', x: '5%', fontSize: 35 }
             },
             {
                 title: 'appinio',
-                options: { ...this.options, y: '85%',x: '5%', fontSize: 30, fontFamily: 'Aeonik Light' }
+                options: { ...this.options, y: '85%', x: '5%', fontSize: 35, fontFamily: 'Aeonik Light' }
             },
             {
                 title: 'Month Year',
-                options: { ...this.options, x: '30%', y: '85%', fontSize: 25 }
+                options: {
+                    ...this.options, x: '30%', y: '82%', fontSize: 25, h: 0.5, fill: 'ffffff', line: { // Border properties
+                        color: '000000', // Border color
+                        size: 1, // Border line width
+                    }, w: '15%'
+                }
             }
         ]
     }
@@ -345,7 +384,7 @@ const slide7Data = {
         fill: "F3F7FC",
         fontSize: 24,
     },
-    texts: ["This is dummy text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At imperdiet dui accumsan sit amet nulla. Bibendum at varius vel pharetra vel turpis nunc eget. Sagittis purus sit amet volutpat consequat mauris nunc congue. Eu facilisis sed odio morbi quis commodo odio aenean. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et netus. Enim eu turpis egestas pretium aenean pharetra magna ac. Tincidunt ornare massa eget egestas. In fermentum posuere urna nec tincidunt praesent. Lorem mollis aliquam ut porttitor leo a. Nibh mauris cursus mattis molestie a iaculis at erat pellentesque. Facilisis magna etiam tempor orci eu lobortis elementum nibh tellus. Porttitor rhoncus dolor purus non enim praesent elementum. Aenean pharetra magna ac placerat", "Non consectetur a erat nam at. Tortor consequat id porta nibh venenatis cras. Et ligula ullamcorper malesuada proin libero nunc consequat. At tellus at urna condimentum mattis. Quis imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper. Sed sed risus pretium quam. Suspendisse faucibus interdum posuere lorem ipsum. Ultricies mi eget mauris pharetra et ultrices neque ornare. Faucibus scelerisque eleifend donec pretium vulputate sapien. Scelerisque fermentum dui faucibus in ornare quam. Faucibus pulvinar elementum integer enim neque. Urna duis convallis convallis tellus id interdum velit laoreet id. Vehicula ipsum a arcu cursus vitae. Quam lacus suspendisse faucibus interdum posuere. Massa enim nec dui nunc. Ultrices tincidunt arcu non sodales. Tempus iaculis urna id volutpat lacus laoreet non. Ac turpis egestas integer eget aliquet. Cum sociis natoque penatibus et magnis dis.","Faucibus pulvinar elementum integer enim neque. Urna duis convallis convallis tellus id interdum velit laoreet id. Vehicula ipsum a arcu cursus vitae. Quam lacus suspendisse faucibus interdum posuere. Massa enim nec dui nunc. Ultrices tincidunt arcu non sodales."],
+    texts: ["This is dummy text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At imperdiet dui accumsan sit amet nulla. Bibendum at varius vel pharetra vel turpis nunc eget. Sagittis purus sit amet volutpat consequat mauris nunc congue. Eu facilisis sed odio morbi quis commodo odio aenean. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et netus. Enim eu turpis egestas pretium aenean pharetra magna ac. Tincidunt ornare massa eget egestas. In fermentum posuere urna nec tincidunt praesent. Lorem mollis aliquam ut porttitor leo a. Nibh mauris cursus mattis molestie a iaculis at erat pellentesque. Facilisis magna etiam tempor orci eu lobortis elementum nibh tellus. Porttitor rhoncus dolor purus non enim praesent elementum. Aenean pharetra magna ac placerat", "Non consectetur a erat nam at. Tortor consequat id porta nibh venenatis cras. Et ligula ullamcorper malesuada proin libero nunc consequat. At tellus at urna condimentum mattis. Quis imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper. Sed sed risus pretium quam. Suspendisse faucibus interdum posuere lorem ipsum. Ultricies mi eget mauris pharetra et ultrices neque ornare. Faucibus scelerisque eleifend donec pretium vulputate sapien. Scelerisque fermentum dui faucibus in ornare quam. Faucibus pulvinar elementum integer enim neque. Urna duis convallis convallis tellus id interdum velit laoreet id. Vehicula ipsum a arcu cursus vitae. Quam lacus suspendisse faucibus interdum posuere. Massa enim nec dui nunc. Ultrices tincidunt arcu non sodales. Tempus iaculis urna id volutpat lacus laoreet non. Ac turpis egestas integer eget aliquet. Cum sociis natoque penatibus et magnis dis.", "Faucibus pulvinar elementum integer enim neque. Urna duis convallis convallis tellus id interdum velit laoreet id. Vehicula ipsum a arcu cursus vitae. Quam lacus suspendisse faucibus interdum posuere. Massa enim nec dui nunc. Ultrices tincidunt arcu non sodales."],
     textOptions: {
         align: 'left',
         color: '000000'
@@ -606,27 +645,42 @@ const slide12Data = {
         },
         {
             title: 'Name',
-            options: { fontSize: 40, y: '25%', x: '18%' }
+            options: {
+                fontSize: 40, y: '20%', x: '20%', w: '70%', h: 0.5, align: 'left', fill: 'ffffff', line: {
+                    color: '000000', // Border color
+                    size: 1, // Border line width
+                }
+            }
         },
         {
             title: 'Position',
-            options: { fontSize: 20, y: '30%', x: '18%' }
+            options: {
+                fontSize: 20, y: '28%', x: '20%', w: '70%', h: 0.3, align: 'left', fill: 'ffffff', line: {
+                    color: '000000', // Border color
+                    size: 1, // Border line width
+                }
+            }
         },
         {
             title: 'Office',
-            options: { fontSize: 8, y: '35%', x: '18%', color: '777777' }
+            options: { fontSize: 8, y: '35%', x: '19%', color: '777777' }
         },
         {
             title: '+49',
-            options: { fontSize: 8, y: '35%', x: '23%', color: '777777' }
+            options: {
+                fontSize: 8, y: '34%', x: '24%', color: '777777', w: '65%', h: 0.2, align: 'left', fill: 'ffffff', line: {
+                    color: '000000', // Border color
+                    size: 1, // Border line width
+                }
+            }
         },
         {
             title: 'Mail',
-            options: { fontSize: 8, y: '37%', x: '18%', color: '777777' }
+            options: { fontSize: 8, y: '39%', x: '19%', color: '777777' }
         },
         {
             title: 'Louise.leitsch@appinio.com',
-            options: { fontSize: 8, y: '37%', x: '23%', color: '777777' }
+            options: { fontSize: 8, y: '39%', x: '23%', color: '777777' }
         },
         {
             image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715070468/Qibble%20App/dvcpusdcg5jpnh4nvhlj.png',
@@ -634,27 +688,42 @@ const slide12Data = {
         },
         {
             title: 'Name',
-            options: { fontSize: 40, y: '55%', x: '18%' }
+            options: {
+                fontSize: 40, y: '50%', x: '20%', w: '70%', h: 0.5, align: 'left', fill: 'ffffff', line: {
+                    color: '000000', // Border color
+                    size: 1, // Border line width
+                }
+            }
         },
         {
             title: 'Position',
-            options: { fontSize: 20, y: '60%', x: '18%' }
+            options: {
+                fontSize: 20, y: '58%', x: '20%', w: '70%', h: 0.3, align: 'left', fill: 'ffffff', line: {
+                    color: '000000', // Border color
+                    size: 1, // Border line width
+                }
+            }
         },
         {
             title: 'Office',
-            options: { fontSize: 8, y: '65%', x: '18%', color: '777777' }
+            options: { fontSize: 8, y: '65%', x: '19%', color: '777777' }
         },
         {
             title: '+49',
-            options: { fontSize: 8, y: '65%', x: '23%', color: '777777' }
+            options: {
+                fontSize: 8, y: '64%', x: '24%', color: '777777', w: '65%', h: 0.2, align: 'left', fill: 'ffffff', line: {
+                    color: '000000', // Border color
+                    size: 1, // Border line width
+                }
+            }
         },
         {
             title: 'Mail',
-            options: { fontSize: 8, y: '67%', x: '18%', color: '777777' }
+            options: { fontSize: 8, y: '69%', x: '19%', color: '777777' }
         },
         {
             title: 'Louise.leitsch@appinio.com',
-            options: { fontSize: 8, y: '67%', x: '23%', color: '777777' }
+            options: { fontSize: 8, y: '69%', x: '23%', color: '777777' }
         },
         {
             title: 'appinio',

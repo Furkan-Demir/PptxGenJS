@@ -203,13 +203,23 @@ function
         color: '363636',
     })
 
-    slide.addText("Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)", {
-        x: '30%',
-        y: '95%', // Adjust position below the tables
-        align: 'left',
+    slide.addText("Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)"
+    , {
+        x: '15%', // Adjust the x position as needed
+        y: '92%', // Adjust the y position as needed
+        w: '70%', // Adjust the width as needed
+        h: 0.3, // Adjust the height as needed (consider font size)
         fontSize: 8,
         color: '363636',
-    })
+        align: 'center', // Set the text alignment to left
+        body: 'Your Text Here', // Text content
+        fill: 'ffffff', // Set background color (optional, for better visibility)
+        line: { // Border properties
+          color: '000000', // Border color
+          size: 1, // Border line width
+        },
+      }
+    )
 }
 function
     slide6(pptx) {
