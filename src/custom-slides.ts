@@ -443,7 +443,7 @@ function slide15(pptx) {
     headingsText.forEach((heading) => {
         slide.addText(heading.title, heading.options)
     })
-    const percentYPos = '34%'
+    const percentYPos = 2.1
     let percentXPos = 10
   
     for(let i =0; i < 5; i++) {
