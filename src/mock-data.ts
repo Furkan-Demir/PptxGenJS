@@ -177,7 +177,61 @@ const slide3Data = {
     ],
     options: {
         color: '7fa1f9',
-    }
+    },
+    headingTexts: [
+        {
+            title: 'Subheadline: Splitname and Total (N=)',
+            options: {
+                x: '3%', // Set x position to 5% from the left
+                y: '9%', // Set y position to 5% from the top
+                w: '100%', // Set width to 40% of slide width
+                align: 'left', // Align text to the left
+                fontSize: 11,
+                font_weight: '300',
+                color: '000000', // Black color
+                marginBottom: '15px'
+            }
+        },
+        {
+            title: 'Turf Waterfall Chart',
+            options: {
+                x: '3%', // Set x position to 5% from the left
+                y: '5%', // Set y position to 5% from the top
+                w: '40%', // Set width to 40% of slide width
+                align: 'left', // Align text to the left
+                font_weight: 'bold',
+                color: '000000', // Black color
+            }
+        },
+        {
+            title: 'appinio',
+            options: {
+                x: '3%', // Left align with the table
+                y: '95%', // Adjust position below the tabl
+                align: 'left', // Left align the text
+                font_size: 12,
+                color: '363636',
+            }
+        },
+        {
+            title: 'Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)',
+            options: {
+                x: '15%', // Adjust the x position as needed
+                y: '92%', // Adjust the y position as needed
+                w: '70%', // Adjust the width as needed
+                h: 0.3, // Adjust the height as needed (consider font size)
+                fontSize: 8,
+                color: '363636',
+                align: 'center', // Set the text alignment to left
+                body: 'Your Text Here', // Text content
+                fill: 'ffffff', // Set background color (optional, for better visibility)
+                line: { // Border properties
+                    color: '000000', // Border color
+                    size: 1, // Border line width
+                },
+            }
+        }
+    ]
 }
 
 const slide4Data = {

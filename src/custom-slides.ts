@@ -56,7 +56,9 @@ function
 function
     slide3(pptx) {
     let slide = pptx.addSlide();
-
+    slide3Data.headingTexts.forEach((heading)=>{
+        slide.addText(heading.title, heading.options)
+    })
     slide.addChart(pptx.ChartType.waterfall, slide3Data.data, slide3Data.options);
 }
 function
