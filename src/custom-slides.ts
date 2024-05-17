@@ -443,6 +443,24 @@ function slide15(pptx) {
     headingsText.forEach((heading) => {
         slide.addText(heading.title, heading.options)
     })
+    const percentYPos = '34%'
+    let percentXPos = 10
+  
+    for(let i =0; i < 5; i++) {
+        slide.addText('100%' ,{ fontSize: 8, y: percentYPos, x: `${percentXPos}%` })
+        percentXPos+= 2.5
+    }
+    percentXPos+= 3.5
+    for(let i =0; i < 5; i++) {
+        slide.addText('100%' ,{ fontSize: 8, y: percentYPos, x: `${percentXPos}%` })
+        percentXPos+= 2.5
+    }
+
+    percentXPos+= 3.5
+    for(let i =0; i < 5; i++) {
+        slide.addText('100%' ,{ fontSize: 8, y: percentYPos, x: `${percentXPos}%` })
+        percentXPos+= 2.5
+    }
 
     slide.addChart(pptx.ChartType.bar, slide15Data.data, slide15Data.options);
 }

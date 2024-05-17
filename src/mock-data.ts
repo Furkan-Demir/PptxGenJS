@@ -865,6 +865,30 @@ const slide13Data = {
                 x: '15%',
                 fontSize: 8,
             }
+        },
+        {
+            title: '54%',
+            options: {
+                y: '18%',
+                x: '15%',
+                fontSize: 10,
+            }
+        },
+        {
+            title: '23%',
+            options: {
+                y: '40%',
+                x: '31%',
+                fontSize: 10,
+            }
+        },
+        {
+            title: '24%',
+            options: {
+                y: '39%',
+                x: '47%',
+                fontSize: 10,
+            }
         }
     ],
     data: [
@@ -959,6 +983,30 @@ const slide14Data = {
                 y: '93%',
                 x: '15%',
                 fontSize: 8,
+            }
+        },
+        {
+            title: '54%',
+            options: {
+                y: '18%',
+                x: '45%',
+                fontSize: 10,
+            }
+        },
+        {
+            title: '23%',
+            options: {
+                y: '40%',
+                x: '61%',
+                fontSize: 10,
+            }
+        },
+        {
+            title: '24%',
+            options: {
+                y: '39%',
+                x: '77%',
+                fontSize: 10,
             }
         }
     ],
