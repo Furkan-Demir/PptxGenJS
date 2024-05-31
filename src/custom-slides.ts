@@ -11,13 +11,8 @@ function slide1(pptx) {
     const top = slide1Data.topDataValues
     let topX = 3.6
 
-    top.forEach((txt) => {
-        slide.addText(`${txt}`, { x: topX, y: 1.5, fontSize: 14 })
-        topX += 0.5
-    })
-
     // Add the chart to the slide
-    slide.addChart(pptx.ChartType.bar, slide1Data.data, slide1Data.options);
+    slide.addChart('custom', slide1Data.data, slide1Data.options);
 }
 function
     slide2(pptx) {
@@ -357,37 +352,21 @@ function slide10(pptx) {
     })
 
     const chartData = slide10Data.data
-
-    let namesYpos = 50;
-    let namesXpos = 8;
-
-    let valuesYpos = 48;
-
-    chartData.names.forEach((name) => {
-        slide.addText(name, { y: `${namesYpos}%`, x: `${namesXpos}%`, fontSize: 12 })
-        namesYpos = namesYpos + 7
-    });
-
-    chartData.values.map((value) => {
-        let valuesXpos = 13;
-
-        slide.addText(value.women, { y: `${valuesYpos}%`, x: `${valuesXpos}%`, fontSize: 12, h: '5%', w: '15%', fill: '8260D9', align: 'center', color: 'FFFFFF' })
-
-        valuesXpos = valuesXpos + 15
-
-        slide.addText(value.men, { y: `${valuesYpos}%`, x: `${valuesXpos}%`, fontSize: 12, h: '5%', w: '15%', fill: 'EA8B54', align: 'center', color: 'FFFFFF' })
-
-        valuesYpos = valuesYpos + 7
-
-    })
-
-    let labelsYpos = valuesYpos
-    let labelsXpos = 13
-
-    chartData.labels.map((label) => {
-        slide.addText(label, { y: `${labelsYpos}%`, x: `${labelsXpos}%`, fontSize: 12, h: '5%', w: '15%', align: 'center' })
-        labelsXpos = labelsXpos + 15
-    })
+ 
+    let dataChartBar = [
+        {
+          name: "Actual Sales",
+          labels: [["Item 1","Item 2","Item 3","Item 4","Item 5","Item 6","Item 7"]],
+          values: [80, 70, 60, 50, 43, 32, 24],
+        }
+      ]; 
+    
+      const chartOptions: any = {
+        x: 1, y: 1, w: 8, h: 5
+      }; 
+    
+      // Add the chart to the slide
+      slide.addChart('slide10', dataChartBar, chartOptions);
 }
 
 function slide11(pptx) {
@@ -443,24 +422,6 @@ function slide15(pptx) {
     headingsText.forEach((heading) => {
         slide.addText(heading.title, heading.options)
     })
-    const percentYPos = 2.1
-    let percentXPos = 10
-  
-    for(let i =0; i < 5; i++) {
-        slide.addText('100%' ,{ fontSize: 8, y: percentYPos, x: `${percentXPos}%` })
-        percentXPos+= 2.5
-    }
-    percentXPos+= 3.5
-    for(let i =0; i < 5; i++) {
-        slide.addText('100%' ,{ fontSize: 8, y: percentYPos, x: `${percentXPos}%` })
-        percentXPos+= 2.5
-    }
-
-    percentXPos+= 3.5
-    for(let i =0; i < 5; i++) {
-        slide.addText('100%' ,{ fontSize: 8, y: percentYPos, x: `${percentXPos}%` })
-        percentXPos+= 2.5
-    }
 
     slide.addChart(pptx.ChartType.bar, slide15Data.data, slide15Data.options);
 }

@@ -169,7 +169,8 @@ declare namespace PptxGenJS {
 		'radar' = 'radar',
 		'scatter' = 'scatter',
 		'funnel' = 'funnel',
-		'waterfall' = 'waterfall'
+		'waterfall' = 'waterfall',
+		'custom' = 'custom'
 	}
 	export enum OutputType {
 		'arraybuffer' = 'arraybuffer',
@@ -404,7 +405,8 @@ declare namespace PptxGenJS {
 		'RADAR' = 'radar',
 		'SCATTER' = 'scatter',
 		'FUNNEL' = 'funnel',
-		'WATERFALL'= 'waterfall'
+		'WATERFALL'= 'waterfall',
+		'CUSTOM' = 'custom'
 	}
 	export enum shapes {
 		ACTION_BUTTON_BACK_OR_PREVIOUS = 'actionButtonBackPrevious',
@@ -606,7 +608,8 @@ declare namespace PptxGenJS {
 		'RADAR' = 'radar',
 		'SCATTER' = 'scatter',
 		'FUNNEL' = 'funnel',
-		'WATERFALL' = 'waterfall'
+		'WATERFALL' = 'waterfall',
+		'CUSTOM' = 'custom'
 	}
 	export enum SCHEME_COLOR_NAMES {
 		'TEXT1' = 'tx1',

@@ -572,23 +572,23 @@ const slide10Data = {
         },
         {
             title: '1000',
-            options: { y: '25%', x: '8%', fontSize: 50 }
+            options: { y: '22%', x: '7%', fontSize: 50 }
         },
         {
             title: 'Participants',
-            options: { y: '30%', x: '8%', fontSize: 10, color: '777777' }
+            options: { y: '27%', x: '7%', fontSize: 10, color: '777777' }
         },
         {
             title: '39.5',
-            options: { y: '25%', x: '23%', fontSize: 50 }
+            options: { y: '22%', x: '23%', fontSize: 50 }
         },
         {
             title: 'Average Ages in years',
-            options: { y: '30%', x: '23%', fontSize: 10, color: '777777' }
+            options: { y: '27%', x: '23%', fontSize: 10, color: '777777' }
         },
         {
             title: 'Age & Gender',
-            options: { y: '40%', x: '8%', fontSize: 20 }
+            options: { y: '34%', x: '7%', fontSize: 20 }
         },
         {
             title: 'United States',
@@ -866,30 +866,6 @@ const slide13Data = {
                 fontSize: 8,
             }
         },
-        {
-            title: '54%',
-            options: {
-                y: '18%',
-                x: '15%',
-                fontSize: 10,
-            }
-        },
-        {
-            title: '23%',
-            options: {
-                y: '40%',
-                x: '31%',
-                fontSize: 10,
-            }
-        },
-        {
-            title: '24%',
-            options: {
-                y: '39%',
-                x: '47%',
-                fontSize: 10,
-            }
-        }
     ],
     data: [
         {
@@ -911,6 +887,8 @@ const slide13Data = {
         barGapWidthPct: 20,
         showValueAxis: false,
         chartColors: ['779DFF'],
+        showLabel: true,
+        showValue: true,
         valAxis: {
             label: { // Configure value label properties
                 font: {
@@ -985,30 +963,6 @@ const slide14Data = {
                 fontSize: 8,
             }
         },
-        {
-            title: '54%',
-            options: {
-                y: '18%',
-                x: '45%',
-                fontSize: 10,
-            }
-        },
-        {
-            title: '23%',
-            options: {
-                y: '40%',
-                x: '61%',
-                fontSize: 10,
-            }
-        },
-        {
-            title: '24%',
-            options: {
-                y: '39%',
-                x: '77%',
-                fontSize: 10,
-            }
-        }
     ],
     data: [
         {
@@ -1030,6 +984,8 @@ const slide14Data = {
         barGapWidthPct: 20,
         showValueAxis: false,
         chartColors: ['779DFF'],
+        showLabel: true,
+        showValue: true,
         x: 5
     }
 }
@@ -1241,7 +1197,15 @@ const slide15Data = {
         showValueAxis: false,
         chartColors: ['B6C9FF', '769DFF', '3C6FFF', '2D54C2', '1E3A84'],
         // x: 5,
-        y: 2
+        y: 2,
+        showLabel: true,
+        showValue: true,
+        dataLabel: {
+            show: true,
+            fontSize: 8,
+            color: '000000',
+            placement: 'outEnd'
+        }
     }
 }
 
