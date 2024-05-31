@@ -8,9 +8,6 @@ function slide1(pptx) {
         slide.addText(heading.title, heading.options)
     })
 
-    const top = slide1Data.topDataValues
-    let topX = 3.6
-
     // Add the chart to the slide
     slide.addChart('custom', slide1Data.data, slide1Data.options);
 }

@@ -55,15 +55,12 @@ const slide1Data = {
     ],
     data: [
         {
-            name: "Actual Sales",
             labels: [["Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7"]],
-            values: [80, 70, 60, 50, 43, 32, 24],
-        },
-        {
-            name: "Projected Sales",
-            labels: [["Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7"]],
-            values: [80, 70, 60, 50, 43, 32, 24],
-        },
+            values: [{
+                negativeValues: [-0.14000000000000001, -0.18, -0.22, -0.25, -0.33, -0.40, -0.47],
+                positiveValues: [0.8, 0.7, 0.6, 0.5, 0.43, 0.32, 0.24]
+            }],
+        }
     ],
     topDataValues: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
     options: {

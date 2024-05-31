@@ -757,7 +757,7 @@ export function makeXmlCharts (rel: ISlideRelChart): string {
 	if(rel.opts._type === ChartType.funnel) {
 		return createFunnelChart()
 	} else if (rel.opts._type === CHART_TYPE.CUSTOM) {
-		return createcustomChart()
+		return createcustomChart(rel)
 	} else if(rel.opts._type === CHART_TYPE.SLIDE10) {
 		return createSlide10Chart(rel)
 	} else {
@@ -765,12 +765,11 @@ export function makeXmlCharts (rel: ISlideRelChart): string {
 	}
 }
 
-function createcustomChart() {
-	console.log('custom chart')
+function createcustomChart(rel) {
 		const data = {
-			labels: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7'],
-			negativeValues: [-0.14000000000000001, -0.18, -0.22, -0.25, -0.33, -0.40, -0.47],
-			positiveValues: [0.8, 0.7, 0.6, 0.5, 0.43, 0.32, 0.24]
+			labels: rel.data[0]?.labels[0],
+			negativeValues: rel.data[0]?.values[0]?.negativeValues,
+			positiveValues: rel.data[0]?.values[0]?.positiveValues
 		};
 	
 		let labelPoints = data.labels.map((label, idx) => 
