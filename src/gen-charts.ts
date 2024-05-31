@@ -759,7 +759,7 @@ export function makeXmlCharts (rel: ISlideRelChart): string {
 	} else if (rel.opts._type === CHART_TYPE.CUSTOM) {
 		return createcustomChart()
 	} else if(rel.opts._type === CHART_TYPE.SLIDE10) {
-		return createSlide10Chart()
+		return createSlide10Chart(rel)
 	} else {
 		return strXml
 	}
@@ -788,11 +788,11 @@ function createcustomChart() {
 		return xmlString
 }
 
-function createSlide10Chart() {
+function createSlide10Chart(rel) {
     // Static variables
-    const categories = ["16 – 24", "25 – 34", "35 – 44", "45 – 54", "55 – 65"];
-    const womenData = [200, 200, 200, 200, 200];
-    const menData = [200, 200, 200, 200, 200];
+    const categories = rel.data[0]?.labels[0];
+    const womenData = rel.data[0]?.values[0]?.women;
+    const menData = rel.data[0]?.values[0]?.men;
 
     // Helper function to generate category XML
     const generateCategoryXML = (categories) => {

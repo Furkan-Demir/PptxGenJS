@@ -351,22 +351,22 @@ function slide10(pptx) {
         }
     })
 
-    const chartData = slide10Data.data
- 
-    let dataChartBar = [
+      const data = [
         {
-          name: "Actual Sales",
-          labels: [["Item 1","Item 2","Item 3","Item 4","Item 5","Item 6","Item 7"]],
-          values: [80, 70, 60, 50, 43, 32, 24],
+            labels: [["16 – 24", "25 – 34", "35 – 44", "45 – 54", "55 – 65"]],
+            values: [{
+                men: [200, 200, 200, 200, 200],
+                women: [200, 200, 200, 200, 200]
+            }]
         }
-      ]; 
+      ]
     
       const chartOptions: any = {
         x: 1, y: 1, w: 8, h: 5
       }; 
     
       // Add the chart to the slide
-      slide.addChart('slide10', dataChartBar, chartOptions);
+      slide.addChart('slide10', data, chartOptions);
 }
 
 function slide11(pptx) {
