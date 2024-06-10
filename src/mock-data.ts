@@ -484,74 +484,70 @@ const slide9Data = {
                 {
                     title: 'Method & Data Collection',
                     options: {
-                        ...this.options, x: '10%', w: '15%', fill: "F5FAFD", y: '22%', h: '10%'
+                        ...this.options, x: '10%', w: '17.5%', fill: "F5FAFD", y: '22%', h: '13%'
                     }
                 },
                 {
                     image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060877/Qibble%20App/d7orwyzdkyxgtemc2pdp.png',
                     options: {
-                        h: '10%', y: '22%', x: '25%', w: '10%'
+                         y: '22%', x: '27.5%'
                     }
                 },
                 {
                     title: 'Objective of the survey/General method used. Mobile questionnaire played out via the Appinio app',
-                    options: { ...this.options, y: '31%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
+                    options: { ...this.options, y: '35%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
                 },
                 {
                     title: 'Number of Questions',
-                    options: { ...this.options, y: '40%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
+                    options: { ...this.options, y: '44%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
                 },
                 {
                     title: 'The survey took place from January 9th, 2023 to January 17th, 2023',
-                    options: { ...this.options, y: '49%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
-                },
-                {
-                    title: 'The survey took place from January 9th, 2023 to January 17th, 2023',
-                    options: { ...this.options, y: '49%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
+                    options: { ...this.options, y: '53%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
                 }
             ],
             [
                 {
                     title: 'Sample',
-                    options: { ...this.options, x: '40%', w: '15%', fill: "F5FAFD", y: '22%', h: '10%' }
+                    options: { ...this.options, x: '40%', w: '17.5%', fill: "F5FAFD", y: '22%', h: '13%' }
                 },
                 {
                     image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060842/Qibble%20App/kf5rpwcom9yiyaranevn.png',
-                    options: { h: '10%', y: '22%', x: '55%', w: '10%' }
+                    options: {  y: '22%', x: '57.5%' }
                 },
                 {
                     title: 'Country/Location details',
-                    options: { ...this.options, y: '31%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
+                    options: { ...this.options, y: '35%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
                 },
                 {
                     title: 'Details on the total N (Age/Sample)',
-                    options: { ...this.options, y: '40%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
+                    options: { ...this.options, y: '44%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
                 },
                 {
                     title: 'Quota Specifics/distribution',
-                    options: { ...this.options, y: '49%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
+                    options: { ...this.options, y: '53%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' }
                 }
             ],
             [
                 {
                     title: 'Questionnaire',
-                    options: { ...this.options, x: '70%', w: '15%', fill: "F5FAFD", y: '22%', h: '10%' }
+                    options: { ...this.options, x: '70%', w: '17.5%', fill: "F5FAFD", y: '22%', h: '13%' }
                 },
                 {
                     image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060808/Qibble%20App/xi1l9dycmj7k3hkkxxct.png',
-                    options: { h: '12%', y: '22%', x: '85%', w: '10%' }
+                    options: {  y: '22%', x: '87.5%' }
                 },
                 {
                     title: 'First goal of questionnair',
-                    options: { ...this.options, y: '31%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 }
+                    options: { ...this.options, y: '35%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 }
                 },
                 {
                     title: 'Second goal of questionnair',
-                    options: { ...this.options, y: '40%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 }
+                    options: { ...this.options, y: '44%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 }
                 },
                 {
                     title: 'Third goal of questionnair',
-                    options: { ...this.options, y: '49%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 }
+                    options: { ...this.options, y: '53%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 }
                 }, {
                     title: 'appinio',
                     options: { ...this.options, y: '90%', fontSize: 24 }
@@ -691,8 +687,8 @@ const slide12Data = {
             options: { fontSize: 20, y: '10%', x: '2%' }
         },
         {
-            image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715070468/Qibble%20App/dvcpusdcg5jpnh4nvhlj.png',
-            options: { w: '10%', h: '20%', y: '20%', x: '8%' }
+            image: 'https://res.cloudinary.com/drascgtap/image/upload/v1718028398/Qibble%20App/ivzkrwk2dvejkyfp7cqw.jpg',
+            options: { w: '12%', h: '20%', y: '20%', x: '8%' }
         },
         {
             title: 'Name',
@@ -734,8 +730,8 @@ const slide12Data = {
             options: { fontSize: 8, y: '39%', x: '23%', color: '777777' }
         },
         {
-            image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715070468/Qibble%20App/dvcpusdcg5jpnh4nvhlj.png',
-            options: { w: '10%', h: '20%', y: '50%', x: '8%' }
+            image: 'https://res.cloudinary.com/drascgtap/image/upload/v1718028398/Qibble%20App/ivzkrwk2dvejkyfp7cqw.jpg',
+            options: { w: '12%', h: '20%', y: '50%', x: '8%' }
         },
         {
             title: 'Name',
@@ -1195,8 +1191,8 @@ const slide15Data = {
         showValueAxis: false,
         chartColors: ['B6C9FF', '769DFF', '3C6FFF', '2D54C2', '1E3A84'],
         // x: 5,
-        y: 1,
-        h:4.7,
+        y: 2,
+        // h:4.7,
         showLabel: true,
         showValue: true,
         dataLabel: {
