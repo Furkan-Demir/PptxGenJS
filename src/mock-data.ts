@@ -874,7 +874,7 @@ const slide13Data = {
     options: {
         // Set grid and axis line colors to white (almost invisible)
         gridLineColor: 'ffffff',
-        catAxisLineColor: 'ffffff',
+        // catAxisLineColor: 'ffffff',
         valAxisLineColor: 'ffffff',
         catGridLineColor: 'ffffff',
         valGridLineColor: 'ffffff',
@@ -892,7 +892,8 @@ const slide13Data = {
                     size: 1 // Adjust font size as needed (smaller for less visibility)
                 }
             }
-        }
+        },
+        h: 5, w: 7
     }
 }
 
@@ -971,7 +972,7 @@ const slide14Data = {
     options: {
         // Set grid and axis line colors to white (almost invisible)
         gridLineColor: 'ffffff',
-        catAxisLineColor: 'ffffff',
+        // catAxisLineColor: 'ffffff',
         valAxisLineColor: 'ffffff',
         catGridLineColor: 'ffffff',
         valGridLineColor: 'ffffff',
@@ -983,7 +984,7 @@ const slide14Data = {
         chartColors: ['779DFF'],
         showLabel: true,
         showValue: true,
-        x: 5
+        x: 5, h:5,w:7
     }
 }
 
@@ -1183,7 +1184,7 @@ const slide15Data = {
     options: {
         // Set grid and axis line colors to white (almost invisible)
         gridLineColor: 'ffffff',
-        catAxisLineColor: 'ffffff',
+        // catAxisLineColor: 'ffffff',
         valAxisLineColor: 'ffffff',
         catGridLineColor: 'ffffff',
         valGridLineColor: 'ffffff',
@@ -1194,7 +1195,8 @@ const slide15Data = {
         showValueAxis: false,
         chartColors: ['B6C9FF', '769DFF', '3C6FFF', '2D54C2', '1E3A84'],
         // x: 5,
-        y: 2,
+        y: 1,
+        h:4.7,
         showLabel: true,
         showValue: true,
         dataLabel: {
@@ -1202,7 +1204,7 @@ const slide15Data = {
             fontSize: 8,
             color: '000000',
             placement: 'outEnd'
-        }
+        },
     }
 }
 
