@@ -169,11 +169,11 @@ export default class Slide {
 	addChart(type: CHART_NAME | IChartMulti[], data: IOptsChartData[] | IOptsCustomChartData[] | IOptsCustomChartWaterfallData, options?: IChartOpts): Slide {
 		// FUTURE: TODO-VERSION-4: Remove first arg - only take data and opts, with "type" required on opts
 		// Set `_type` on IChartOptsLib as its what is used as object is passed around
-		if (type === ChartType.funnel) {
-			this.generateFunnelChart(type, data as IOptsCustomChartData[], options);
-		} else if(type === ChartType.waterfall) {
+		if(type === ChartType.waterfall) {
 			this.generateWaterfallChart(data as IOptsCustomChartWaterfallData, options)
-		} else {
+		} else if (type === ChartType.funnel) {
+            this.generateFunnelChart(type, data as IOptsCustomChartData[], options);
+        } else {
 			const optionsWithType: IChartOptsLib = options || {}
 			optionsWithType._type = type
 			genObj.addChartDefinition(this, type, data as IOptsChartData[], options)
