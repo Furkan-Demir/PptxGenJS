@@ -14,7 +14,7 @@ const slide1Data = {
             }
         },
         {
-            title: 'Max Diff Table',
+            title: 'Max Diff Graph (WIP)',
             options: {
                 x: '3%', // Set x position to 5% from the left
                 y: '5%', // Set y position to 5% from the top
@@ -22,6 +22,15 @@ const slide1Data = {
                 align: 'left', // Align text to the left
                 font_weight: 'bold',
                 color: '000000', // Black color
+            }
+        },
+        {
+            title:"03 Detailed Results",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 11
             }
         },
         {
@@ -114,6 +123,15 @@ const slide2Data = {
             }
         },
         {
+            title:"03 Detailed Results",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 11
+            }
+        },
+        {
             title: 'Max Diff Table',
             options: {
                 x: '3%', // Set x position to 5% from the left
@@ -190,6 +208,15 @@ const slide3Data = {
             }
         },
         {
+            title:"03 Detailed Results",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 11
+            }
+        },
+        {
             title: 'Turf Waterfall Chart',
             options: {
                 x: '3%', // Set x position to 5% from the left
@@ -263,6 +290,15 @@ const slide4Data = {
             {
                 title: 'Portfolio Size: 1 Flavour',
                 options: { ...this.headingTextOpts, x: '15%', y: '17%', }
+            },
+            {
+                title:"03 Detailed Results",
+                options: {
+                    x: -4.5,
+                    y: -0.5,
+                    rotate: -90,
+                    fontSize: 11
+                }
             },
             {
                 title: 'Portfolio Size: 2 Flavours',
@@ -482,6 +518,15 @@ const slide9Data = {
                     options: { y: '10%', fontSize: 20 }
                 },
                 {
+                    title:"01 Study Design",
+                    options: {
+                        x: -4.5,
+                        y: -0.5,
+                        rotate: -90,
+                        fontSize: 11
+                    }
+                },
+                {
                     title: 'Method & Data Collection',
                     options: {
                         ...this.options, x: '10%', w: '17.5%', fill: "F5FAFD", y: '22%', h: '13%'
@@ -562,6 +607,15 @@ const slide10Data = {
         {
             title: 'Sample Overview',
             options: { y: '10%', x: '3%', fontSize: 20 }
+        },
+        {
+            title:"01 Study Design",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 11
+            }
         },
         {
             title: '1000',
@@ -649,6 +703,15 @@ const slide11Data = {
                 }
             },
             {
+                title:"02 Executive Summary",
+                options: {
+                    x: -4.5,
+                    y: -0.5,
+                    rotate: -90,
+                    fontSize: 11
+                }
+            },
+            {
                 title: 'Only have one big key insight in the summary? This is a nice space to highlight the main insight or just introduce the insight summary.',
                 options: {
                     ...this.options, y: '25%', fontSize: 20, w: '55%',
@@ -685,6 +748,15 @@ const slide12Data = {
         {
             title: 'Any questions? We are happy to help!',
             options: { fontSize: 20, y: '10%', x: '2%' }
+        },
+        {
+            title:"04 Contract",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 11
+            }
         },
         {
             image: 'https://res.cloudinary.com/drascgtap/image/upload/v1718028398/Qibble%20App/ivzkrwk2dvejkyfp7cqw.jpg',
@@ -806,6 +878,15 @@ const slide13Data = {
             }
         },
         {
+            title:"03 Detailed Results",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 11
+            }
+        },
+        {
             title: 'Total: (N = 1000)',
             options: {
                 y: '16%',
@@ -904,6 +985,15 @@ const slide14Data = {
             }
         },
         {
+            title:"03 Detailed Results",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 11
+            }
+        },
+        {
             title: 'Total: (N = 1000)',
             options: {
                 y: '16%',
@@ -992,6 +1082,15 @@ const slide15Data = {
                 y: '10%',
                 x: '2%',
                 fontSize: 20
+            }
+        },
+        {
+            title:"03 Detailed Results",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 11
             }
         },
         {

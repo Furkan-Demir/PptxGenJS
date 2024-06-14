@@ -109,6 +109,13 @@ function
         color: '000000',
     })
 
+    slide.addText("03 Detailed Results", {
+        x: -4.8,
+        y: -0.5,
+        rotate: -90,
+        fontSize: 11
+    })
+
     slide.addText("Subheadline: Splitname and Total (N=)", {
         x: '3%',
         y: '9%',
