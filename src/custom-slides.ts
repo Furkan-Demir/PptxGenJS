@@ -21,14 +21,21 @@ function
     table._slideObjects.forEach((slideObject) => {
         if (slideObject._type === 'table') {
             slideObject.arrTabRows.forEach((row, index) => {
-                if (index % 2 == 0) { // Odd-numbered row
-                    row.forEach(cell => {
-                        cell.options.fill = 'F5FAFD'; // Change fill color to light gray
-                    });
-                } else {
+                if(index === 0) {
                     row.forEach(cell => {
                         cell.options.fill = 'FFFFFF'; // Change fill color to light gray
+                        cell.options.bold = true;
                     });
+                } else {
+                    if (index % 2 != 0) { // Odd-numbered row
+                        row.forEach(cell => {
+                            cell.options.fill = 'F5FAFD'; // Change fill color to light gray
+                        });
+                    } else {
+                        row.forEach(cell => {
+                            cell.options.fill = 'FFFFFF'; // Change fill color to light gray
+                        });
+                    }
                 }
 
                 row.forEach((cell,ind) => {
@@ -117,8 +124,15 @@ function
     })
 
     slide.addText("Subheadline: Splitname and Total (N=)", {
-        x: '3%',
-        y: '9%',
+        x: '4%',
+        y: '7%',
+        h:0.3,
+        w:'95%',
+        line: { // Border properties
+            color: '000000', // Border color
+            size: 1, // Border line width
+            dashType: 'dash'
+        },
         color: '000000',
         fontSize:11
     })
@@ -209,7 +223,7 @@ function
         x: '15%', // Adjust the x position as needed
         y: '92%', // Adjust the y position as needed
         w: '70%', // Adjust the width as needed
-        h: 0.3, // Adjust the height as needed (consider font size)
+        h: 0.5, // Adjust the height as needed (consider font size)
         fontSize: 8,
         color: '363636',
         align: 'center', // Set the text alignment to left
@@ -218,6 +232,7 @@ function
         line: { // Border properties
           color: '000000', // Border color
           size: 1, // Border line width
+          dashtype: 'dash'
         },
       }
     )

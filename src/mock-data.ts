@@ -3,14 +3,21 @@ const slide1Data = {
         {
             title: 'Subheadline: Splitname and Total (N=)',
             options: {
-                x: '3%', // Set x position to 5% from the left
-                y: '9%', // Set y position to 5% from the top
-                w: '100%', // Set width to 40% of slide width
+                x: '4%', // Set x position to 5% from the left
+                y: '8%', // Set y position to 5% from the top
+                w: '94%', // Set width to 40% of slide width
                 align: 'left', // Align text to the left
-                fontSize: 11,
+                fontSize: 13,
+                h: 0.3,
                 font_weight: '300',
                 color: '000000', // Black color
-                marginBottom: '15px'
+                marginBottom: '15px',
+                FontFace: 'Aeonik Light',
+                line: { // Border properties
+                    color: '000000', // Border color
+                    size: 1, // Border line width
+                    dashType: 'dash'
+                },
             }
         },
         {
@@ -22,15 +29,18 @@ const slide1Data = {
                 align: 'left', // Align text to the left
                 font_weight: 'bold',
                 color: '000000', // Black color
+                FontFace: 'Aeonik Regular',
+                fontSize: 20
             }
         },
         {
-            title:"03 Detailed Results",
+            title: "03 Detailed Results",
             options: {
                 x: -4.5,
                 y: -0.5,
                 rotate: -90,
-                fontSize: 11
+                fontSize: 10,
+                FontFace: 'Aeonik Light',
             }
         },
         {
@@ -41,6 +51,7 @@ const slide1Data = {
                 align: 'left', // Left align the text
                 font_size: 12,
                 color: '363636',
+                FontFace: 'Aeonik Light',
             }
         },
         {
@@ -49,7 +60,7 @@ const slide1Data = {
                 x: '15%', // Adjust the x position as needed
                 y: '87%', // Adjust the y position as needed
                 w: '70%', // Adjust the width as needed
-                h: 0.3, // Adjust the height as needed (consider font size)
+                h: 0.5, // Adjust the height as needed (consider font size)
                 fontSize: 8,
                 color: '363636',
                 align: 'center', // Set the text alignment to left
@@ -58,6 +69,7 @@ const slide1Data = {
                 line: { // Border properties
                     color: '000000', // Border color
                     size: 1, // Border line width
+                    dashType: 'dash'
                 },
             }
         }
@@ -112,23 +124,31 @@ const slide2Data = {
         {
             title: 'Subheadline: Splitname and Total (N=)',
             options: {
-                x: '3%', // Set x position to 5% from the left
-                y: '9%', // Set y position to 5% from the top
-                w: '100%', // Set width to 40% of slide width
+                x: '4%', // Set x position to 5% from the left
+                y: '8%', // Set y position to 5% from the top
+                w: '95%', // Set width to 40% of slide width
                 align: 'left', // Align text to the left
-                fontSize: 11,
+                fontSize: 13,
+                h:0.3,
                 font_weight: '300',
                 color: '000000', // Black color
-                marginBottom: '15px'
+                marginBottom: '15px',
+                fontFace: 'Aeonik Light',
+                line: { // Border properties
+                    color: '000000', // Border color
+                    size: 1, // Border line width
+                    dashType: 'dash'
+                },
             }
         },
         {
-            title:"03 Detailed Results",
+            title: "03 Detailed Results",
             options: {
                 x: -4.5,
                 y: -0.5,
                 rotate: -90,
-                fontSize: 11
+                fontSize: 10,
+                FontFace: 'Aeonik Regular',
             }
         },
         {
@@ -140,6 +160,8 @@ const slide2Data = {
                 align: 'left', // Align text to the left
                 font_weight: 'bold',
                 color: '000000', // Black color
+                FontFace: 'Aeonik Regular',
+                fontSize: 20
             }
         },
         {
@@ -150,6 +172,7 @@ const slide2Data = {
                 align: 'left', // Left align the text
                 font_size: 12,
                 color: '363636',
+                fontFace: 'Aeonik Light'
             }
         },
         {
@@ -158,7 +181,7 @@ const slide2Data = {
                 x: '15%', // Adjust the x position as needed
                 y: '87%', // Adjust the y position as needed
                 w: '70%', // Adjust the width as needed
-                h: 0.3, // Adjust the height as needed (consider font size)
+                h: 0.5, // Adjust the height as needed (consider font size)
                 fontSize: 8,
                 color: '363636',
                 align: 'center', // Set the text alignment to left
@@ -167,6 +190,7 @@ const slide2Data = {
                 line: { // Border properties
                     color: '000000', // Border color
                     size: 1, // Border line width
+                    dashType: 'dash'
                 },
             }
         }
@@ -197,23 +221,40 @@ const slide3Data = {
         {
             title: 'Subheadline: Splitname and Total (N=)',
             options: {
-                x: '3%', // Set x position to 5% from the left
-                y: '9%', // Set y position to 5% from the top
-                w: '100%', // Set width to 40% of slide width
+                x: '4%', // Set x position to 5% from the left
+                y: '7%', // Set y position to 5% from the top
+                w: '95%', // Set width to 40% of slide width
                 align: 'left', // Align text to the left
                 fontSize: 11,
+                h:0.3,
                 font_weight: '300',
                 color: '000000', // Black color
-                marginBottom: '15px'
+                marginBottom: '15px',
+                line: { // Border properties
+                    color: '000000', // Border color
+                    size: 1, // Border line width
+                    dashType: 'dash'
+                },
             }
         },
         {
-            title:"03 Detailed Results",
+            title: "03 Detailed Results",
             options: {
                 x: -4.5,
                 y: -0.5,
                 rotate: -90,
                 fontSize: 11
+            }
+        },
+        {
+            title: "Reichweite",
+            options: {
+                x: -3.5,
+                y: -0.6,
+                rotate: -90,
+                fontSize: 18,
+                bold: true,
+                fontFace: 'Aeonik Light'
             }
         },
         {
@@ -238,12 +279,25 @@ const slide3Data = {
             }
         },
         {
+            title: 'Anzahl Sorten im portfolio',
+            options: {
+                x: '15%', // Adjust the x position as needed
+                y: '88%', // Adjust the y position as needed
+                w: '70%', // Adjust the width as needed
+                h: 0.3, // Adjust the height as needed (consider font size)
+                fontSize: 12,
+                bold: true,
+                color: '000000',
+                align: 'center', // Set the text alignment to left
+            }
+        },
+        {
             title: 'Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)',
             options: {
                 x: '15%', // Adjust the x position as needed
                 y: '92%', // Adjust the y position as needed
                 w: '70%', // Adjust the width as needed
-                h: 0.3, // Adjust the height as needed (consider font size)
+                h: 0.5, // Adjust the height as needed (consider font size)
                 fontSize: 8,
                 color: '363636',
                 align: 'center', // Set the text alignment to left
@@ -252,6 +306,7 @@ const slide3Data = {
                 line: { // Border properties
                     color: '000000', // Border color
                     size: 1, // Border line width
+                    dashType: 'dash'
                 },
             }
         }
@@ -283,18 +338,19 @@ const slide4Data = {
         fill: 'F7F7F7',
         font_size: 12,
         color: '363636',
-        gridLineColor: 'none'
+        gridLineColor: 'none',
+        margin: 10
     },
     headingTexts: function () {
         return [
             {
                 title: 'Portfolio Size: 1 Flavour',
-                options: { ...this.headingTextOpts, x: '15%', y: '17%', }
+                options: { ...this.headingTextOpts, x: '15%', y: '18%', }
             },
             {
-                title:"03 Detailed Results",
+                title: "03 Detailed Results",
                 options: {
-                    x: -4.5,
+                    x: -4.8,
                     y: -0.5,
                     rotate: -90,
                     fontSize: 11
@@ -302,27 +358,34 @@ const slide4Data = {
             },
             {
                 title: 'Portfolio Size: 2 Flavours',
-                options: { ...this.headingTextOpts, x: '65%', y: '17%', }
+                options: { ...this.headingTextOpts, x: '65%', y: '18%', }
             },
             {
                 title: 'Portfolio Size: 3 Flavours',
-                options: { ...this.headingTextOpts, x: '15%', y: '51%', }
+                options: { ...this.headingTextOpts, x: '15%', y: '52%', }
             },
             {
                 title: 'Portfolio Size: 4 Flavours',
-                options: { ...this.headingTextOpts, x: '65%', y: '51%', }
+                options: { ...this.headingTextOpts, x: '65%', y: '52%', }
             },
             {
                 title: 'Subheadline: Splitname and Total (N=)',
                 options: {
-                    x: '3%',
+                    x: '4%',
                     y: '8.5%',
-                    w: '100%',
+                    w: '95%',
+                    h:0.3,
                     align: 'left',
                     font_weight: '300',
-                    fontSize: 11,
+                    fontSize: 13,
                     color: '000000',
-                    marginBottom: '15px'
+                    marginBottom: '15px',
+                    FontFace: 'Aeonik Light',
+                    line: { // Border properties
+                        color: '000000', // Border color
+                        size: 1, // Border line width
+                        dashType: 'dash'
+                    },
                 }
             },
             {
@@ -334,6 +397,8 @@ const slide4Data = {
                     align: 'left',
                     font_weight: 'bold',
                     color: '000000',
+                    FontFace: 'Aeonik Regular',
+                    fontSize: 20
                 }
             },
             {
@@ -344,6 +409,7 @@ const slide4Data = {
                     align: 'left',
                     font_size: 12,
                     color: '363636',
+                    FontFace: 'Aeonik Light'
                 }
             },
             {
@@ -352,7 +418,7 @@ const slide4Data = {
                     x: '15%', // Adjust the x position as needed
                     y: '87%', // Adjust the y position as needed
                     w: '70%', // Adjust the width as needed
-                    h: 0.3, // Adjust the height as needed (consider font size)
+                    h: 0.5, // Adjust the height as needed (consider font size)
                     fontSize: 8,
                     color: '363636',
                     align: 'center', // Set the text alignment to left
@@ -361,6 +427,7 @@ const slide4Data = {
                     line: { // Border properties
                         color: '000000', // Border color
                         size: 1, // Border line width
+                        dashType: 'dash'
                     },
                 }
             }
@@ -425,19 +492,25 @@ const slide6Data = {
         return [
             {
                 title: 'INSIGHT REPORT',
-                options: { ...this.options, y: '27%', x: '5%', fontSize: 70 }
+                options: {
+                    ...this.options, y: '27%', x: '5%', fontSize: 80, FontFace: 'Aeonik Medium',
+                }
             },
             {
                 title: 'Project Name',
-                options: { ...this.options, y: '52%', x: '5%', fontSize: 45, color: '0270C0' }
+                options: {
+                    ...this.options, y: '52%', x: '5%', fontSize: 50, color: '0270C0', FontFace: 'Aeonik Light',
+                }
             },
             {
                 title: 'Date',
-                options: { ...this.options, y: '62%', x: '5%', fontSize: 35 }
+                options: {
+                    ...this.options, y: '62%', x: '5%', fontSize: 40, FontFace: 'Inter Light',
+                }
             },
             {
                 title: 'appinio',
-                options: { ...this.options, y: '85%', x: '5%', fontSize: 35, fontFamily: 'Aeonik Light' }
+                options: { ...this.options, y: '85%', x: '5%', fontSize: 50, fontFamily: 'Aeonik Light' }
             },
             {
                 title: 'Month Year',
@@ -445,6 +518,7 @@ const slide6Data = {
                     ...this.options, x: '30%', y: '82%', fontSize: 25, h: 0.5, fill: 'ffffff', line: { // Border properties
                         color: '000000', // Border color
                         size: 1, // Border line width
+                        dashType: 'dash'
                     }, w: '15%'
                 }
             }
@@ -487,13 +561,13 @@ const slide8Data = {
             {
                 title: '01',
                 options: {
-                    ...this.options, y: '10%', fontSize: 70
+                    ...this.options, y: '10%', fontSize: 80, FontFace: 'Aeonik Thin',
                 }
             },
             {
                 title: 'CHAPTER SLIDE',
                 options: {
-                    ...this.options, y: '25%', fontSize: 70
+                    ...this.options, y: '25%', fontSize: 80, FontFace: 'Aeonik Medium'
                 }
             },
             {
@@ -518,7 +592,7 @@ const slide9Data = {
                     options: { y: '10%', fontSize: 20 }
                 },
                 {
-                    title:"01 Study Design",
+                    title: "01 Study Design",
                     options: {
                         x: -4.5,
                         y: -0.5,
@@ -535,7 +609,7 @@ const slide9Data = {
                 {
                     image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060877/Qibble%20App/d7orwyzdkyxgtemc2pdp.png',
                     options: {
-                         y: '22%', x: '27.5%'
+                        y: '22%', x: '27.5%'
                     }
                 },
                 {
@@ -558,7 +632,7 @@ const slide9Data = {
                 },
                 {
                     image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060842/Qibble%20App/kf5rpwcom9yiyaranevn.png',
-                    options: {  y: '22%', x: '57.5%' }
+                    options: { y: '22%', x: '57.5%' }
                 },
                 {
                     title: 'Country/Location details',
@@ -580,7 +654,7 @@ const slide9Data = {
                 },
                 {
                     image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060808/Qibble%20App/xi1l9dycmj7k3hkkxxct.png',
-                    options: {  y: '22%', x: '87.5%' }
+                    options: { y: '22%', x: '87.5%' }
                 },
                 {
                     title: 'First goal of questionnair',
@@ -606,10 +680,10 @@ const slide10Data = {
     headingsText: [
         {
             title: 'Sample Overview',
-            options: { y: '10%', x: '3%', fontSize: 20 }
+            options: { y: '10%', x: '3%', fontSize: 20, FontFace: 'Aeonik Regular' }
         },
         {
-            title:"01 Study Design",
+            title: "01 Study Design",
             options: {
                 x: -4.5,
                 y: -0.5,
@@ -619,55 +693,55 @@ const slide10Data = {
         },
         {
             title: '1000',
-            options: { y: '22%', x: '7%', fontSize: 50 }
+            options: { y: '22%', x: '7%', fontSize: 50, FontFace: 'Aeonik Regular' }
         },
         {
             title: 'Participants',
-            options: { y: '27%', x: '7%', fontSize: 10, color: '777777' }
+            options: { y: '27%', x: '7%', fontSize: 10, color: '777777', FontFace: 'Aeonik' }
         },
         {
             title: '39.5',
-            options: { y: '22%', x: '23%', fontSize: 50 }
+            options: { y: '22%', x: '23%', fontSize: 50, FontFace: 'Aeonik Regular' }
         },
         {
             title: 'Average Ages in years',
-            options: { y: '27%', x: '23%', fontSize: 10, color: '777777' }
+            options: { y: '27%', x: '23%', fontSize: 10, color: '777777', FontFace: 'Aeonik' }
         },
         {
             title: 'Age & Gender',
-            options: { y: '34%', x: '7%', fontSize: 20 }
+            options: { y: '34%', x: '7%', fontSize: 20, FontFace: 'Aeonik Regular' }
         },
         {
             title: 'United States',
-            options: { y: '75%', x: "55%", fontSize: 50 }
+            options: { y: '75%', x: "55%", fontSize: 50, FontFace: 'Aeonik Regular' }
         },
         {
             title: 'United States',
-            options: { y: '75%', x: "55%", fontSize: 50 }
+            options: { y: '75%', x: "55%", fontSize: 50, FontFace: 'Aeonik Regular' }
         },
         {
             title: '10.04.22',
-            options: { y: '90%', x: "55%", fontSize: 16 }
+            options: { y: '90%', x: "55%", fontSize: 20, FontFace: 'Aeonik Regular' }
         },
         {
             title: 'Start Date',
-            options: { y: '93%', x: "55%", fontSize: 8, color: '777777' }
+            options: { y: '93%', x: "55%", fontSize: 10, color: '777777', FontFace: 'Aeonik' }
         },
         {
             title: '7 Days',
-            options: { y: '90%', x: "65%", fontSize: 16 }
+            options: { y: '90%', x: "65%", fontSize: 20, FontFace: 'Aeonik Regular' }
         },
         {
             title: 'Field Time',
-            options: { y: '93%', x: "65%", fontSize: 8, color: '777777' }
+            options: { y: '93%', x: "65%", fontSize: 10, color: '777777', FontFace: 'Aeonik' }
         },
         {
             title: '34',
-            options: { y: '90%', x: "75%", fontSize: 16 }
+            options: { y: '90%', x: "75%", fontSize: 20, FontFace: 'Aeonik Regular' }
         },
         {
             title: 'Number of Questions',
-            options: { y: '93%', x: "75%", fontSize: 8, color: '777777' }
+            options: { y: '93%', x: "75%", fontSize: 10, color: '777777', FontFace: 'Aeonik' }
         },
         {
             title: 'appinio',
@@ -699,11 +773,11 @@ const slide11Data = {
             {
                 title: 'Executive Summary',
                 options: {
-                    x: '2.5%', y: '10%', fontSize: 20,
+                    x: '2.5%', y: '10%', fontSize: 20, FontFace: 'Aeonik Regular'
                 }
             },
             {
-                title:"02 Executive Summary",
+                title: "02 Executive Summary",
                 options: {
                     x: -4.5,
                     y: -0.5,
@@ -714,24 +788,24 @@ const slide11Data = {
             {
                 title: 'Only have one big key insight in the summary? This is a nice space to highlight the main insight or just introduce the insight summary.',
                 options: {
-                    ...this.options, y: '25%', fontSize: 20, w: '55%',
+                    ...this.options, y: '25%', fontSize: 20, w: '55%', FontFace: 'Aeonik Regular'
                 }
             },
             {
                 title: 'This is dummy text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At imperdiet dui accumsan sit amet nulla. Bibendum at varius vel pharetra vel turpis nunc eget. Sagittis purus sit amet volutpat consequat mauris nunc congue. Eu facilisis sed odio morbi quis commodo odio aenean. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et netus. Enim eu turpis egestas pretium aenean pharetra magna ac. Tincidunt ornare massa eget egestas. In fermentum posuere urna nec tincidunt praesent. Lorem mollis aliquam ut porttitor leo a. Nibh mauris cursus mattis molestie a iaculis at erat pellentesque. Facilisis magna etiam tempor orci eu lobortis elementum nibh tellus. Porttitor rhoncus dolor purus non enim praesent elementum. Aenean pharetra magna ac placerat',
-                options: { ...this.extraOptions, x: '7%', fontSize: 10, y: '50%', w: '30%' }
+                options: { ...this.extraOptions, x: '7%', fontSize: 11, y: '55%', w: '30%', FontFace: 'Aeonik Light' }
             },
             {
                 title: 'vestibulum lectus mauris ultrices eros. Elementum pulvinar etiam non quam lacus suspendisse faucibus interdum. Massa tincidunt dui ut ornare lectus sit. Vulputate sapien nec sagittis aliquam malesuada. Elementum sagittis vitae et leo duis ut diam. Nec feugiat in fermentum posuere urna nec tincidunt praesent semper.Est sit amet facilisis magna etiam tempor orci. Non consectetur a erat nam at. Tortor consequat id porta nibh venenatis cras. Et ligula ullamcorper malesuada proin libero nunc consequat. At tellus at urna condimentum mattis. Quis imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper.',
-                options: { ...this.extraOptions, x: '37%', fontSize: 10, y: '45%', w: '30%' }
+                options: { ...this.extraOptions, x: '37%', fontSize: 11, y: '50%', w: '30%', FontFace: 'Aeonik Light' }
             },
             {
                 title: 'Sed sed risus pretium quam. Suspendisse faucibus interdum posuere lorem ipsum. Ultricies mi eget mauris pharetra et ultrices neque ornare. Faucibus scelerisque eleifend donec pretium vulputate sapien. Scelerisque fermentum dui faucibus in ornare quam.',
-                options: { ...this.extraOptions, x: '7%', fontSize: 10, y: '75%', w: '30%' }
+                options: { ...this.extraOptions, x: '7%', fontSize: 11, y: '80%', w: '30%', FontFace: 'Aeonik Light' }
             },
             {
                 title: "vestibulum lectus mauris ultrices eros. Elementum pulvinar etiam non quam lacus suspendisse faucibus interdum. Massa tincidunt dui ut ornare lectus sit. Vulputate sapien nec sagittis aliquam malesuada. Elementum sagittis vitae et leo duis ut diam. Nec feugiat in fermentum posuere urna nec tincidunt praesent semper.Est sit amet facilisis magna etiam tempor orci.",
-                options: { ...this.extraOptions, x: '37%', fontSize: 10, y: '68%', w: '30%' }
+                options: { ...this.extraOptions, x: '37%', fontSize: 11, y: '73%', w: '30%', FontFace: 'Aeonik Light' }
             },
             {
                 title: 'appinio',
@@ -747,10 +821,10 @@ const slide12Data = {
     headingsText: [
         {
             title: 'Any questions? We are happy to help!',
-            options: { fontSize: 20, y: '10%', x: '2%' }
+            options: { fontSize: 20, y: '10%', x: '2%', FontFace: 'Aeonik Regular' }
         },
         {
-            title:"04 Contract",
+            title: "04 Contract",
             options: {
                 x: -4.5,
                 y: -0.5,
@@ -768,7 +842,9 @@ const slide12Data = {
                 fontSize: 40, y: '20%', x: '20%', w: '70%', h: 0.5, align: 'left', fill: 'ffffff', line: {
                     color: '000000', // Border color
                     size: 1, // Border line width
-                }
+                    dashType: 'dash'
+                },
+                FontFace: 'Aeonik Regular'
             }
         },
         {
@@ -777,12 +853,15 @@ const slide12Data = {
                 fontSize: 20, y: '28%', x: '20%', w: '70%', h: 0.3, align: 'left', fill: 'ffffff', line: {
                     color: '000000', // Border color
                     size: 1, // Border line width
-                }
+                    dashType: 'dash'
+                },
+                FontFace: 'Aeonik Regular'
+
             }
         },
         {
             title: 'Office',
-            options: { fontSize: 8, y: '35%', x: '19%', color: '777777' }
+            options: { fontSize: 8, y: '35%', x: '19%', color: '777777', FontFace: 'Aeonik Regular' }
         },
         {
             title: '+49',
@@ -790,16 +869,18 @@ const slide12Data = {
                 fontSize: 8, y: '34%', x: '24%', color: '777777', w: '65%', h: 0.2, align: 'left', fill: 'ffffff', line: {
                     color: '000000', // Border color
                     size: 1, // Border line width
-                }
+                    dashType: 'dash'
+                },
+                FontFace: 'Aeonik Regular'
             }
         },
         {
             title: 'Mail',
-            options: { fontSize: 8, y: '39%', x: '19%', color: '777777' }
+            options: { fontSize: 8, y: '39%', x: '19%', color: '777777', FontFace: 'Aeonik Regular' }
         },
         {
             title: 'Louise.leitsch@appinio.com',
-            options: { fontSize: 8, y: '39%', x: '23%', color: '777777' }
+            options: { fontSize: 8, y: '39%', x: '23%', color: '777777', FontFace: 'Aeonik Regular' }
         },
         {
             image: 'https://res.cloudinary.com/drascgtap/image/upload/v1718028398/Qibble%20App/ivzkrwk2dvejkyfp7cqw.jpg',
@@ -811,7 +892,9 @@ const slide12Data = {
                 fontSize: 40, y: '50%', x: '20%', w: '70%', h: 0.5, align: 'left', fill: 'ffffff', line: {
                     color: '000000', // Border color
                     size: 1, // Border line width
-                }
+                    dashType: 'dash'
+                },
+                FontFace: 'Aeonik Regular'
             }
         },
         {
@@ -820,12 +903,14 @@ const slide12Data = {
                 fontSize: 20, y: '58%', x: '20%', w: '70%', h: 0.3, align: 'left', fill: 'ffffff', line: {
                     color: '000000', // Border color
                     size: 1, // Border line width
-                }
+                    dashType: 'dash'
+                },
+                FontFace: 'Aeonik Regular'
             }
         },
         {
             title: 'Office',
-            options: { fontSize: 8, y: '65%', x: '19%', color: '777777' }
+            options: { fontSize: 8, y: '65%', x: '19%', color: '777777', FontFace: 'Aeonik Regular' }
         },
         {
             title: '+49',
@@ -833,16 +918,18 @@ const slide12Data = {
                 fontSize: 8, y: '64%', x: '24%', color: '777777', w: '65%', h: 0.2, align: 'left', fill: 'ffffff', line: {
                     color: '000000', // Border color
                     size: 1, // Border line width
-                }
+                    dashType: 'dash'
+                },
+                FontFace: 'Aeonik Regular'
             }
         },
         {
             title: 'Mail',
-            options: { fontSize: 8, y: '69%', x: '19%', color: '777777' }
+            options: { fontSize: 8, y: '69%', x: '19%', color: '777777', FontFace: 'Aeonik Regular' }
         },
         {
             title: 'Louise.leitsch@appinio.com',
-            options: { fontSize: 8, y: '69%', x: '23%', color: '777777' }
+            options: { fontSize: 8, y: '69%', x: '23%', color: '777777', FontFace: 'Aeonik Regular' }
         },
         {
             title: 'appinio',
@@ -850,11 +937,11 @@ const slide12Data = {
         },
         {
             title: 'Appinio Germany Grobe Theaterstrabe 31 20354 Hamburg',
-            options: { fontSize: 10, y: '90%', x: '23%', w: '10%' }
+            options: { fontSize: 10, y: '90%', x: '23%', w: '10%', FontFace: 'Aeonik Regular' }
         },
         {
             title: 'Appinio USA 1355 Market St 94301 San Francisco',
-            options: { fontSize: 10, y: '90%', x: '43%', w: '10%' }
+            options: { fontSize: 10, y: '90%', x: '43%', w: '10%', FontFace: 'Aeonik Regular' }
         },
         {
             title: 'Appinio UK Victoria House, Suite 41 38 Survey Quays Road, London UK',
@@ -874,11 +961,12 @@ const slide13Data = {
             options: {
                 y: '10%',
                 x: '2%',
-                fontSize: 20
+                fontSize: 20,
+                FontFace: 'Inter'
             }
         },
         {
-            title:"03 Detailed Results",
+            title: "03 Detailed Results",
             options: {
                 x: -4.5,
                 y: -0.5,
@@ -891,17 +979,19 @@ const slide13Data = {
             options: {
                 y: '16%',
                 x: '2%',
-                fontSize: 10
+                fontSize: 10,
+                FontFace: 'Aeonik Light'
             }
         },
         {
             title: 'Insights',
             options: {
-                y: '18%',
+                y: '22%',
                 x: '60%',
                 w: '100%',
-                fontSize: 8,
+                fontSize: 10,
                 color: '777777',
+                FontFace: 'Aeonik Light'
             }
         },
         {
@@ -912,6 +1002,7 @@ const slide13Data = {
                 fontSize: 12,
                 w: '25%',
                 color: '000000',
+                FontFace: 'Aeonik Light'
             }
         },
         {
@@ -922,6 +1013,7 @@ const slide13Data = {
                 fontSize: 12,
                 w: '25%',
                 color: '000000',
+                FontFace: 'Aeonik Light'
             }
         },
         {
@@ -937,7 +1029,8 @@ const slide13Data = {
             options: {
                 y: '93%',
                 x: '15%',
-                fontSize: 8,
+                fontSize: 7,
+                FontFace: 'Inter'
             }
         },
     ],
@@ -981,11 +1074,12 @@ const slide14Data = {
             options: {
                 y: '10%',
                 x: '2%',
-                fontSize: 20
+                fontSize: 20,
+                FontFace: 'Inter'
             }
         },
         {
-            title:"03 Detailed Results",
+            title: "03 Detailed Results",
             options: {
                 x: -4.5,
                 y: -0.5,
@@ -998,17 +1092,19 @@ const slide14Data = {
             options: {
                 y: '16%',
                 x: '2%',
-                fontSize: 10
+                fontSize: 10,
+                FontFace: 'Aeonik Light'
             }
         },
         {
             title: 'Insights',
             options: {
-                y: '20%',
+                y: '22%',
                 x: '7%',
                 w: '100%',
-                fontSize: 8,
+                fontSize: 10,
                 color: '777777',
+                FontFace: 'Aeonik Light'
             }
         },
         {
@@ -1019,6 +1115,7 @@ const slide14Data = {
                 fontSize: 12,
                 w: '25%',
                 color: '000000',
+                FontFace: 'Aeonik Light'
             }
         },
         {
@@ -1029,6 +1126,7 @@ const slide14Data = {
                 fontSize: 12,
                 w: '25%',
                 color: '000000',
+                FontFace: 'Aeonik Light'
             }
         },
         {
@@ -1044,7 +1142,8 @@ const slide14Data = {
             options: {
                 y: '93%',
                 x: '15%',
-                fontSize: 8,
+                fontSize: 7,
+                FontFace: 'Inter'
             }
         },
     ],
@@ -1070,7 +1169,7 @@ const slide14Data = {
         chartColors: ['779DFF'],
         showLabel: true,
         showValue: true,
-        x: 5, h:5,w:7
+        x: 5, h: 5, w: 7
     }
 }
 
@@ -1081,11 +1180,12 @@ const slide15Data = {
             options: {
                 y: '10%',
                 x: '2%',
-                fontSize: 20
+                fontSize: 20,
+                FontFace: 'Inter'
             }
         },
         {
-            title:"03 Detailed Results",
+            title: "03 Detailed Results",
             options: {
                 x: -4.5,
                 y: -0.5,
@@ -1098,7 +1198,8 @@ const slide15Data = {
             options: {
                 y: '16%',
                 x: '2%',
-                fontSize: 10
+                fontSize: 10,
+                FontFace: 'Aeonik Light'
             }
         },
         {
@@ -1107,8 +1208,9 @@ const slide15Data = {
                 y: '20%',
                 x: '60%',
                 w: '100%',
-                fontSize: 8,
+                fontSize: 10,
                 color: '777777',
+                FontFace: 'Aeonik Light'
             }
         },
         {
@@ -1119,6 +1221,7 @@ const slide15Data = {
                 fontSize: 12,
                 w: '30%',
                 color: '000000',
+                FontFace: 'Aeonik Light'
             }
         },
         {
@@ -1129,6 +1232,7 @@ const slide15Data = {
                 fontSize: 12,
                 w: '30%',
                 color: '000000',
+                FontFace: 'Aeonik Light'
             }
         },
         {
@@ -1249,7 +1353,8 @@ const slide15Data = {
             options: {
                 y: '93%',
                 x: '15%',
-                fontSize: 8,
+                fontSize: 7,
+                FontFace: 'Inter'
             }
         }
     ],
