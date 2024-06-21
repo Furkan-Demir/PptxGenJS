@@ -790,8 +790,110 @@ function createcustomChart(rel) {
 function createSlide10Chart(rel) {
     // Static variables
     const categories = rel.data[0]?.labels[0];
-    const womenData = rel.data[0]?.values[0]?.women;
-    const menData = rel.data[0]?.values[0]?.men;
+    const dataValues = rel.data[0]?.values[0];
+	const colors = rel.data[0]?.colors;
+	var xPosition =  0.2
+	var width = 0.20
+
+	for(let i = 0; i<(colors.length-1); i++){
+		xPosition = xPosition/2;
+		width = width + 0.15
+	}
+
+
+    const generateDynamicXml = () => {
+        let str = '';
+        // Iterate over each key in dataValues (assuming it contains multiple series)
+        Object.keys(dataValues).forEach((key, index) => {
+            const seriesName = key; // Use this as your series name or identifier
+            // Generate XML for each series dynamically
+            str += `
+            <c:ser>
+                <c:idx val="${index}"/>
+                <c:order val="${index}"/>
+                <c:tx>
+                    <c:strRef>
+                        <c:f>Sheet1!$A$2</c:f>
+                        <c:strCache>
+                            <c:ptCount val="1"/>
+                            <c:pt idx="0">
+                                <c:v>${seriesName} (1000)</c:v>
+                            </c:pt>
+                        </c:strCache>
+                    </c:strRef>
+                </c:tx>
+                <c:spPr>
+                    <a:solidFill>
+                        <a:srgbClr val="${colors[index]}"/>
+                    </a:solidFill>
+                    <a:ln w="6350" cap="flat">
+                        <a:noFill/>
+                        <a:miter lim="400000"/>
+                    </a:ln>
+                    <a:effectLst/>
+                </c:spPr>
+                <c:invertIfNegative val="0"/>
+                <c:dLbls>
+                    <c:numFmt formatCode="#,##0" sourceLinked="0"/>
+                    <c:spPr>
+                        <a:noFill/>
+                        <a:ln>
+                            <a:noFill/>
+                        </a:ln>
+                        <a:effectLst/>
+                    </c:spPr>
+                    <c:txPr>
+                        <a:bodyPr/>
+                        <a:lstStyle/>
+                        <a:p>
+                            <a:pPr>
+                                <a:defRPr>
+                                    <a:solidFill>
+                                        <a:srgbClr val="FFFFFF"/>
+                                    </a:solidFill>
+                                </a:defRPr>
+                            </a:pPr>
+                            <a:endParaRPr lang="en-PK"/>
+                        </a:p>
+                    </c:txPr>
+                    <c:dLblPos val="ctr"/>
+                    <c:showLegendKey val="0"/>
+                    <c:showVal val="1"/>
+                    <c:showCatName val="0"/>
+                    <c:showSerName val="0"/>
+                    <c:showPercent val="0"/>
+                    <c:showBubbleSize val="0"/>
+                    <c:showLeaderLines val="0"/>
+                </c:dLbls>
+                <c:cat>
+                    <c:strRef>
+                        <c:f>Sheet1!$B$1:$F$1</c:f>
+                        <c:strCache>
+                            <c:ptCount val="${categories.length}"/>
+                            ${generateCategoryXML(categories)}
+                        </c:strCache>
+                    </c:strRef>
+                </c:cat>
+                <c:val>
+                    <c:numRef>
+                        <c:f>Sheet1!$B$2:$F$2</c:f>
+                        <c:numCache>
+                            <c:formatCode>General</c:formatCode>
+                            <c:ptCount val="${dataValues[key].length}"/>
+                            ${generateDataXML(dataValues[key])}
+                        </c:numCache>
+                    </c:numRef>
+                </c:val>
+                <c:extLst>
+                    <c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart">
+                        <c16:uniqueId val="{00000000-07DB-8E4D-8FB1-AAE78A14B9A9}"/>
+                    </c:ext>
+                </c:extLst>
+            </c:ser>`;
+        });
+
+        return str;
+    };
 
     // Helper function to generate category XML
     const generateCategoryXML = (categories) => {
@@ -803,7 +905,8 @@ function createSlide10Chart(rel) {
         return data.map((value, index) => `<c:pt idx="${index}"><c:v>${value}</c:v></c:pt>`).join('');
     };
 
-    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    // Construct the entire XML for the chart
+    const chartXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     <c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:c16r2="http://schemas.microsoft.com/office/drawing/2015/06/chart">
         <c:date1904 val="1"/>
         <c:lang val="en-GB"/>
@@ -834,180 +937,7 @@ function createSlide10Chart(rel) {
                     <c:barDir val="bar"/>
                     <c:grouping val="stacked"/>
                     <c:varyColors val="0"/>
-                    <c:ser>
-                        <c:idx val="0"/>
-                        <c:order val="0"/>
-                        <c:tx>
-                            <c:strRef>
-                                <c:f>Sheet1!$A$2</c:f>
-                                <c:strCache>
-                                    <c:ptCount val="1"/>
-                                    <c:pt idx="0">
-                                        <c:v>Women (1000)</c:v>
-                                    </c:pt>
-                                </c:strCache>
-                            </c:strRef>
-                        </c:tx>
-                        <c:spPr>
-                            <a:solidFill>
-                                <a:srgbClr val="7A54DB"/>
-                            </a:solidFill>
-                            <a:ln w="6350" cap="flat">
-                                <a:noFill/>
-                                <a:miter lim="400000"/>
-                            </a:ln>
-                            <a:effectLst/>
-                        </c:spPr>
-                        <c:invertIfNegative val="0"/>
-                        <c:dLbls>
-                            <c:numFmt formatCode="#,##0" sourceLinked="0"/>
-                            <c:spPr>
-                                <a:noFill/>
-                                <a:ln>
-                                    <a:noFill/>
-                                </a:ln>
-                                <a:effectLst/>
-                            </c:spPr>
-                            <c:txPr>
-                                <a:bodyPr/>
-                                <a:lstStyle/>
-                                <a:p>
-                                    <a:pPr>
-                                        <a:defRPr>
-                                            <a:solidFill>
-                                                <a:srgbClr val="FFFFFF"/>
-                                            </a:solidFill>
-                                        </a:defRPr>
-                                    </a:pPr>
-                                    <a:endParaRPr lang="en-PK"/>
-                                </a:p>
-                            </c:txPr>
-                            <c:dLblPos val="ctr"/>
-                            <c:showLegendKey val="0"/>
-                            <c:showVal val="1"/>
-                            <c:showCatName val="0"/>
-                            <c:showSerName val="0"/>
-                            <c:showPercent val="0"/>
-                            <c:showBubbleSize val="0"/>
-                            <c:showLeaderLines val="0"/>
-                            <c:extLst>
-                                <c:ext uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}" xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart">
-                                    <c15:showLeaderLines val="0"/>
-                                </c:ext>
-                            </c:extLst>
-                        </c:dLbls>
-                        <c:cat>
-                            <c:strRef>
-                                <c:f>Sheet1!$B$1:$F$1</c:f>
-                                <c:strCache>
-                                    <c:ptCount val="${categories.length}"/>
-                                    ${generateCategoryXML(categories)}
-                                </c:strCache>
-                            </c:strRef>
-                        </c:cat>
-                        <c:val>
-                            <c:numRef>
-                                <c:f>Sheet1!$B$2:$F$2</c:f>
-                                <c:numCache>
-                                    <c:formatCode>General</c:formatCode>
-                                    <c:ptCount val="${womenData.length}"/>
-                                    ${generateDataXML(womenData)}
-                                </c:numCache>
-                            </c:numRef>
-                        </c:val>
-                        <c:extLst>
-                            <c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart">
-                                <c16:uniqueId val="{00000000-07DB-8E4D-8FB1-AAE78A14B9A9}"/>
-                            </c:ext>
-                        </c:extLst>
-                    </c:ser>
-                    <c:ser>
-                        <c:idx val="1"/>
-                        <c:order val="1"/>
-                        <c:tx>
-                            <c:strRef>
-                                <c:f>Sheet1!$A$3</c:f>
-                                <c:strCache>
-                                    <c:ptCount val="1"/>
-                                    <c:pt idx="0">
-                                        <c:v>Men (1000)</c:v>
-                                    </c:pt>
-                                </c:strCache>
-                            </c:strRef>
-                        </c:tx>
-                        <c:spPr>
-                            <a:solidFill>
-                                <a:srgbClr val="EE8447"/>
-                            </a:solidFill>
-                            <a:ln w="6350" cap="flat">
-                                <a:noFill/>
-                                <a:miter lim="400000"/>
-                            </a:ln>
-                            <a:effectLst/>
-                        </c:spPr>
-                        <c:invertIfNegative val="0"/>
-                        <c:dLbls>
-                            <c:numFmt formatCode="#,##0" sourceLinked="0"/>
-                            <c:spPr>
-                                <a:noFill/>
-                                <a:ln>
-                                    <a:noFill/>
-                                </a:ln>
-                                <a:effectLst/>
-                            </c:spPr>
-                            <c:txPr>
-                                <a:bodyPr/>
-                                <a:lstStyle/>
-                                <a:p>
-                                    <a:pPr>
-                                        <a:defRPr>
-                                            <a:solidFill>
-                                                <a:srgbClr val="FFFFFF"/>
-                                            </a:solidFill>
-                                        </a:defRPr>
-                                    </a:pPr>
-                                    <a:endParaRPr lang="en-PK"/>
-                                </a:p>
-                            </c:txPr>
-                            <c:dLblPos val="ctr"/>
-                            <c:showLegendKey val="0"/>
-                            <c:showVal val="1"/>
-                            <c:showCatName val="0"/>
-                            <c:showSerName val="0"/>
-                            <c:showPercent val="0"/>
-                            <c:showBubbleSize val="0"/>
-                            <c:showLeaderLines val="0"/>
-                            <c:extLst>
-                                <c:ext uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}" xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart">
-                                    <c15:showLeaderLines val="0"/>
-                                </c:ext>
-                            </c:extLst>
-                        </c:dLbls>
-                        <c:cat>
-                            <c:strRef>
-                                <c:f>Sheet1!$B$1:$F$1</c:f>
-                                <c:strCache>
-                                    <c:ptCount val="${categories.length}"/>
-                                    ${generateCategoryXML(categories)}
-                                </c:strCache>
-                            </c:strRef>
-                        </c:cat>
-                        <c:val>
-                            <c:numRef>
-                                <c:f>Sheet1!$B$3:$F$3</c:f>
-                                <c:numCache>
-                                    <c:formatCode>General</c:formatCode>
-                                    <c:ptCount val="${menData.length}"/>
-                                    ${generateDataXML(menData)}
-                                </c:numCache>
-                            </c:numRef>
-                        </c:val>
-                        <c:extLst>
-                            <c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart">
-                                <c16:uniqueId val="{00000001-07DB-8E4D-8FB1-AAE78A14B9A9}"/>
-                            </c:ext>
-                        </c:extLst>
-                    </c:ser>
+                    ${generateDynamicXml()}
                     <c:dLbls>
                         <c:showLegendKey val="0"/>
                         <c:showVal val="0"/>
@@ -1103,9 +1033,9 @@ function createSlide10Chart(rel) {
                     <c:manualLayout>
                         <c:xMode val="edge"/>
                         <c:yMode val="edge"/>
-                        <c:x val="0.1"/>
+                        <c:x val="${xPosition}"/>
                         <c:y val="0.99"/>
-                        <c:w val="0.35"/>
+                        <c:w val="${width}"/>
                         <c:h val="0.3"/>
                     </c:manualLayout>
                 </c:layout>
@@ -1158,7 +1088,10 @@ function createSlide10Chart(rel) {
             <c:autoUpdate val="0"/>
         </c:externalData>
     </c:chartSpace>`;
+
+    return chartXml;
 }
+
 
 function createFunnelChart() {
 	const data = [

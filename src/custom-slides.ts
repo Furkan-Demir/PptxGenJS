@@ -370,22 +370,56 @@ function slide10(pptx) {
         }
     })
 
-      const data = [
+    const dataChart = [
         {
-            labels: [["16 – 24", "25 – 34", "35 – 44", "45 – 54", "55 – 65"]],
-            values: [{
-                men: [200, 200, 200, 200, 200],
-                women: [200, 200, 200, 200, 200]
-            }]
-        }
-      ]
-    
-      const chartOptions: any = {
-        x: 1, y: 1, w: 8, h: 5
-      }; 
-    
-      // Add the chart to the slide
-      slide.addChart('slide10', data, chartOptions);
+            name: 'men (1000)',
+            labels: ['16 – 24', '25 – 34', '35 – 44', '45 – 54', '55 – 65'],
+            values: [200, 200, 200, 200, 200],
+            color: '7A54DB'
+        },
+        {
+            name: 'women (1000)',
+            labels: ['16 – 24', '25 – 34', '35 – 44', '45 – 54', '55 – 65'],
+            values: [200, 200, 200, 200, 200],
+            color: 'EE8447'
+        },
+    ];
+
+    const chartOptions = {
+        x: 1, y: 2.8, w: 6.5, h: 3,
+        barDir: 'bar', // 'bar' for horizontal bars
+        catAxisLabelColor: '000000',
+        valAxisLabelColor: '000000',
+        showLegend: true,
+        showValue: true,
+        barGapWidthPct: 20, // Increase the gap width percentage to create spacing between bars
+        barWidthPct: 50,
+        dataLabelColor: 'FFFFFF',
+        barGrouping: 'stacked',
+        gridLineColor: 'ffffff',
+        legendPos: 'b',
+        // catAxisLineColor: 'ffffff',
+        valAxisLineColor: 'ffffff',
+        catGridLineColor: 'ffffff',
+        valGridLineColor: 'ffffff',
+        catGridLine: { style: 'none' },
+        valGridLine: { style: 'none' },
+        valAxisHidden: true,
+        // barGapWidthPct: 2,
+        showValueAxis: false,
+        chartColors: ['7A54DB', 'EE8447', '2ECC71', 'F1C40F'],
+        showLabel: true,
+        valAxis: {
+            label: { // Configure value label properties
+                font: {
+                    size: 1 // Adjust font size as needed (smaller for less visibility)
+                }
+            }
+        },
+    };
+
+    slide.addChart(pptx.ChartType.bar, dataChart, chartOptions);
+
 }
 
 function slide11(pptx) {
