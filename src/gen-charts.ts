@@ -786,7 +786,7 @@ function createcustomChart(rel) {
 
 		return xmlString
 }
-
+//Outdated
 function createSlide10Chart(rel) {
     // Static variables
     const categories = rel.data[0]?.labels[0];
