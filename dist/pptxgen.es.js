@@ -1,4 +1,4 @@
-/* PptxGenJS 3.13.0-beta.0 @ 2023-05-17T03:15:58.392Z */
+/* PptxGenJS 3.13.0-beta.1 @ 2024-07-02T14:47:51.729Z */
 import JSZip from 'jszip';
 
 /******************************************************************************
@@ -183,6 +183,10 @@ var ChartType;
     ChartType["pie"] = "pie";
     ChartType["radar"] = "radar";
     ChartType["scatter"] = "scatter";
+    ChartType["funnel"] = "funnel";
+    ChartType["custom_funnel"] = "custom_funnel";
+    ChartType["waterfall"] = "waterfall";
+    ChartType["custom"] = "custom";
 })(ChartType || (ChartType = {}));
 var ShapeType;
 (function (ShapeType) {
@@ -594,6 +598,11 @@ var CHART_TYPE;
     CHART_TYPE["PIE"] = "pie";
     CHART_TYPE["RADAR"] = "radar";
     CHART_TYPE["SCATTER"] = "scatter";
+    CHART_TYPE["FUNNEL"] = "funnel";
+    CHART_TYPE["WATERFALL"] = "waterfall";
+    CHART_TYPE["CUSTOM_FUNNEL"] = "custom_funnel";
+    CHART_TYPE["CUSTOM"] = "custom";
+    CHART_TYPE["SLIDE10"] = "slide10";
 })(CHART_TYPE || (CHART_TYPE = {}));
 var SCHEME_COLOR_NAMES;
 (function (SCHEME_COLOR_NAMES) {
@@ -2891,10 +2900,275 @@ var Slide = /** @class */ (function () {
     Slide.prototype.addChart = function (type, data, options) {
         // FUTURE: TODO-VERSION-4: Remove first arg - only take data and opts, with "type" required on opts
         // Set `_type` on IChartOptsLib as its what is used as object is passed around
-        var optionsWithType = options || {};
-        optionsWithType._type = type;
-        addChartDefinition(this, type, data, options);
+        if (type === ChartType.waterfall) {
+            this.generateWaterfallChart(data, options);
+        }
+        else if (type === ChartType.funnel) {
+            this.generateFunnelChart(type, data, options);
+        }
+        else {
+            var optionsWithType = options || {};
+            optionsWithType._type = type;
+            addChartDefinition(this, type, data, options);
+        }
         return this;
+    };
+    Slide.prototype.generateWaterfallChart = function (data, options) {
+        var _this = this;
+        var _a, _b, _c;
+        if (options === void 0) { options = {}; }
+        options.x = 0.5;
+        options.y = 0.5;
+        options.color = (_a = options.color) !== null && _a !== void 0 ? _a : '000000';
+        var labelYyAxisPos = 0.5;
+        var labelYxAxisPos = 0.5;
+        var labelsY = data[0].labelsY.sort(function (a, b) { return b - a; });
+        var labelsX = (_b = data[0]) === null || _b === void 0 ? void 0 : _b.labelsX;
+        var values = (_c = data[0]) === null || _c === void 0 ? void 0 : _c.values;
+        var minY = Math.min.apply(Math, labelsY);
+        var maxY = Math.max.apply(Math, labelsY);
+        // Adjust Y position to account for negative values
+        var yAxisZeroPos = labelYyAxisPos + (maxY / (maxY - minY)) * (labelsY.length - 1) * 0.5;
+        var x = values.length;
+        var x2 = x + 2;
+        var x3 = x2 * 0.5;
+        var x4 = x - x3;
+        console.log(x, x2, x3, x4);
+        var finalX = 2.5 - x4;
+        console.log("finalX", finalX);
+        if (values.length === 2) {
+            finalX = 3.5;
+        }
+        if (values.length === 1) {
+            finalX = 4.5;
+        }
+        // Y Axis Line & Text
+        labelsY.forEach(function (labelY, index) {
+            var _a;
+            _this.addText("".concat(labelY), {
+                x: labelYxAxisPos + finalX,
+                y: labelYyAxisPos + 1,
+                color: '000000',
+                fontSize: (_a = options === null || options === void 0 ? void 0 : options.fontSize) !== null && _a !== void 0 ? _a : 12,
+            });
+            if (index !== (labelsY === null || labelsY === void 0 ? void 0 : labelsY.length) - 1) {
+                labelYyAxisPos += 0.4;
+            }
+        });
+        this.addShape(ShapeType.line, {
+            x: options.x + 1 + finalX,
+            y: labelYxAxisPos - 0.2 + 1,
+            h: labelYyAxisPos,
+            w: 0.02,
+            fill: { color: '000000' },
+            line: { color: '000000' },
+        });
+        var labelXxAxisPos = 2;
+        var xAxisLineY = yAxisZeroPos + 0.3;
+        var valuesXpos = [];
+        labelsX.forEach(function (labelX, index) {
+            var _a, _b;
+            valuesXpos.push(labelXxAxisPos);
+            _this.addText("".concat(labelX), {
+                x: labelXxAxisPos + finalX,
+                y: xAxisLineY + 0.5,
+                color: '000000',
+                fontSize: (_a = options === null || options === void 0 ? void 0 : options.fontSize) !== null && _a !== void 0 ? _a : 12,
+            });
+            if (index !== ((_b = data[0]) === null || _b === void 0 ? void 0 : _b.labelsX.length) - 1) {
+                labelXxAxisPos += 2;
+            }
+        });
+        this.addShape(ShapeType.line, {
+            x: 1.5 + finalX,
+            y: xAxisLineY,
+            h: 0.02,
+            w: labelXxAxisPos - 0.5,
+            line: { color: '000000' },
+        });
+        // Values Mapping & Boxes
+        var cumulativeValue = 0;
+        var yUnit = (labelsY[0] - labelsY[1]) / 0.4; // Calculate the unit height for the bars
+        values.forEach(function (value, index) {
+            var difference = value - cumulativeValue;
+            var boxHeight = (Math.abs(difference) / yUnit);
+            var boxYpos = difference >= 0
+                ? yAxisZeroPos - cumulativeValue / yUnit - boxHeight
+                : yAxisZeroPos - cumulativeValue / yUnit;
+            _this.addShape(ShapeType.rect, {
+                x: valuesXpos[index] + finalX,
+                y: boxYpos,
+                w: 1,
+                h: boxHeight,
+                fill: { color: options.color },
+                line: { color: '000000' },
+            });
+            if (values[1] - values[2] < 0) {
+                if (index < values.length - 1) {
+                    values[index + 1];
+                    _this.addShape(ShapeType.line, {
+                        x: valuesXpos[index] + 1 + finalX,
+                        y: boxYpos,
+                        w: valuesXpos[index + 1] - valuesXpos[index] - 1,
+                        h: 0.00,
+                        line: { color: '000000' },
+                    });
+                }
+            }
+            // Update cumulative value
+            cumulativeValue += difference;
+        });
+        if (values[1] - values[2] > 0) {
+            for (var index = 0; index < values.length - 1; index++) {
+                var value = values[index];
+                var difference = value - cumulativeValue;
+                var boxHeight = Math.abs(difference) / yUnit;
+                var boxYpos = difference >= 0
+                    ? yAxisZeroPos - cumulativeValue / yUnit - boxHeight
+                    : yAxisZeroPos - cumulativeValue / yUnit;
+                this.addShape(ShapeType.line, {
+                    x: valuesXpos[index] + 1 + finalX,
+                    y: boxYpos,
+                    w: valuesXpos[index + 1] - valuesXpos[index] - 1,
+                    h: 0.00,
+                    line: { color: '000000' },
+                });
+            }
+        }
+    };
+    Slide.prototype.generateFunnelChart = function (type, data, options) {
+        var _this = this;
+        var _a, _b, _c, _d, _e, _f, _g;
+        var slideWidth = 10; // Define the width of the slide
+        var chartWidth = data.length * 1; // Define the width of the chart based on the number of steps (1 step = width 1)
+        // Setting Options if not present
+        options = options !== null && options !== void 0 ? options : {};
+        options.align = (_a = options === null || options === void 0 ? void 0 : options.align) !== null && _a !== void 0 ? _a : 'center'; // Setting Alignment Center if not present
+        options.x = 0.5; // X Coordinate cannot be changed
+        options.y = Number((_b = options.y) !== null && _b !== void 0 ? _b : 1.5); // Y Coordinate cannot be changed
+        options.color = (_c = options.color) !== null && _c !== void 0 ? _c : 'ffffff';
+        options.position = (_d = options.position) !== null && _d !== void 0 ? _d : 'left';
+        if (!options.chartColors || ((_e = options.chartColors) === null || _e === void 0 ? void 0 : _e.length) === 0) {
+            var colorsDefaultArr = [];
+            for (var i = 0; i < data.length; i++) {
+                colorsDefaultArr.push(this.getRandomHexCode());
+            }
+            options.chartColors = colorsDefaultArr;
+        }
+        if (options.position === 'right') {
+            options.y = options.y + 1;
+        }
+        var initialX = this.setInitialXPositionFunnelChart(options, slideWidth, chartWidth);
+        var alignmentPosX = this.funnelChartAlignment(options.align, initialX);
+        if (options.position === 'left') {
+            data.sort(function (a, b) { return b.value - a.value; });
+        }
+        else if (options.position === 'right') {
+            data.sort(function (a, b) { return a.value - b.value; });
+        }
+        else {
+            data.sort(function (a, b) { return b.value - a.value; });
+        }
+        var globalOptions = {
+            x: alignmentPosX,
+            y: (_f = options === null || options === void 0 ? void 0 : options.y) !== null && _f !== void 0 ? _f : 1.5,
+            w: chartWidth,
+            h: (_g = options === null || options === void 0 ? void 0 : options.h) !== null && _g !== void 0 ? _g : 2
+        };
+        var barHeights = [];
+        var prevH = globalOptions.h; // Initialize previous height
+        var prevY = globalOptions.y; // Initialize previous height
+        data.forEach(function () {
+            barHeights.push(prevH);
+            prevH -= 0.3;
+        });
+        var prevX = globalOptions.x; // Initialize previous X position
+        if (options.position === 'right') {
+            barHeights.reverse();
+        }
+        data.forEach(function (info, index) {
+            var _a, _b, _c, _d;
+            var optionsObj = {
+                x: prevX,
+                y: prevY,
+                h: barHeights[index],
+                w: 1,
+                color: (_a = options === null || options === void 0 ? void 0 : options.color) !== null && _a !== void 0 ? _a : '000000',
+                fontSize: (_b = options === null || options === void 0 ? void 0 : options.fontSize) !== null && _b !== void 0 ? _b : 12,
+                align: (_c = options === null || options === void 0 ? void 0 : options.align) !== null && _c !== void 0 ? _c : 'left'
+            };
+            if (options.chartColors && ((_d = options.chartColors) === null || _d === void 0 ? void 0 : _d.length) > 0) {
+                Object.assign(optionsObj, {
+                    fill: {
+                        color: options.chartColors[index]
+                    }
+                });
+            }
+            else {
+                Object.assign(optionsObj, {
+                    fill: {
+                        color: '000000'
+                    }
+                });
+            }
+            // Add text with updated options
+            var text = info.type === 'percent' ? "".concat(info.value, "%") : "".concat(info.value);
+            _this.addText(text, optionsObj);
+            // Update previous Y position and height
+            // prevH -= 0.3; // Adjust the decrement as needed for height
+            // prevY += -(0.2);
+            if (options.position === 'left') {
+                prevY += 0.2;
+            }
+            else if (options.position === 'right') {
+                prevY += -(0.2);
+            }
+            // Update previous X position for the next step
+            prevX += 1;
+        });
+    };
+    Slide.prototype.funnelChartAlignment = function (alignValue, initialX) {
+        var alignmentPosX;
+        switch (alignValue) {
+            case 'left':
+                alignmentPosX = initialX + 0.5;
+                break;
+            case 'right':
+                alignmentPosX = initialX - 0.5;
+                break;
+            case 'center':
+                alignmentPosX = initialX;
+                break;
+            default:
+                alignmentPosX = initialX;
+                break;
+        }
+        return alignmentPosX;
+    };
+    Slide.prototype.setInitialXPositionFunnelChart = function (options, slideWidth, chartWidth) {
+        var _a;
+        var initialX;
+        if ((options === null || options === void 0 ? void 0 : options.align) === 'center') {
+            initialX = (slideWidth - chartWidth) / 2; // Calculate the initial X position to center the chart
+        }
+        else if ((options === null || options === void 0 ? void 0 : options.align) === 'left') {
+            initialX = 0; // Align chart to the left
+        }
+        else if ((options === null || options === void 0 ? void 0 : options.align) === 'right') {
+            initialX = slideWidth - chartWidth; // Align chart to the right
+        }
+        else {
+            initialX = (_a = options === null || options === void 0 ? void 0 : options.x) !== null && _a !== void 0 ? _a : 0.5; // Default to provided x position if align value is not specified
+        }
+        return initialX;
+    };
+    Slide.prototype.getRandomHexCode = function () {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
     };
     /**
      * Add image to Slide
@@ -3140,7 +3414,11 @@ function createExcelWorksheet(chartObject, zip) {
                                     });
                                 }
                                 else {
-                                    strTableXml_1 += "<table xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" id=\"1\" name=\"Table1\" displayName=\"Table1\" ref=\"A1:".concat(getExcelColName(data.length + data[0].labels.length)).concat(data[0].labels[0].length + 1, "'\" totalsRowShown=\"0\">");
+                                    strTableXml_1 +=
+                                        '<table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" id="1" name="Table1" displayName="Table1" ref="A1:' +
+                                            getExcelColName(data.length + data[0].labels.length) +
+                                            (data[0].labels[0].length + 1) +
+                                            '" totalsRowShown="0">';
                                     strTableXml_1 += "<tableColumns count=\"".concat(data.length + data[0].labels.length, "\">");
                                     data[0].labels.forEach(function (_labelsGroup, idx) {
                                         strTableXml_1 += "<tableColumn id=\"".concat(idx + 1, "\" name=\"Column").concat(idx + 1, "\"/>");
@@ -3644,7 +3922,109 @@ function makeXmlCharts(rel) {
     strXml += '<c:externalData r:id="rId1"><c:autoUpdate val="0"/></c:externalData>';
     // LAST: chartSpace end
     strXml += '</c:chartSpace>';
-    return strXml;
+    if (rel.opts._type === ChartType.custom_funnel) {
+        return createFunnelChart();
+    }
+    else if (rel.opts._type === CHART_TYPE.CUSTOM) {
+        return createcustomChart(rel);
+    }
+    else if (rel.opts._type === CHART_TYPE.SLIDE10) {
+        return createSlide10Chart(rel);
+    }
+    else {
+        return strXml;
+    }
+}
+function createcustomChart(rel) {
+    var _a, _b, _c, _d, _e;
+    var data = {
+        labels: (_a = rel.data[0]) === null || _a === void 0 ? void 0 : _a.labels[0],
+        negativeValues: (_c = (_b = rel.data[0]) === null || _b === void 0 ? void 0 : _b.values[0]) === null || _c === void 0 ? void 0 : _c.negativeValues,
+        positiveValues: (_e = (_d = rel.data[0]) === null || _d === void 0 ? void 0 : _d.values[0]) === null || _e === void 0 ? void 0 : _e.positiveValues
+    };
+    var labelPoints = data.labels.map(function (label, idx) {
+        return "<c:pt idx=\"".concat(idx, "\"><c:v>").concat(label, "</c:v></c:pt>");
+    }).join('');
+    var negativeValuePoints = data.negativeValues.map(function (value, idx) {
+        return "<c:pt idx=\"".concat(idx, "\"><c:v>").concat(value, "</c:v></c:pt>");
+    }).join('');
+    var positiveValuePoints = data.positiveValues.map(function (value, idx) {
+        return "<c:pt idx=\"".concat(idx, "\"><c:v>").concat(value, "</c:v></c:pt>");
+    }).join('');
+    var xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n\t\t<c:chartSpace xmlns:c=\"http://schemas.openxmlformats.org/drawingml/2006/chart\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:c16r2=\"http://schemas.microsoft.com/office/drawing/2015/06/chart\"><c:date1904 val=\"0\"/><c:lang val=\"en-GB\"/><c:roundedCorners val=\"0\"/><mc:AlternateContent xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\"><mc:Choice Requires=\"c14\" xmlns:c14=\"http://schemas.microsoft.com/office/drawing/2007/8/2/chart\"><c14:style val=\"102\"/></mc:Choice><mc:Fallback><c:style val=\"2\"/></mc:Fallback></mc:AlternateContent><c:chart><c:autoTitleDeleted val=\"0\"/><c:plotArea><c:layout><c:manualLayout><c:layoutTarget val=\"inner\"/><c:xMode val=\"edge\"/><c:yMode val=\"edge\"/><c:x val=\"0.10482734584069632\"/><c:y val=\"5.5871344259417713E-2\"/><c:w val=\"0.87057867529141852\"/><c:h val=\"0.92307398175211686\"/></c:manualLayout></c:layout><c:barChart><c:barDir val=\"bar\"/><c:grouping val=\"stacked\"/><c:varyColors val=\"0\"/><c:ser><c:idx val=\"0\"/><c:order val=\"0\"/><c:tx><c:strRef><c:f>Sheet1!$B$1</c:f><c:strCache><c:ptCount val=\"1\"/><c:pt idx=\"0\"><c:v>Negative</c:v></c:pt></c:strCache></c:strRef></c:tx><c:spPr><a:solidFill><a:srgbClr val=\"A93B4C\"/></a:solidFill><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:invertIfNegative val=\"0\"/><c:dLbls><c:dLbl><c:idx val=\"1\"/><c:layout><c:manualLayout><c:x val=\"4.8201188184149061E-3\"/><c:y val=\"4.158618463171603E-6\"/></c:manualLayout></c:layout><c:dLblPos val=\"ctr\"/><c:showLegendKey val=\"0\"/><c:showVal val=\"1\"/><c:showCatName val=\"0\"/><c:showSerName val=\"0\"/><c:showPercent val=\"0\"/><c:showBubbleSize val=\"0\"/><c:extLst><c:ext uri=\"{CE6537A1-D6FC-4f65-9D91-7224C49458BB}\" xmlns:c15=\"http://schemas.microsoft.com/office/drawing/2012/chart\"/><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{00000000-C60A-6F4C-8131-02F22F975519}\"/></c:ext></c:extLst></c:dLbl><c:dLbl><c:idx val=\"7\"/><c:layout><c:manualLayout><c:x val=\"3.2134968893602848E-3\"/><c:y val=\"2.1887465595640017E-7\"/></c:manualLayout></c:layout><c:dLblPos val=\"ctr\"/><c:showLegendKey val=\"0\"/><c:showVal val=\"1\"/><c:showCatName val=\"0\"/><c:showSerName val=\"0\"/><c:showPercent val=\"0\"/><c:showBubbleSize val=\"0\"/><c:extLst><c:ext uri=\"{CE6537A1-D6FC-4f65-9D91-7224C49458BB}\" xmlns:c15=\"http://schemas.microsoft.com/office/drawing/2012/chart\"/><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{00000001-C60A-6F4C-8131-02F22F975519}\"/></c:ext></c:extLst></c:dLbl><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:txPr><a:bodyPr rot=\"0\" spcFirstLastPara=\"1\" vertOverflow=\"ellipsis\" vert=\"horz\" wrap=\"square\" lIns=\"38100\" tIns=\"19050\" rIns=\"38100\" bIns=\"19050\" anchor=\"ctr\" anchorCtr=\"0\"><a:spAutoFit/></a:bodyPr><a:lstStyle/><a:p><a:pPr algn=\"ctr\"><a:defRPr lang=\"en-US\" sz=\"1100\" b=\"0\" i=\"0\" u=\"none\" strike=\"noStrike\" kern=\"1200\" baseline=\"0\"><a:solidFill><a:srgbClr val=\"FFFFF9\"/></a:solidFill><a:latin typeface=\"Aeonik\" panose=\"020B0503030300000000\" pitchFamily=\"34\" charset=\"0\"/><a:ea typeface=\"+mn-ea\"/><a:cs typeface=\"+mn-cs\"/></a:defRPr></a:pPr><a:endParaRPr lang=\"en-PK\"/></a:p></c:txPr><c:dLblPos val=\"ctr\"/><c:showLegendKey val=\"0\"/><c:showVal val=\"1\"/><c:showCatName val=\"0\"/><c:showSerName val=\"0\"/><c:showPercent val=\"0\"/><c:showBubbleSize val=\"0\"/><c:showLeaderLines val=\"0\"/><c:extLst><c:ext uri=\"{CE6537A1-D6FC-4f65-9D91-7224C49458BB}\" xmlns:c15=\"http://schemas.microsoft.com/office/drawing/2012/chart\"><c15:showLeaderLines val=\"0\"/></c:ext></c:extLst></c:dLbls><c:cat><c:strRef><c:f>Sheet1!$A$2:$A$8</c:f><c:strCache><c:ptCount val=\"7\"/>".concat(labelPoints, "</c:strCache></c:strRef></c:cat><c:val><c:numRef><c:f>Sheet1!$B$2:$B$8</c:f><c:numCache><c:formatCode>0%</c:formatCode><c:ptCount val=\"7\"/>").concat(negativeValuePoints, "</c:numCache></c:numRef></c:val><c:extLst><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{00000002-C60A-6F4C-8131-02F22F975519}\"/></c:ext></c:extLst></c:ser><c:ser><c:idx val=\"1\"/><c:order val=\"1\"/><c:tx><c:strRef><c:f>Sheet1!$C$1</c:f><c:strCache><c:ptCount val=\"1\"/><c:pt idx=\"0\"><c:v>Positive</c:v></c:pt></c:strCache></c:strRef></c:tx><c:spPr><a:solidFill><a:srgbClr val=\"8ED19C\"/></a:solidFill><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:invertIfNegative val=\"0\"/><c:dLbls><c:dLbl><c:idx val=\"0\"/><c:layout><c:manualLayout><c:x val=\"1.0442910990218195E-2\"/><c:y val=\"2.9462338448117653E-6\"/></c:manualLayout></c:layout><c:dLblPos val=\"ctr\"/><c:showLegendKey val=\"0\"/><c:showVal val=\"1\"/><c:showCatName val=\"0\"/><c:showSerName val=\"0\"/><c:showPercent val=\"0\"/><c:showBubbleSize val=\"0\"/><c:extLst><c:ext uri=\"{CE6537A1-D6FC-4f65-9D91-7224C49458BB}\" xmlns:c15=\"http://schemas.microsoft.com/office/drawing/2012/chart\"/><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{00000003-C60A-6F4C-8131-02F22F975519}\"/></c:ext></c:extLst></c:dLbl><c:dLbl><c:idx val=\"1\"/><c:layout><c:manualLayout><c:x val=\"8.033362676524089E-3\"/><c:y val=\"2.8453705274332021E-6\"/></c:manualLayout></c:layout><c:dLblPos val=\"ctr\"/><c:showLegendKey val=\"0\"/><c:showVal val=\"1\"/><c:showCatName val=\"0\"/><c:showSerName val=\"0\"/><c:showPercent val=\"0\"/><c:showBubbleSize val=\"0\"/><c:extLst><c:ext uri=\"{CE6537A1-D6FC-4f65-9D91-7224C49458BB}\" xmlns:c15=\"http://schemas.microsoft.com/office/drawing/2012/chart\"/><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{00000004-C60A-6F4C-8131-02F22F975519}\"/></c:ext></c:extLst></c:dLbl><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:txPr><a:bodyPr rot=\"0\" spcFirstLastPara=\"1\" vertOverflow=\"ellipsis\" vert=\"horz\" wrap=\"square\" lIns=\"38100\" tIns=\"19050\" rIns=\"38100\" bIns=\"19050\" anchor=\"ctr\" anchorCtr=\"0\"><a:spAutoFit/></a:bodyPr><a:lstStyle/><a:p><a:pPr algn=\"ctr\"><a:defRPr lang=\"en-US\" sz=\"1050\" b=\"0\" i=\"0\" u=\"none\" strike=\"noStrike\" kern=\"1200\" baseline=\"0\"><a:solidFill><a:srgbClr val=\"FFFFF9\"/></a:solidFill><a:latin typeface=\"Aeonik\" panose=\"020B0503030300000000\" pitchFamily=\"34\" charset=\"0\"/><a:ea typeface=\"+mn-ea\"/><a:cs typeface=\"+mn-cs\"/></a:defRPr></a:pPr><a:endParaRPr lang=\"en-PK\"/></a:p></c:txPr><c:dLblPos val=\"ctr\"/><c:showLegendKey val=\"0\"/><c:showVal val=\"1\"/><c:showCatName val=\"0\"/><c:showSerName val=\"0\"/><c:showPercent val=\"0\"/><c:showBubbleSize val=\"0\"/><c:showLeaderLines val=\"0\"/><c:extLst><c:ext uri=\"{CE6537A1-D6FC-4f65-9D91-7224C49458BB}\" xmlns:c15=\"http://schemas.microsoft.com/office/drawing/2012/chart\"><c15:showLeaderLines val=\"0\"/></c:ext></c:extLst></c:dLbls><c:cat><c:strRef><c:f>Sheet1!$A$2:$A$8</c:f><c:strCache><c:ptCount val=\"7\"/>").concat(labelPoints, "</c:strCache></c:strRef></c:cat><c:val><c:numRef><c:f>Sheet1!$C$2:$C$8</c:f><c:numCache><c:formatCode>0%</c:formatCode><c:ptCount val=\"7\"/>").concat(positiveValuePoints, "</c:numCache></c:numRef></c:val><c:extLst><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{00000005-C60A-6F4C-8131-02F22F975519}\"/></c:ext></c:extLst></c:ser><c:dLbls><c:showLegendKey val=\"0\"/><c:showVal val=\"0\"/><c:showCatName val=\"0\"/><c:showSerName val=\"0\"/><c:showPercent val=\"0\"/><c:showBubbleSize val=\"0\"/></c:dLbls><c:gapWidth val=\"20\"/><c:overlap val=\"100\"/><c:axId val=\"1722139648\"/><c:axId val=\"1\"/></c:barChart><c:catAx><c:axId val=\"1722139648\"/><c:scaling><c:orientation val=\"maxMin\"/></c:scaling><c:delete val=\"0\"/><c:axPos val=\"l\"/><c:numFmt formatCode=\"General\" sourceLinked=\"1\"/><c:majorTickMark val=\"none\"/><c:minorTickMark val=\"none\"/><c:tickLblPos val=\"low\"/><c:spPr><a:noFill/><a:ln w=\"9122\" cap=\"flat\" cmpd=\"sng\" algn=\"ctr\"><a:solidFill><a:schemeClr val=\"tx2\"/></a:solidFill><a:round/></a:ln><a:effectLst/></c:spPr><c:txPr><a:bodyPr rot=\"-60000000\" spcFirstLastPara=\"1\" vertOverflow=\"ellipsis\" vert=\"horz\" wrap=\"square\" anchor=\"ctr\" anchorCtr=\"1\"/><a:lstStyle/><a:p><a:pPr><a:defRPr sz=\"1050\" b=\"0\" i=\"0\" u=\"none\" strike=\"noStrike\" kern=\"1200\" spc=\"10\" baseline=\"0\"><a:solidFill><a:schemeClr val=\"bg2\"><a:lumMod val=\"25000\"/></a:schemeClr></a:solidFill><a:latin typeface=\"Aeonik\" panose=\"020B0503030300000000\" pitchFamily=\"34\" charset=\"0\"/><a:ea typeface=\"+mn-ea\"/><a:cs typeface=\"+mn-cs\"/></a:defRPr></a:pPr><a:endParaRPr lang=\"en-PK\"/></a:p></c:txPr><c:crossAx val=\"1\"/><c:crosses val=\"autoZero\"/><c:auto val=\"1\"/><c:lblAlgn val=\"ctr\"/><c:lblOffset val=\"100\"/><c:noMultiLvlLbl val=\"0\"/></c:catAx><c:valAx><c:axId val=\"1\"/><c:scaling><c:orientation val=\"minMax\"/><c:max val=\"1\"/><c:min val=\"-1\"/></c:scaling><c:delete val=\"0\"/><c:axPos val=\"t\"/><c:numFmt formatCode=\"0%\" sourceLinked=\"1\"/><c:majorTickMark val=\"out\"/><c:minorTickMark val=\"none\"/><c:tickLblPos val=\"nextTo\"/><c:crossAx val=\"1722139648\"/><c:crosses val=\"autoZero\"/><c:crossBetween val=\"between\"/></c:valAx><c:spPr><a:noFill/><a:ln w=\"24325\"><a:noFill/></a:ln></c:spPr></c:plotArea><c:plotVisOnly val=\"1\"/><c:dispBlanksAs val=\"gap\"/><c:showDLblsOverMax val=\"0\"/></c:chart><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:txPr><a:bodyPr/><a:lstStyle/><a:p><a:pPr><a:defRPr/></a:pPr><a:endParaRPr lang=\"en-PK\"/></a:p></c:txPr><c:externalData r:id=\"rId1\"><c:autoUpdate val=\"0\"/></c:externalData></c:chartSpace>");
+    return xmlString;
+}
+//Outdated
+function createSlide10Chart(rel) {
+    var _a, _b, _c;
+    // Static variables
+    var categories = (_a = rel.data[0]) === null || _a === void 0 ? void 0 : _a.labels[0];
+    var dataValues = (_b = rel.data[0]) === null || _b === void 0 ? void 0 : _b.values[0];
+    var colors = (_c = rel.data[0]) === null || _c === void 0 ? void 0 : _c.colors;
+    var xPosition = 0.2;
+    var width = 0.20;
+    for (var i = 0; i < (colors.length - 1); i++) {
+        xPosition = xPosition / 2;
+        width = width + 0.15;
+    }
+    var generateDynamicXml = function () {
+        var str = '';
+        // Iterate over each key in dataValues (assuming it contains multiple series)
+        Object.keys(dataValues).forEach(function (key, index) {
+            var seriesName = key; // Use this as your series name or identifier
+            // Generate XML for each series dynamically
+            str += "\n            <c:ser>\n                <c:idx val=\"".concat(index, "\"/>\n                <c:order val=\"").concat(index, "\"/>\n                <c:tx>\n                    <c:strRef>\n                        <c:f>Sheet1!$A$2</c:f>\n                        <c:strCache>\n                            <c:ptCount val=\"1\"/>\n                            <c:pt idx=\"0\">\n                                <c:v>").concat(seriesName, " (1000)</c:v>\n                            </c:pt>\n                        </c:strCache>\n                    </c:strRef>\n                </c:tx>\n                <c:spPr>\n                    <a:solidFill>\n                        <a:srgbClr val=\"").concat(colors[index], "\"/>\n                    </a:solidFill>\n                    <a:ln w=\"6350\" cap=\"flat\">\n                        <a:noFill/>\n                        <a:miter lim=\"400000\"/>\n                    </a:ln>\n                    <a:effectLst/>\n                </c:spPr>\n                <c:invertIfNegative val=\"0\"/>\n                <c:dLbls>\n                    <c:numFmt formatCode=\"#,##0\" sourceLinked=\"0\"/>\n                    <c:spPr>\n                        <a:noFill/>\n                        <a:ln>\n                            <a:noFill/>\n                        </a:ln>\n                        <a:effectLst/>\n                    </c:spPr>\n                    <c:txPr>\n                        <a:bodyPr/>\n                        <a:lstStyle/>\n                        <a:p>\n                            <a:pPr>\n                                <a:defRPr>\n                                    <a:solidFill>\n                                        <a:srgbClr val=\"FFFFFF\"/>\n                                    </a:solidFill>\n                                </a:defRPr>\n                            </a:pPr>\n                            <a:endParaRPr lang=\"en-PK\"/>\n                        </a:p>\n                    </c:txPr>\n                    <c:dLblPos val=\"ctr\"/>\n                    <c:showLegendKey val=\"0\"/>\n                    <c:showVal val=\"1\"/>\n                    <c:showCatName val=\"0\"/>\n                    <c:showSerName val=\"0\"/>\n                    <c:showPercent val=\"0\"/>\n                    <c:showBubbleSize val=\"0\"/>\n                    <c:showLeaderLines val=\"0\"/>\n                </c:dLbls>\n                <c:cat>\n                    <c:strRef>\n                        <c:f>Sheet1!$B$1:$F$1</c:f>\n                        <c:strCache>\n                            <c:ptCount val=\"").concat(categories.length, "\"/>\n                            ").concat(generateCategoryXML(categories), "\n                        </c:strCache>\n                    </c:strRef>\n                </c:cat>\n                <c:val>\n                    <c:numRef>\n                        <c:f>Sheet1!$B$2:$F$2</c:f>\n                        <c:numCache>\n                            <c:formatCode>General</c:formatCode>\n                            <c:ptCount val=\"").concat(dataValues[key].length, "\"/>\n                            ").concat(generateDataXML(dataValues[key]), "\n                        </c:numCache>\n                    </c:numRef>\n                </c:val>\n                <c:extLst>\n                    <c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\">\n                        <c16:uniqueId val=\"{00000000-07DB-8E4D-8FB1-AAE78A14B9A9}\"/>\n                    </c:ext>\n                </c:extLst>\n            </c:ser>");
+        });
+        return str;
+    };
+    // Helper function to generate category XML
+    var generateCategoryXML = function (categories) {
+        return categories.map(function (category, index) { return "<c:pt idx=\"".concat(index, "\"><c:v>").concat(category, "</c:v></c:pt>"); }).join('');
+    };
+    // Helper function to generate data XML
+    var generateDataXML = function (data) {
+        return data.map(function (value, index) { return "<c:pt idx=\"".concat(index, "\"><c:v>").concat(value, "</c:v></c:pt>"); }).join('');
+    };
+    // Construct the entire XML for the chart
+    var chartXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n    <c:chartSpace xmlns:c=\"http://schemas.openxmlformats.org/drawingml/2006/chart\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:c16r2=\"http://schemas.microsoft.com/office/drawing/2015/06/chart\">\n        <c:date1904 val=\"1\"/>\n        <c:lang val=\"en-GB\"/>\n        <c:roundedCorners val=\"0\"/>\n        <mc:AlternateContent xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\">\n            <mc:Choice Requires=\"c14\" xmlns:c14=\"http://schemas.microsoft.com/office/drawing/2007/8/2/chart\">\n                <c14:style val=\"102\"/>\n            </mc:Choice>\n            <mc:Fallback>\n                <c:style val=\"2\"/>\n            </mc:Fallback>\n        </mc:AlternateContent>\n        <c:chart>\n            <c:autoTitleDeleted val=\"1\"/>\n            <c:plotArea>\n                <c:layout>\n                    <c:manualLayout>\n                        <c:layoutTarget val=\"inner\"/>\n                        <c:xMode val=\"edge\"/>\n                        <c:yMode val=\"edge\"/>\n                        <c:x val=\"0.0\"/>\n                        <c:y val=\"0.335\"/>\n                        <c:w val=\"0.5\"/>\n                        <c:h val=\"0.5\"/>\n                    </c:manualLayout>\n                </c:layout>\n                <c:barChart>\n                    <c:barDir val=\"bar\"/>\n                    <c:grouping val=\"stacked\"/>\n                    <c:varyColors val=\"0\"/>\n                    ".concat(generateDynamicXml(), "\n                    <c:dLbls>\n                        <c:showLegendKey val=\"0\"/>\n                        <c:showVal val=\"0\"/>\n                        <c:showCatName val=\"0\"/>\n                        <c:showSerName val=\"0\"/>\n                        <c:showPercent val=\"0\"/>\n                        <c:showBubbleSize val=\"0\"/>\n                    </c:dLbls>\n                    <c:gapWidth val=\"30\"/>\n                    <c:overlap val=\"100\"/>\n                    <c:axId val=\"2094734552\"/>\n                    <c:axId val=\"2094734553\"/>\n                </c:barChart>\n                <c:catAx>\n                    <c:axId val=\"2094734552\"/>\n                    <c:scaling>\n                        <c:orientation val=\"maxMin\"/>\n                    </c:scaling>\n                    <c:delete val=\"0\"/>\n                    <c:axPos val=\"l\"/>\n                    <c:numFmt formatCode=\"General\" sourceLinked=\"0\"/>\n                    <c:majorTickMark val=\"none\"/>\n                    <c:minorTickMark val=\"none\"/>\n                    <c:tickLblPos val=\"nextTo\"/>\n                    <c:spPr>\n                        <a:ln w=\"6350\" cap=\"flat\">\n                            <a:noFill/>\n                            <a:prstDash val=\"solid\"/>\n                            <a:miter lim=\"800000\"/>\n                        </a:ln>\n                    </c:spPr>\n                    <c:txPr>\n                        <a:bodyPr rot=\"0\"/>\n                        <a:lstStyle/>\n                        <a:p>\n                            <a:pPr>\n                                <a:defRPr sz=\"1200\" spc=\"10\" baseline=\"0\"/>\n                            </a:pPr>\n                            <a:endParaRPr lang=\"en-PK\"/>\n                        </a:p>\n                    </c:txPr>\n                    <c:crossAx val=\"2094734553\"/>\n                    <c:crosses val=\"autoZero\"/>\n                    <c:auto val=\"1\"/>\n                    <c:lblAlgn val=\"ctr\"/>\n                    <c:lblOffset val=\"100\"/>\n                    <c:noMultiLvlLbl val=\"1\"/>\n                </c:catAx>\n                <c:valAx>\n                    <c:axId val=\"2094734553\"/>\n                    <c:scaling>\n                        <c:orientation val=\"minMax\"/>\n                    </c:scaling>\n                    <c:delete val=\"0\"/>\n                    <c:axPos val=\"t\"/>\n                    <c:numFmt formatCode=\"#,##0\" sourceLinked=\"0\"/>\n                    <c:majorTickMark val=\"none\"/>\n                    <c:minorTickMark val=\"none\"/>\n                    <c:tickLblPos val=\"none\"/>\n                    <c:spPr>\n                        <a:ln w=\"6350\" cap=\"flat\">\n                            <a:noFill/>\n                            <a:prstDash val=\"solid\"/>\n                            <a:miter lim=\"800000\"/>\n                        </a:ln>\n                    </c:spPr>\n                    <c:txPr>\n                        <a:bodyPr rot=\"0\"/>\n                        <a:lstStyle/>\n                        <a:p>\n                            <a:pPr>\n                                <a:defRPr/>\n                            </a:pPr>\n                            <a:endParaRPr lang=\"en-PK\"/>\n                        </a:p>\n                    </c:txPr>\n                    <c:crossAx val=\"2094734552\"/>\n                    <c:crosses val=\"autoZero\"/>\n                    <c:crossBetween val=\"between\"/>\n                </c:valAx>\n                <c:spPr>\n                    <a:noFill/>\n                    <a:ln w=\"12700\" cap=\"flat\">\n                        <a:noFill/>\n                        <a:miter lim=\"400000\"/>\n                    </a:ln>\n                    <a:effectLst/>\n                </c:spPr>\n            </c:plotArea>\n            <c:legend>\n                <c:legendPos val=\"b\"/>\n                <c:layout>\n                    <c:manualLayout>\n                        <c:xMode val=\"edge\"/>\n                        <c:yMode val=\"edge\"/>\n                        <c:x val=\"").concat(xPosition, "\"/>\n                        <c:y val=\"0.99\"/>\n                        <c:w val=\"").concat(width, "\"/>\n                        <c:h val=\"0.3\"/>\n                    </c:manualLayout>\n                </c:layout>\n                <c:overlay val=\"1\"/>\n                <c:spPr>\n                    <a:noFill/>\n                    <a:ln w=\"12700\" cap=\"flat\">\n                        <a:noFill/>\n                        <a:miter lim=\"400000\"/>\n                    </a:ln>\n                    <a:effectLst/>\n                </c:spPr>\n                <c:txPr>\n                    <a:bodyPr rot=\"0\"/>\n                    <a:lstStyle/>\n                    <a:p>\n                        <a:pPr>\n                            <a:defRPr sz=\"1200\" spc=\"10\" baseline=\"0\"/>\n                        </a:pPr>\n                        <a:endParaRPr lang=\"en-PK\"/>\n                    </a:p>\n                </c:txPr>\n            </c:legend>\n            <c:plotVisOnly val=\"1\"/>\n            <c:dispBlanksAs val=\"gap\"/>\n            <c:showDLblsOverMax val=\"1\"/>\n        </c:chart>\n        <c:spPr>\n            <a:noFill/>\n            <a:ln>\n                <a:noFill/>\n            </a:ln>\n            <a:effectLst/>\n        </c:spPr>\n        <c:txPr>\n            <a:bodyPr/>\n            <a:lstStyle/>\n            <a:p>\n                <a:pPr>\n                    <a:defRPr>\n                        <a:solidFill>\n                            <a:schemeClr val=\"tx1\"/>\n                        </a:solidFill>\n                    </a:defRPr>\n                </a:pPr>\n                <a:endParaRPr lang=\"en-PK\"/>\n            </a:p>\n        </c:txPr>\n        <c:externalData r:id=\"rId1\">\n            <c:autoUpdate val=\"0\"/>\n        </c:externalData>\n    </c:chartSpace>");
+    return chartXml;
+}
+function createFunnelChart() {
+    var data = [
+        {
+            values: [0, 0, 0, 1051.5, 1026.5],
+            fill: '88D298'
+        },
+        {
+            values: [0, 0, 1647.5, 1051.5],
+            fill: '8152E3'
+        },
+        {
+            values: [0, 1824, 1647.5],
+            fill: 'FFAF75'
+        },
+        {
+            values: [0, 1824, 1647.5],
+            fill: '779DFF'
+        },
+        {
+            values: [50, 58, 58, 234.5, 830.5],
+            fill: 'FFFFFF'
+        }
+    ];
+    var newStrxml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<c:chartSpace xmlns:c=\"http://schemas.openxmlformats.org/drawingml/2006/chart\" \n              xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" \n              xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\">\n    <c:date1904 val=\"0\"/>\n    <c:roundedCorners val=\"1\"/>\n    <c:chart>\n        <c:autoTitleDeleted val=\"1\"/>\n        <c:plotArea>\n            <c:layout/>\n            <c:areaChart>\n                <c:grouping val=\"standard\"/>\n                <c:varyColors val=\"0\"/>";
+    for (var i = 0; i < data.length; i++) {
+        var info = data[i];
+        var seriesIdx = data.length - 1 - i;
+        newStrxml += "<c:ser>\n        <c:idx val=\"".concat(seriesIdx, "\"/>\n        <c:order val=\"").concat(i, "\"/>\n        <c:spPr>\n            <a:solidFill>\n                <a:srgbClr val=\"").concat(info.fill, "\"/>\n            </a:solidFill>\n            <a:ln>\n                <a:noFill/>\n            </a:ln>\n        </c:spPr>\n        <c:val>\n            <c:numRef>\n                <c:f>scratch!$AJ$11:$AJ$16</c:f>\n                <c:numCache>\n                    <c:formatCode>General</c:formatCode>\n                    <c:ptCount val=\"").concat(info.values.length, "\"/>");
+        for (var j = 0; j < info.values.length; j++) {
+            var val = info.values[j];
+            newStrxml += "<c:pt idx=\"".concat(j, "\">\n                        <c:v>").concat(val, "</c:v>\n                      </c:pt>");
+        }
+        newStrxml += "</c:numCache>\n            </c:numRef>\n        </c:val>\n        <c:extLst>\n            <c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\">\n                <c16:uniqueId val=\"{00000000-096B-3942-BF36-84F747CF6E4D}\"/>\n            </c:ext>\n        </c:extLst>\n    </c:ser>";
+    }
+    newStrxml += "<c:dLbls><c:showLegendKey val=\"0\"/><c:showVal val=\"0\"/><c:showCatName val=\"0\"/><c:showSerName val=\"0\"/><c:showPercent val=\"0\"/><c:showBubbleSize val=\"0\"/></c:dLbls><c:axId val=\"270962536\"/><c:axId val=\"270962928\"/></c:areaChart><c:scatterChart><c:scatterStyle val=\"lineMarker\"/><c:varyColors val=\"0\"/><c:ser><c:idx val=\"1\"/><c:order val=\"5\"/><c:spPr><a:ln w=\"28575\"><a:noFill/></a:ln></c:spPr><c:marker><c:symbol val=\"none\"/></c:marker><c:xVal><c:numRef><c:f>scratch!$Y$11:$Y$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val=\"6\"/><c:pt idx=\"0\"><c:v>1.8</c:v></c:pt><c:pt idx=\"1\"><c:v>2</c:v></c:pt><c:pt idx=\"2\"><c:v>3</c:v></c:pt><c:pt idx=\"3\"><c:v>4</c:v></c:pt><c:pt idx=\"4\"><c:v>5</c:v></c:pt><c:pt idx=\"5\"><c:v>6</c:v></c:pt></c:numCache></c:numRef></c:xVal><c:yVal><c:numRef><c:f>scratch!$AD$11:$AD$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val=\"6\"/><c:pt idx=\"0\"><c:v>50</c:v></c:pt><c:pt idx=\"1\"><c:v>58</c:v></c:pt><c:pt idx=\"2\"><c:v>58</c:v></c:pt><c:pt idx=\"3\"><c:v>234.5</c:v></c:pt><c:pt idx=\"4\"><c:v>830.5</c:v></c:pt><c:pt idx=\"5\"><c:v>855.5</c:v></c:pt></c:numCache></c:numRef></c:yVal><c:smooth val=\"0\"/><c:extLst><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{00000005-096B-3942-BF36-84F747CF6E4D}\"/></c:ext></c:extLst></c:ser><c:ser><c:idx val=\"6\"/><c:order val=\"6\"/><c:spPr><a:ln w=\"28575\"><a:noFill/></a:ln></c:spPr><c:marker><c:symbol val=\"none\"/></c:marker><c:xVal><c:numRef><c:f>scratch!$Y$11:$Y$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val=\"6\"/><c:pt idx=\"0\"><c:v>1.8</c:v></c:pt><c:pt idx=\"1\"><c:v>2</c:v></c:pt><c:pt idx=\"2\"><c:v>3</c:v></c:pt><c:pt idx=\"3\"><c:v>4</c:v></c:pt><c:pt idx=\"4\"><c:v>5</c:v></c:pt><c:pt idx=\"5\"><c:v>6</c:v></c:pt></c:numCache></c:numRef></c:xVal><c:yVal><c:numRef><c:f>scratch!$AE$11:$AE$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val=\"6\"/><c:pt idx=\"0\"><c:v>1832</c:v></c:pt><c:pt idx=\"1\"><c:v>1824</c:v></c:pt><c:pt idx=\"2\"><c:v>1824</c:v></c:pt><c:pt idx=\"3\"><c:v>1647.5</c:v></c:pt><c:pt idx=\"4\"><c:v>1051.5</c:v></c:pt><c:pt idx=\"5\"><c:v>1026.5</c:v></c:pt></c:numCache></c:numRef></c:yVal><c:smooth val=\"0\"/><c:extLst><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{00000006-096B-3942-BF36-84F747CF6E4D}\"/></c:ext></c:extLst></c:ser><c:ser><c:idx val=\"8\"/><c:order val=\"7\"/><c:tx><c:v>Lost</c:v></c:tx><c:spPr><a:ln><a:noFill/></a:ln></c:spPr><c:marker><c:symbol val=\"none\"/></c:marker><c:xVal><c:numRef><c:f>scratch!$Q$13:$Q$15</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val=\"3\"/><c:pt idx=\"0\"><c:v>2.4500000000000002</c:v></c:pt><c:pt idx=\"1\"><c:v>3.45</c:v></c:pt><c:pt idx=\"2\"><c:v>4.45</c:v></c:pt></c:numCache></c:numRef></c:xVal><c:yVal><c:numRef><c:f>scratch!$R$13:$R$15</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val=\"3\"/><c:pt idx=\"0\"><c:v>760.32799999999997</c:v></c:pt><c:pt idx=\"1\"><c:v>760.32799999999997</c:v></c:pt><c:pt idx=\"2\"><c:v>760.32799999999997</c:v></c:pt></c:numCache></c:numRef></c:yVal><c:smooth val=\"0\"/><c:extLst><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{00000007-096B-3942-BF36-84F747CF6E4D}\"/></c:ext></c:extLst></c:ser><c:ser><c:idx val=\"9\"/><c:order val=\"8\"/><c:tx><c:v>Uqualified</c:v></c:tx><c:marker><c:symbol val=\"none\"/></c:marker><c:xVal><c:numRef><c:f>scratch!$V$13</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val=\"1\"/><c:pt idx=\"0\"><c:v>2.4500000000000002</c:v></c:pt></c:numCache></c:numRef></c:xVal><c:yVal><c:numRef><c:f>scratch!$W$13</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val=\"1\"/><c:pt idx=\"0\"><c:v>699.16300000000001</c:v></c:pt></c:numCache></c:numRef></c:yVal><c:smooth val=\"0\"/><c:extLst><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{00000008-096B-3942-BF36-84F747CF6E4D}\"/></c:ext></c:extLst></c:ser><c:ser><c:idx val=\"11\"/><c:order val=\"9\"/><c:tx><c:v>Percentages</c:v></c:tx><c:spPr><a:ln><a:noFill/></a:ln></c:spPr><c:marker><c:symbol val=\"none\"/></c:marker><c:dLbls><c:dLbl><c:idx val=\"0\"/><c:tx><c:rich><a:bodyPr wrap=\"square\" lIns=\"38100\" tIns=\"19050\" rIns=\"38100\" bIns=\"19050\" anchor=\"ctr\"><a:noAutofit/></a:bodyPr><a:lstStyle/><a:p><a:pPr><a:defRPr sz=\"900\" b=\"0\"><a:solidFill><a:schemeClr val=\"bg1\"/></a:solidFill><a:latin typeface=\"+mj-lt\"/></a:defRPr></a:pPr><a:fld id=\"{F3440B4F-6AD0-2147-9A45-FCA5C5DF2AEA}\" type=\"CELLRANGE\"><a:rPr lang=\"en-US\"/><a:pPr><a:defRPr sz=\"900\" b=\"0\"><a:solidFill><a:schemeClr val=\"bg1\"/></a:solidFill><a:latin typeface=\"+mj-lt\"/></a:defRPr></a:pPr><a:t>[CELLRANGE]</a:t></a:fld><a:endParaRPr lang=\"en-PK\"/></a:p></c:rich></c:tx><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:dLblPos val=\"ctr\"/><c:showLegendKey val=\"0\"/><c:showVal val=\"0\"/><c:showCatName val=\"0\"/><c:showSerName val=\"0\"/><c:showPercent val=\"0\"/><c:showBubbleSize val=\"0\"/><c:extLst><c:ext uri=\"{CE6537A1-D6FC-4f65-9D91-7224C49458BB}\" xmlns:c15=\"http://schemas.microsoft.com/office/drawing/2012/chart\"><c15:layout><c:manualLayout><c:w val=\"0.22918996461474705\"/><c:h val=\"0.15312670347996721\"/></c:manualLayout></c15:layout><c15:dlblFieldTable/><c15:showDataLabelsRange val=\"1\"/></c:ext><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{00000009-096B-3942-BF36-84F747CF6E4D}\"/></c:ext></c:extLst></c:dLbl><c:dLbl><c:idx val=\"1\"/><c:tx><c:rich><a:bodyPr wrap=\"square\" lIns=\"38100\" tIns=\"19050\" rIns=\"38100\" bIns=\"19050\" anchor=\"ctr\"><a:spAutoFit/></a:bodyPr><a:lstStyle/><a:p><a:pPr><a:defRPr sz=\"900\" b=\"0\"><a:solidFill><a:schemeClr val=\"tx1\"/></a:solidFill><a:latin typeface=\"+mj-lt\"/></a:defRPr></a:pPr><a:fld id=\"{3742B605-1CFB-9447-8470-9250B9702A05}\" type=\"CELLRANGE\"><a:rPr lang=\"en-PK\"/><a:pPr><a:defRPr sz=\"900\" b=\"0\"><a:solidFill><a:schemeClr val=\"tx1\"/></a:solidFill><a:latin typeface=\"+mj-lt\"/></a:defRPr></a:pPr><a:t>[CELLRANGE]</a:t></a:fld><a:endParaRPr lang=\"en-PK\"/></a:p></c:rich></c:tx><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:dLblPos val=\"ctr\"/><c:showLegendKey val=\"0\"/><c:showVal val=\"0\"/><c:showCatName val=\"0\"/><c:showSerName val=\"0\"/><c:showPercent val=\"0\"/><c:showBubbleSize val=\"0\"/><c:extLst><c:ext uri=\"{CE6537A1-D6FC-4f65-9D91-7224C49458BB}\" xmlns:c15=\"http://schemas.microsoft.com/office/drawing/2012/chart\"><c15:dlblFieldTable/><c15:xForSave val=\"1\"/><c15:showDataLabelsRange val=\"1\"/></c:ext><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{0000000A-096B-3942-BF36-84F747CF6E4D}\"/></c:ext></c:extLst></c:dLbl><c:dLbl><c:idx val=\"2\"/><c:tx><c:rich><a:bodyPr/><a:lstStyle/><a:p><a:fld id=\"{2728191A-B09D-9D45-A38E-5F7AA3D6E41A}\" type=\"CELLRANGE\"><a:rPr lang=\"en-PK\"/><a:pPr/><a:t>[CELLRANGE]</a:t></a:fld><a:endParaRPr lang=\"en-PK\"/></a:p></c:rich></c:tx><c:dLblPos val=\"ctr\"/><c:showLegendKey val=\"0\"/><c:showVal val=\"0\"/><c:showCatName val=\"0\"/><c:showSerName val=\"0\"/><c:showPercent val=\"0\"/><c:showBubbleSize val=\"0\"/><c:extLst><c:ext uri=\"{CE6537A1-D6FC-4f65-9D91-7224C49458BB}\" xmlns:c15=\"http://schemas.microsoft.com/office/drawing/2012/chart\"><c15:dlblFieldTable/><c15:xForSave val=\"1\"/><c15:showDataLabelsRange val=\"1\"/></c:ext><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{0000000B-096B-3942-BF36-84F747CF6E4D}\"/></c:ext></c:extLst></c:dLbl><c:dLbl><c:idx val=\"3\"/><c:tx><c:rich><a:bodyPr wrap=\"square\" lIns=\"38100\" tIns=\"19050\" rIns=\"38100\" bIns=\"19050\" anchor=\"ctr\"><a:spAutoFit/></a:bodyPr><a:lstStyle/><a:p><a:pPr><a:defRPr sz=\"900\" b=\"0\"><a:solidFill><a:schemeClr val=\"tx1\"/></a:solidFill><a:latin typeface=\"+mj-lt\"/></a:defRPr></a:pPr><a:fld id=\"{6CC5A663-137A-8646-B00A-8819AF793E7D}\" type=\"CELLRANGE\"><a:rPr lang=\"en-PK\"/><a:pPr><a:defRPr sz=\"900\" b=\"0\"><a:solidFill><a:schemeClr val=\"tx1\"/></a:solidFill><a:latin typeface=\"+mj-lt\"/></a:defRPr></a:pPr><a:t>[CELLRANGE]</a:t></a:fld><a:endParaRPr lang=\"en-PK\"/></a:p></c:rich></c:tx><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:dLblPos val=\"ctr\"/><c:showLegendKey val=\"0\"/><c:showVal val=\"0\"/><c:showCatName val=\"0\"/><c:showSerName val=\"0\"/><c:showPercent val=\"0\"/><c:showBubbleSize val=\"0\"/><c:extLst><c:ext uri=\"{CE6537A1-D6FC-4f65-9D91-7224C49458BB}\" xmlns:c15=\"http://schemas.microsoft.com/office/drawing/2012/chart\"><c15:dlblFieldTable/><c15:xForSave val=\"1\"/><c15:showDataLabelsRange val=\"1\"/></c:ext><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{0000000C-096B-3942-BF36-84F747CF6E4D}\"/></c:ext></c:extLst></c:dLbl><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:txPr><a:bodyPr wrap=\"square\" lIns=\"38100\" tIns=\"19050\" rIns=\"38100\" bIns=\"19050\" anchor=\"ctr\"><a:spAutoFit/></a:bodyPr><a:lstStyle/><a:p><a:pPr><a:defRPr sz=\"900\" b=\"0\"><a:solidFill><a:schemeClr val=\"bg1\"/></a:solidFill><a:latin typeface=\"+mj-lt\"/></a:defRPr></a:pPr><a:endParaRPr lang=\"en-PK\"/></a:p></c:txPr><c:dLblPos val=\"ctr\"/><c:showLegendKey val=\"0\"/><c:showVal val=\"0\"/><c:showCatName val=\"0\"/><c:showSerName val=\"0\"/><c:showPercent val=\"0\"/><c:showBubbleSize val=\"0\"/><c:showLeaderLines val=\"0\"/><c:extLst><c:ext uri=\"{CE6537A1-D6FC-4f65-9D91-7224C49458BB}\" xmlns:c15=\"http://schemas.microsoft.com/office/drawing/2012/chart\"><c15:showDataLabelsRange val=\"1\"/><c15:showLeaderLines val=\"0\"/></c:ext></c:extLst></c:dLbls><c:xVal><c:numRef><c:f>scratch!$G$13:$G$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val=\"4\"/><c:pt idx=\"0\"><c:v>2.4500000000000002</c:v></c:pt><c:pt idx=\"1\"><c:v>3.45</c:v></c:pt><c:pt idx=\"2\"><c:v>4.45</c:v></c:pt><c:pt idx=\"3\"><c:v>5.3500000000000005</c:v></c:pt></c:numCache></c:numRef></c:xVal><c:yVal><c:numRef><c:f>scratch!$H$13:$H$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val=\"4\"/><c:pt idx=\"0\"><c:v>977.22849999999994</c:v></c:pt><c:pt idx=\"1\"><c:v>977.22849999999994</c:v></c:pt><c:pt idx=\"2\"><c:v>977.22849999999994</c:v></c:pt><c:pt idx=\"3\"><c:v>977.22849999999994</c:v></c:pt></c:numCache></c:numRef></c:yVal><c:smooth val=\"0\"/><c:extLst><c:ext uri=\"{02D57815-91ED-43cb-92C2-25804820EDAC}\" xmlns:c15=\"http://schemas.microsoft.com/office/drawing/2012/chart\"><c15:datalabelsRange><c15:f>scratch!$E$13:$E$16</c15:f><c15:dlblRangeCache><c:ptCount val=\"4\"/><c:pt idx=\"0\"><c:v>100%</c:v></c:pt><c:pt idx=\"1\"><c:v>80%</c:v></c:pt><c:pt idx=\"2\"><c:v>13%</c:v></c:pt><c:pt idx=\"3\"><c:v>10%</c:v></c:pt></c15:dlblRangeCache></c15:datalabelsRange></c:ext><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{0000000D-096B-3942-BF36-84F747CF6E4D}\"/></c:ext></c:extLst></c:ser><c:ser><c:idx val=\"7\"/><c:order val=\"10\"/><c:tx><c:v>Stage Totals 2</c:v></c:tx><c:spPr><a:ln><a:noFill/></a:ln></c:spPr><c:marker><c:symbol val=\"none\"/></c:marker><c:xVal><c:numRef><c:f>scratch!$L$13:$L$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val=\"4\"/><c:pt idx=\"0\"><c:v>2.4500000000000002</c:v></c:pt><c:pt idx=\"1\"><c:v>3.45</c:v></c:pt><c:pt idx=\"2\"><c:v>4.45</c:v></c:pt></c:numCache></c:numRef></c:xVal><c:yVal><c:numRef><c:f>scratch!$M$13:$M$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val=\"4\"/><c:pt idx=\"0\"><c:v>904.77150000000006</c:v></c:pt><c:pt idx=\"1\"><c:v>904.77150000000006</c:v></c:pt><c:pt idx=\"2\"><c:v>904.77150000000006</c:v></c:pt></c:numCache></c:numRef></c:yVal><c:smooth val=\"0\"/><c:extLst><c:ext uri=\"{C3380CC4-5D6E-409C-BE32-E72D297353CC}\" xmlns:c16=\"http://schemas.microsoft.com/office/drawing/2014/chart\"><c16:uniqueId val=\"{0000000E-096B-3942-BF36-84F747CF6E4D}\"/></c:ext></c:extLst></c:ser><c:dLbls><c:showLegendKey val=\"0\"/><c:showVal val=\"0\"/><c:showCatName val=\"0\"/><c:showSerName val=\"0\"/><c:showPercent val=\"0\"/><c:showBubbleSize val=\"0\"/></c:dLbls><c:axId val=\"270962536\"/><c:axId val=\"270962928\"/></c:scatterChart><c:catAx>  <c:axId val=\"2094734554\"/>  <c:scaling><c:orientation val=\"minMax\"/></c:scaling>  <c:delete val=\"0\"/>  <c:axPos val=\"b\"/>  <c:numFmt formatCode=\"General\" sourceLinked=\"1\"/>  <c:majorTickMark val=\"out\"/>  <c:minorTickMark val=\"none\"/>  <c:tickLblPos val=\"low\"/>  <c:spPr>    <a:ln w=\"12700\" cap=\"flat\"><a:solidFill><a:srgbClr val=\"888888\"/></a:solidFill>      <a:prstDash val=\"solid\"/>      <a:round/>    </a:ln>  </c:spPr>  <c:txPr><a:bodyPr/>    <a:lstStyle/>    <a:p>    <a:pPr>      <a:defRPr sz=\"1200\" b=\"0\" i=\"0\" u=\"none\" strike=\"noStrike\">      <a:solidFill><a:srgbClr val=\"000000\"/></a:solidFill>      <a:latin typeface=\"Arial\"/>   </a:defRPr>  </a:pPr>  <a:endParaRPr lang=\"en-US\"/>  </a:p> </c:txPr> <c:crossAx val=\"2094734552\"/> <c:crosses val=\"autoZero\"/> <c:auto val=\"1\"/> <c:lblAlgn val=\"ctr\"/> <c:noMultiLvlLbl val=\"1\"/></c:catAx><c:valAx>  <c:axId val=\"2094734552\"/>  <c:scaling><c:orientation val=\"minMax\"/>  </c:scaling>  <c:delete val=\"0\"/>  <c:axPos val=\"l\"/><c:numFmt formatCode=\"General\" sourceLinked=\"0\"/> <c:majorTickMark val=\"out\"/> <c:minorTickMark val=\"none\"/> <c:tickLblPos val=\"nextTo\"/> <c:spPr>   <a:ln w=\"12700\" cap=\"flat\"><a:solidFill><a:srgbClr val=\"888888\"/></a:solidFill>     <a:prstDash val=\"solid\"/>     <a:round/>   </a:ln> </c:spPr> <c:txPr>  <a:bodyPr/>  <a:lstStyle/>  <a:p>    <a:pPr>      <a:defRPr sz=\"1200\" b=\"0\" i=\"0\" u=\"none\" strike=\"noStrike\">        <a:solidFill><a:srgbClr val=\"000000\"/></a:solidFill>        <a:latin typeface=\"Arial\"/>      </a:defRPr>    </a:pPr>  <a:endParaRPr lang=\"en-US\"/>  </a:p> </c:txPr> <c:crossAx val=\"2094734554\"/> <c:crosses val=\"autoZero\"/> <c:crossBetween val=\"between\"/></c:valAx>  <c:spPr><a:noFill/><a:ln><a:noFill/></a:ln>    <a:effectLst/>  </c:spPr></c:plotArea>  <c:plotVisOnly val=\"1\"/>  <c:dispBlanksAs val=\"span\"/></c:chart><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln>  <a:effectLst/></c:spPr><c:externalData r:id=\"rId1\"><c:autoUpdate val=\"0\"/></c:externalData></c:chartSpace>";
+    return newStrxml;
 }
 /**
  * Create XML string for any given chart type
@@ -6676,6 +7056,1781 @@ function makeXmlViewProps() {
     return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>".concat(CRLF, "<p:viewPr xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:p=\"http://schemas.openxmlformats.org/presentationml/2006/main\"><p:normalViewPr horzBarState=\"maximized\"><p:restoredLeft sz=\"15611\"/><p:restoredTop sz=\"94610\"/></p:normalViewPr><p:slideViewPr><p:cSldViewPr snapToGrid=\"0\" snapToObjects=\"1\"><p:cViewPr varScale=\"1\"><p:scale><a:sx n=\"136\" d=\"100\"/><a:sy n=\"136\" d=\"100\"/></p:scale><p:origin x=\"216\" y=\"312\"/></p:cViewPr><p:guideLst/></p:cSldViewPr></p:slideViewPr><p:notesTextViewPr><p:cViewPr><p:scale><a:sx n=\"1\" d=\"1\"/><a:sy n=\"1\" d=\"1\"/></p:scale><p:origin x=\"0\" y=\"0\"/></p:cViewPr></p:notesTextViewPr><p:gridSpacing cx=\"76200\" cy=\"76200\"/></p:viewPr>");
 }
 
+var slide1Data = {
+    headingTexts: [
+        {
+            title: 'Subheadline: Splitname and Total (N=)',
+            options: {
+                x: '4%',
+                y: '8%',
+                w: '94%',
+                align: 'left',
+                fontSize: 13,
+                h: 0.3,
+                font_weight: '300',
+                color: '000000',
+                marginBottom: '15px',
+                FontFace: 'Aeonik Light',
+                line: {
+                    color: '000000',
+                    size: 1,
+                    dashType: 'dash'
+                },
+            }
+        },
+        {
+            title: 'Max Diff Graph (WIP)',
+            options: {
+                x: '3%',
+                y: '5%',
+                w: '40%',
+                align: 'left',
+                font_weight: 'bold',
+                color: '000000',
+                FontFace: 'Aeonik Regular',
+                fontSize: 20
+            }
+        },
+        {
+            title: "03 Detailed Results",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 10,
+                FontFace: 'Aeonik Light',
+            }
+        },
+        {
+            title: 'appinio',
+            options: {
+                x: '3%',
+                y: '90%',
+                align: 'left',
+                font_size: 12,
+                color: '363636',
+                FontFace: 'Aeonik Light',
+            }
+        },
+        {
+            title: 'Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)',
+            options: {
+                x: '15%',
+                y: '87%',
+                w: '70%',
+                h: 0.5,
+                fontSize: 8,
+                color: '363636',
+                align: 'center',
+                body: 'Your Text Here',
+                fill: 'ffffff',
+                line: {
+                    color: '000000',
+                    size: 1,
+                    dashType: 'dash'
+                },
+            }
+        }
+    ],
+    data: [
+        {
+            labels: [["Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7"]],
+            values: [{
+                    negativeValues: [-0.14000000000000001, -0.18, -0.22, -0.25, -0.33, -0.40, -0.47],
+                    positiveValues: [0.8, 0.7, 0.6, 0.5, 0.43, 0.32, 0.24]
+                }],
+        }
+    ],
+    topDataValues: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+    options: {
+        // Set grid and axis line colors to white (almost invisible)
+        gridLineColor: 'ffffff',
+        catAxisLineColor: 'ffffff',
+        valAxisLineColor: 'ffffff',
+        catGridLineColor: 'ffffff',
+        valGridLineColor: 'ffffff',
+        catGridLine: { style: 'none' },
+        valGridLine: { style: 'none' },
+        valAxisHidden: true,
+        barGapWidthPct: 20,
+        showValueAxis: true,
+        chartColors: ['a93b4c', '8ed19c'],
+        valAxis: {
+            label: {
+                font: {
+                    size: 14,
+                    bold: true // Optionally make the text bold
+                },
+            }
+        },
+        x: 3, y: 1.7, w: 8, h: 4, barDir: 'bar', barGrouping: 'stacked'
+    }
+};
+var slide2Data = {
+    data: [
+        ["", "", "Positive", "Negative", "Score"],
+        ["1", "Item", "47.19%", "-10.59%", "36.60%"],
+        ["2", "Item", "45.22%", "-8.97%", "36.25%"],
+        ["3", "Item", "37.87%", "-8.56%", "29.31%"],
+        ["4", "Item", "34.48%", "-16.53%", "17.95%"],
+        ["5", "Item", "23.95%", "-19.22%", "4.73%"],
+        ["6", "Item", "25.18%", "-25.54%", "-0.36%"],
+        ["7", "Item", "24.17%", "-25.11%", "-0.94%"],
+    ],
+    headingTexts: [
+        {
+            title: 'Subheadline: Splitname and Total (N=)',
+            options: {
+                x: '4%',
+                y: '8%',
+                w: '95%',
+                align: 'left',
+                fontSize: 13,
+                h: 0.3,
+                font_weight: '300',
+                color: '000000',
+                marginBottom: '15px',
+                fontFace: 'Aeonik Light',
+                line: {
+                    color: '000000',
+                    size: 1,
+                    dashType: 'dash'
+                },
+            }
+        },
+        {
+            title: "03 Detailed Results",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 10,
+                FontFace: 'Aeonik Regular',
+            }
+        },
+        {
+            title: 'Max Diff Table',
+            options: {
+                x: '3%',
+                y: '5%',
+                w: '40%',
+                align: 'left',
+                font_weight: 'bold',
+                color: '000000',
+                FontFace: 'Aeonik Regular',
+                fontSize: 20
+            }
+        },
+        {
+            title: 'appinio',
+            options: {
+                x: '3%',
+                y: '90%',
+                align: 'left',
+                font_size: 12,
+                color: '363636',
+                fontFace: 'Aeonik Light'
+            }
+        },
+        {
+            title: 'Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)',
+            options: {
+                x: '15%',
+                y: '87%',
+                w: '70%',
+                h: 0.5,
+                fontSize: 8,
+                color: '363636',
+                align: 'center',
+                body: 'Your Text Here',
+                fill: 'ffffff',
+                line: {
+                    color: '000000',
+                    size: 1,
+                    dashType: 'dash'
+                },
+            }
+        }
+    ],
+    options: {
+        x: '10%',
+        y: '20%',
+        w: "80%",
+        h: 4.5,
+        fill: 'F7F7F7',
+        font_size: 12,
+        color: '363636',
+    }
+};
+var slide3Data = {
+    data: [
+        {
+            labelsY: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+            labelsX: [1, 2, 3],
+            values: [55, 80, 90], // Data values for each category
+        },
+    ],
+    options: {
+        color: '7fa1f9',
+    },
+    headingTexts: [
+        {
+            title: 'Subheadline: Splitname and Total (N=)',
+            options: {
+                x: '4%',
+                y: '7%',
+                w: '95%',
+                align: 'left',
+                fontSize: 11,
+                h: 0.3,
+                font_weight: '300',
+                color: '000000',
+                marginBottom: '15px',
+                line: {
+                    color: '000000',
+                    size: 1,
+                    dashType: 'dash'
+                },
+            }
+        },
+        {
+            title: "03 Detailed Results",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 11
+            }
+        },
+        {
+            title: "Reichweite",
+            options: {
+                x: -3.5,
+                y: -0.6,
+                rotate: -90,
+                fontSize: 18,
+                bold: true,
+                fontFace: 'Aeonik Light'
+            }
+        },
+        {
+            title: 'Turf Waterfall Chart',
+            options: {
+                x: '3%',
+                y: '5%',
+                w: '40%',
+                align: 'left',
+                font_weight: 'bold',
+                color: '000000', // Black color
+            }
+        },
+        {
+            title: 'appinio',
+            options: {
+                x: '3%',
+                y: '95%',
+                align: 'left',
+                font_size: 12,
+                color: '363636',
+            }
+        },
+        {
+            title: 'Anzahl Sorten im portfolio',
+            options: {
+                x: '15%',
+                y: '88%',
+                w: '70%',
+                h: 0.3,
+                fontSize: 12,
+                bold: true,
+                color: '000000',
+                align: 'center', // Set the text alignment to left
+            }
+        },
+        {
+            title: 'Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)',
+            options: {
+                x: '15%',
+                y: '92%',
+                w: '70%',
+                h: 0.5,
+                fontSize: 8,
+                color: '363636',
+                align: 'center',
+                body: 'Your Text Here',
+                fill: 'ffffff',
+                line: {
+                    color: '000000',
+                    size: 1,
+                    dashType: 'dash'
+                },
+            }
+        }
+    ]
+};
+var slide4Data = {
+    data: [[
+            ["Rank", "Flavour Combination", "Reach", "Frequency"],
+            ["1", "Orange", "64%", "1"],
+            ["2", "Apple", "62%", "1"],
+            ["3", "Peach", "51%", "1"],
+        ], [
+            ["Rank", "Flavour Combination", "Reach", "Frequency"],
+            ["1", "Orange", "64%", "1"],
+            ["2", "Apple", "62%", "1"],
+            ["3", "Peach", "51%", "1"],
+        ]],
+    headingTextOpts: {
+        align: 'left',
+        fontSize: 14,
+        font_weight: '300',
+        color: '000000',
+        marginBottom: '15px'
+    },
+    options: {
+        w: "40%",
+        h: "20%",
+        fill: 'F7F7F7',
+        font_size: 12,
+        color: '363636',
+        gridLineColor: 'none',
+        margin: 10
+    },
+    headingTexts: function () {
+        return [
+            {
+                title: 'Portfolio Size: 1 Flavour',
+                options: __assign(__assign({}, this.headingTextOpts), { x: '15%', y: '18%' })
+            },
+            {
+                title: "03 Detailed Results",
+                options: {
+                    x: -4.8,
+                    y: -0.5,
+                    rotate: -90,
+                    fontSize: 11
+                }
+            },
+            {
+                title: 'Portfolio Size: 2 Flavours',
+                options: __assign(__assign({}, this.headingTextOpts), { x: '65%', y: '18%' })
+            },
+            {
+                title: 'Portfolio Size: 3 Flavours',
+                options: __assign(__assign({}, this.headingTextOpts), { x: '15%', y: '52%' })
+            },
+            {
+                title: 'Portfolio Size: 4 Flavours',
+                options: __assign(__assign({}, this.headingTextOpts), { x: '65%', y: '52%' })
+            },
+            {
+                title: 'Subheadline: Splitname and Total (N=)',
+                options: {
+                    x: '4%',
+                    y: '8.5%',
+                    w: '95%',
+                    h: 0.3,
+                    align: 'left',
+                    font_weight: '300',
+                    fontSize: 13,
+                    color: '000000',
+                    marginBottom: '15px',
+                    FontFace: 'Aeonik Light',
+                    line: {
+                        color: '000000',
+                        size: 1,
+                        dashType: 'dash'
+                    },
+                }
+            },
+            {
+                title: 'TURF Analysis (Optimal number of flavor combinations',
+                options: {
+                    x: '3%',
+                    y: '5%',
+                    w: '100%',
+                    align: 'left',
+                    font_weight: 'bold',
+                    color: '000000',
+                    FontFace: 'Aeonik Regular',
+                    fontSize: 20
+                }
+            },
+            {
+                title: 'appinio',
+                options: {
+                    x: '3%',
+                    y: '90%',
+                    align: 'left',
+                    font_size: 12,
+                    color: '363636',
+                    FontFace: 'Aeonik Light'
+                }
+            },
+            {
+                title: 'Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)',
+                options: {
+                    x: '15%',
+                    y: '87%',
+                    w: '70%',
+                    h: 0.5,
+                    fontSize: 8,
+                    color: '363636',
+                    align: 'center',
+                    body: 'Your Text Here',
+                    fill: 'ffffff',
+                    line: {
+                        color: '000000',
+                        size: 1,
+                        dashType: 'dash'
+                    },
+                }
+            }
+        ];
+    }
+};
+var slide5Data = {
+    data: [
+        [{
+                name: 'Funnel Step 1',
+                value: 100,
+                type: 'percent'
+            },
+            {
+                name: 'Funnel Step 2',
+                value: 80,
+                type: 'percent'
+            },
+            {
+                name: 'Funnel Step 3',
+                value: 13,
+                type: 'percent'
+            },
+            {
+                name: 'Funnel Step 4',
+                value: 10,
+                type: 'percent'
+            }], [
+            ["Total", "X", "X%", ''],
+            ["Funnel Step 1", "X", "X%", "X%"],
+            ["Funnel Step 2", "X", "X%", "X%"],
+            ["Funnel Step 3", "X", "X%", "X%"],
+        ]
+    ],
+    options: {
+        h: 2,
+        color: 'ffffff',
+        chartColors: ['7FA1F9', 'F9B27E', '885EE0', '8ED19C'],
+        align: 'left',
+        fontSize: 12,
+        position: 'left',
+        y: 2.5
+    },
+    tableOptions: {
+        w: "40%",
+        h: "60%",
+        fill: 'F7F7F7',
+        font_size: 12,
+        color: '363636',
+    }
+};
+var slide6Data = {
+    options: {
+        align: 'left',
+        fontWeight: 'bold',
+        color: '000000',
+        marginBottom: '15px'
+    },
+    headingsText: function () {
+        return [
+            {
+                title: 'INSIGHT REPORT',
+                options: __assign(__assign({}, this.options), { y: '27%', x: '5%', fontSize: 80, FontFace: 'Aeonik Medium' })
+            },
+            {
+                title: 'Project Name',
+                options: __assign(__assign({}, this.options), { y: '52%', x: '5%', fontSize: 50, color: '0270C0', FontFace: 'Aeonik Light' })
+            },
+            {
+                title: 'Date',
+                options: __assign(__assign({}, this.options), { y: '62%', x: '5%', fontSize: 40, FontFace: 'Inter Light' })
+            },
+            {
+                title: 'appinio',
+                options: __assign(__assign({}, this.options), { y: '85%', x: '5%', fontSize: 50, fontFamily: 'Aeonik Light' })
+            },
+            {
+                title: 'Month Year',
+                options: __assign(__assign({}, this.options), { x: '30%', y: '82%', fontSize: 25, h: 0.5, fill: 'ffffff', line: {
+                        color: '000000',
+                        size: 1,
+                        dashType: 'dash'
+                    }, w: '15%' })
+            }
+        ];
+    }
+};
+var slide7Data = {
+    data: [
+        "Agenda",
+        "01 Study Design",
+        "02 Executive Summary",
+        "03 Detailed Results",
+        "05 Contact"
+    ],
+    options: {
+        align: 'left',
+        fontWeight: 'bold',
+        marginBottom: '15px',
+    },
+    extraOptions: {
+        x: '5%',
+        w: '25%',
+        fill: "F3F7FC",
+        fontSize: 24,
+    },
+    texts: ["This is dummy text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At imperdiet dui accumsan sit amet nulla. Bibendum at varius vel pharetra vel turpis nunc eget. Sagittis purus sit amet volutpat consequat mauris nunc congue. Eu facilisis sed odio morbi quis commodo odio aenean. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et netus. Enim eu turpis egestas pretium aenean pharetra magna ac. Tincidunt ornare massa eget egestas. In fermentum posuere urna nec tincidunt praesent. Lorem mollis aliquam ut porttitor leo a. Nibh mauris cursus mattis molestie a iaculis at erat pellentesque. Facilisis magna etiam tempor orci eu lobortis elementum nibh tellus. Porttitor rhoncus dolor purus non enim praesent elementum. Aenean pharetra magna ac placerat", "Non consectetur a erat nam at. Tortor consequat id porta nibh venenatis cras. Et ligula ullamcorper malesuada proin libero nunc consequat. At tellus at urna condimentum mattis. Quis imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper. Sed sed risus pretium quam. Suspendisse faucibus interdum posuere lorem ipsum. Ultricies mi eget mauris pharetra et ultrices neque ornare. Faucibus scelerisque eleifend donec pretium vulputate sapien. Scelerisque fermentum dui faucibus in ornare quam. Faucibus pulvinar elementum integer enim neque. Urna duis convallis convallis tellus id interdum velit laoreet id. Vehicula ipsum a arcu cursus vitae. Quam lacus suspendisse faucibus interdum posuere. Massa enim nec dui nunc. Ultrices tincidunt arcu non sodales. Tempus iaculis urna id volutpat lacus laoreet non. Ac turpis egestas integer eget aliquet. Cum sociis natoque penatibus et magnis dis.", "Faucibus pulvinar elementum integer enim neque. Urna duis convallis convallis tellus id interdum velit laoreet id. Vehicula ipsum a arcu cursus vitae. Quam lacus suspendisse faucibus interdum posuere. Massa enim nec dui nunc. Ultrices tincidunt arcu non sodales."],
+    textOptions: {
+        align: 'left',
+        color: '000000'
+    }
+};
+var slide8Data = {
+    options: {
+        x: '5%',
+    },
+    headingsText: function () {
+        return [
+            {
+                title: '01',
+                options: __assign(__assign({}, this.options), { y: '10%', fontSize: 80, FontFace: 'Aeonik Thin' })
+            },
+            {
+                title: 'CHAPTER SLIDE',
+                options: __assign(__assign({}, this.options), { y: '25%', fontSize: 80, FontFace: 'Aeonik Medium' })
+            },
+            {
+                title: 'appinio',
+                options: __assign(__assign({}, this.options), { y: '90%', fontSize: 24 })
+            }
+        ];
+    }
+};
+var slide9Data = {
+    options: {
+        fontSize: 20,
+    },
+    data: function () {
+        return [
+            [
+                {
+                    title: 'Study Design',
+                    options: { y: '10%', fontSize: 20 }
+                },
+                {
+                    title: "01 Study Design",
+                    options: {
+                        x: -4.5,
+                        y: -0.5,
+                        rotate: -90,
+                        fontSize: 11
+                    }
+                },
+                {
+                    title: 'Method & Data Collection',
+                    options: __assign(__assign({}, this.options), { x: '10%', w: '17.5%', fill: "F5FAFD", y: '22%', h: '13%' })
+                },
+                {
+                    image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060877/Qibble%20App/d7orwyzdkyxgtemc2pdp.png',
+                    options: {
+                        y: '22%', x: '27.5%'
+                    }
+                },
+                {
+                    title: 'Objective of the survey/General method used. Mobile questionnaire played out via the Appinio app',
+                    options: __assign(__assign({}, this.options), { y: '35%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' })
+                },
+                {
+                    title: 'Number of Questions',
+                    options: __assign(__assign({}, this.options), { y: '44%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' })
+                },
+                {
+                    title: 'The survey took place from January 9th, 2023 to January 17th, 2023',
+                    options: __assign(__assign({}, this.options), { y: '53%', x: '10%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' })
+                }
+            ],
+            [
+                {
+                    title: 'Sample',
+                    options: __assign(__assign({}, this.options), { x: '40%', w: '17.5%', fill: "F5FAFD", y: '22%', h: '13%' })
+                },
+                {
+                    image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060842/Qibble%20App/kf5rpwcom9yiyaranevn.png',
+                    options: { y: '22%', x: '57.5%' }
+                },
+                {
+                    title: 'Country/Location details',
+                    options: __assign(__assign({}, this.options), { y: '35%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' })
+                },
+                {
+                    title: 'Details on the total N (Age/Sample)',
+                    options: __assign(__assign({}, this.options), { y: '44%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' })
+                },
+                {
+                    title: 'Quota Specifics/distribution',
+                    options: __assign(__assign({}, this.options), { y: '53%', x: '40%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%' })
+                }
+            ],
+            [
+                {
+                    title: 'Questionnaire',
+                    options: __assign(__assign({}, this.options), { x: '70%', w: '17.5%', fill: "F5FAFD", y: '22%', h: '13%' })
+                },
+                {
+                    image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715060808/Qibble%20App/xi1l9dycmj7k3hkkxxct.png',
+                    options: { y: '22%', x: '87.5%' }
+                },
+                {
+                    title: 'First goal of questionnair',
+                    options: __assign(__assign({}, this.options), { y: '35%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 })
+                },
+                {
+                    title: 'Second goal of questionnair',
+                    options: __assign(__assign({}, this.options), { y: '44%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 })
+                },
+                {
+                    title: 'Third goal of questionnair',
+                    options: __assign(__assign({}, this.options), { y: '53%', x: '70%', fontSize: 12, w: '25%', fill: "F5FAFD", h: '10%', margin: 5 })
+                }, {
+                    title: 'appinio',
+                    options: __assign(__assign({}, this.options), { y: '90%', fontSize: 24 })
+                }
+            ]
+        ];
+    }
+};
+var slide10Data = {
+    headingsText: [
+        {
+            title: 'Sample Overview',
+            options: { y: '10%', x: '3%', fontSize: 20, FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: "01 Study Design",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 11
+            }
+        },
+        {
+            title: '1000',
+            options: { y: '22%', x: '7%', fontSize: 50, FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: 'Participants',
+            options: { y: '27%', x: '7%', fontSize: 10, color: '777777', FontFace: 'Aeonik' }
+        },
+        {
+            title: '39.5',
+            options: { y: '22%', x: '23%', fontSize: 50, FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: 'Average Ages in years',
+            options: { y: '27%', x: '23%', fontSize: 10, color: '777777', FontFace: 'Aeonik' }
+        },
+        {
+            title: 'Age & Gender',
+            options: { y: '34%', x: '7%', fontSize: 20, FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: 'United States',
+            options: { y: '75%', x: "55%", fontSize: 50, FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: 'United States',
+            options: { y: '75%', x: "55%", fontSize: 50, FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: '10.04.22',
+            options: { y: '90%', x: "55%", fontSize: 20, FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: 'Start Date',
+            options: { y: '93%', x: "55%", fontSize: 10, color: '777777', FontFace: 'Aeonik' }
+        },
+        {
+            title: '7 Days',
+            options: { y: '90%', x: "65%", fontSize: 20, FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: 'Field Time',
+            options: { y: '93%', x: "65%", fontSize: 10, color: '777777', FontFace: 'Aeonik' }
+        },
+        {
+            title: '34',
+            options: { y: '90%', x: "75%", fontSize: 20, FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: 'Number of Questions',
+            options: { y: '93%', x: "75%", fontSize: 10, color: '777777', FontFace: 'Aeonik' }
+        },
+        {
+            title: 'appinio',
+            options: { y: '95%', x: "3%", fontSize: 14 }
+        },
+        {
+            image: 'https://res.cloudinary.com/drascgtap/image/upload/v1715068058/Qibble%20App/c5xay6vcb96euuryamp7.png',
+            options: { y: '10%', x: '50%', h: '60%', w: '50%' }
+        }
+    ],
+    data: {
+        names: ['16-24', '25-34', '35-44', '45-54', '55-65'],
+        labels: ['Women', 'Men'],
+        values: [{ women: '200', men: '200' }, { women: '200', men: '200' }, { women: '200', men: '200' }, { women: '200', men: '200' }, { women: '200', men: '200' }]
+    }
+};
+var slide11Data = {
+    options: {
+        x: '7%',
+    },
+    extraOptions: {
+        align: 'left',
+        color: '000000'
+    },
+    headingsText: function () {
+        return [
+            {
+                title: 'Executive Summary',
+                options: {
+                    x: '2.5%', y: '10%', fontSize: 20, FontFace: 'Aeonik Regular'
+                }
+            },
+            {
+                title: "02 Executive Summary",
+                options: {
+                    x: -4.5,
+                    y: -0.5,
+                    rotate: -90,
+                    fontSize: 11
+                }
+            },
+            {
+                title: 'Only have one big key insight in the summary? This is a nice space to highlight the main insight or just introduce the insight summary.',
+                options: __assign(__assign({}, this.options), { y: '25%', fontSize: 20, w: '55%', FontFace: 'Aeonik Regular' })
+            },
+            {
+                title: 'This is dummy text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At imperdiet dui accumsan sit amet nulla. Bibendum at varius vel pharetra vel turpis nunc eget. Sagittis purus sit amet volutpat consequat mauris nunc congue. Eu facilisis sed odio morbi quis commodo odio aenean. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et netus. Enim eu turpis egestas pretium aenean pharetra magna ac. Tincidunt ornare massa eget egestas. In fermentum posuere urna nec tincidunt praesent. Lorem mollis aliquam ut porttitor leo a. Nibh mauris cursus mattis molestie a iaculis at erat pellentesque. Facilisis magna etiam tempor orci eu lobortis elementum nibh tellus. Porttitor rhoncus dolor purus non enim praesent elementum. Aenean pharetra magna ac placerat',
+                options: __assign(__assign({}, this.extraOptions), { x: '7%', fontSize: 11, y: '55%', w: '30%', FontFace: 'Aeonik Light' })
+            },
+            {
+                title: 'vestibulum lectus mauris ultrices eros. Elementum pulvinar etiam non quam lacus suspendisse faucibus interdum. Massa tincidunt dui ut ornare lectus sit. Vulputate sapien nec sagittis aliquam malesuada. Elementum sagittis vitae et leo duis ut diam. Nec feugiat in fermentum posuere urna nec tincidunt praesent semper.Est sit amet facilisis magna etiam tempor orci. Non consectetur a erat nam at. Tortor consequat id porta nibh venenatis cras. Et ligula ullamcorper malesuada proin libero nunc consequat. At tellus at urna condimentum mattis. Quis imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper.',
+                options: __assign(__assign({}, this.extraOptions), { x: '37%', fontSize: 11, y: '50%', w: '30%', FontFace: 'Aeonik Light' })
+            },
+            {
+                title: 'Sed sed risus pretium quam. Suspendisse faucibus interdum posuere lorem ipsum. Ultricies mi eget mauris pharetra et ultrices neque ornare. Faucibus scelerisque eleifend donec pretium vulputate sapien. Scelerisque fermentum dui faucibus in ornare quam.',
+                options: __assign(__assign({}, this.extraOptions), { x: '7%', fontSize: 11, y: '80%', w: '30%', FontFace: 'Aeonik Light' })
+            },
+            {
+                title: "vestibulum lectus mauris ultrices eros. Elementum pulvinar etiam non quam lacus suspendisse faucibus interdum. Massa tincidunt dui ut ornare lectus sit. Vulputate sapien nec sagittis aliquam malesuada. Elementum sagittis vitae et leo duis ut diam. Nec feugiat in fermentum posuere urna nec tincidunt praesent semper.Est sit amet facilisis magna etiam tempor orci.",
+                options: __assign(__assign({}, this.extraOptions), { x: '37%', fontSize: 11, y: '73%', w: '30%', FontFace: 'Aeonik Light' })
+            },
+            {
+                title: 'appinio',
+                options: {
+                    x: '2.5%', y: '95%', fontSize: 16,
+                }
+            }
+        ];
+    }
+};
+var slide12Data = {
+    headingsText: [
+        {
+            title: 'Any questions? We are happy to help!',
+            options: { fontSize: 20, y: '10%', x: '2%', FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: "04 Contract",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 11
+            }
+        },
+        {
+            image: 'https://res.cloudinary.com/drascgtap/image/upload/v1718028398/Qibble%20App/ivzkrwk2dvejkyfp7cqw.jpg',
+            options: { w: '12%', h: '20%', y: '20%', x: '8%' }
+        },
+        {
+            title: 'Name',
+            options: {
+                fontSize: 40, y: '20%', x: '20%', w: '70%', h: 0.5, align: 'left', fill: 'ffffff', line: {
+                    color: '000000',
+                    size: 1,
+                    dashType: 'dash'
+                },
+                FontFace: 'Aeonik Regular'
+            }
+        },
+        {
+            title: 'Position',
+            options: {
+                fontSize: 20, y: '28%', x: '20%', w: '70%', h: 0.3, align: 'left', fill: 'ffffff', line: {
+                    color: '000000',
+                    size: 1,
+                    dashType: 'dash'
+                },
+                FontFace: 'Aeonik Regular'
+            }
+        },
+        {
+            title: 'Office',
+            options: { fontSize: 8, y: '35%', x: '19%', color: '777777', FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: '+49',
+            options: {
+                fontSize: 8, y: '34%', x: '24%', color: '777777', w: '65%', h: 0.2, align: 'left', fill: 'ffffff', line: {
+                    color: '000000',
+                    size: 1,
+                    dashType: 'dash'
+                },
+                FontFace: 'Aeonik Regular'
+            }
+        },
+        {
+            title: 'Mail',
+            options: { fontSize: 8, y: '39%', x: '19%', color: '777777', FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: 'Louise.leitsch@appinio.com',
+            options: { fontSize: 8, y: '39%', x: '23%', color: '777777', FontFace: 'Aeonik Regular' }
+        },
+        {
+            image: 'https://res.cloudinary.com/drascgtap/image/upload/v1718028398/Qibble%20App/ivzkrwk2dvejkyfp7cqw.jpg',
+            options: { w: '12%', h: '20%', y: '50%', x: '8%' }
+        },
+        {
+            title: 'Name',
+            options: {
+                fontSize: 40, y: '50%', x: '20%', w: '70%', h: 0.5, align: 'left', fill: 'ffffff', line: {
+                    color: '000000',
+                    size: 1,
+                    dashType: 'dash'
+                },
+                FontFace: 'Aeonik Regular'
+            }
+        },
+        {
+            title: 'Position',
+            options: {
+                fontSize: 20, y: '58%', x: '20%', w: '70%', h: 0.3, align: 'left', fill: 'ffffff', line: {
+                    color: '000000',
+                    size: 1,
+                    dashType: 'dash'
+                },
+                FontFace: 'Aeonik Regular'
+            }
+        },
+        {
+            title: 'Office',
+            options: { fontSize: 8, y: '65%', x: '19%', color: '777777', FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: '+49',
+            options: {
+                fontSize: 8, y: '64%', x: '24%', color: '777777', w: '65%', h: 0.2, align: 'left', fill: 'ffffff', line: {
+                    color: '000000',
+                    size: 1,
+                    dashType: 'dash'
+                },
+                FontFace: 'Aeonik Regular'
+            }
+        },
+        {
+            title: 'Mail',
+            options: { fontSize: 8, y: '69%', x: '19%', color: '777777', FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: 'Louise.leitsch@appinio.com',
+            options: { fontSize: 8, y: '69%', x: '23%', color: '777777', FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: 'appinio',
+            options: { fontSize: 14, y: '90%', x: '2%' }
+        },
+        {
+            title: 'Appinio Germany Grobe Theaterstrabe 31 20354 Hamburg',
+            options: { fontSize: 10, y: '90%', x: '23%', w: '10%', FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: 'Appinio USA 1355 Market St 94301 San Francisco',
+            options: { fontSize: 10, y: '90%', x: '43%', w: '10%', FontFace: 'Aeonik Regular' }
+        },
+        {
+            title: 'Appinio UK Victoria House, Suite 41 38 Survey Quays Road, London UK',
+            options: { fontSize: 10, y: '90%', x: '63%', w: '10%' }
+        },
+        {
+            title: 'appinio.com',
+            options: { fontSize: 10, y: '90%', x: '83%', w: '10%' }
+        },
+    ]
+};
+var slide13Data = {
+    headingsText: [
+        {
+            title: 'Are you planning to go on vacation this year?',
+            options: {
+                y: '10%',
+                x: '2%',
+                fontSize: 20,
+                FontFace: 'Inter'
+            }
+        },
+        {
+            title: "03 Detailed Results",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 11
+            }
+        },
+        {
+            title: 'Total: (N = 1000)',
+            options: {
+                y: '16%',
+                x: '2%',
+                fontSize: 10,
+                FontFace: 'Aeonik Light'
+            }
+        },
+        {
+            title: 'Insights',
+            options: {
+                y: '22%',
+                x: '60%',
+                w: '100%',
+                fontSize: 10,
+                color: '777777',
+                FontFace: 'Aeonik Light'
+            }
+        },
+        {
+            title: 'Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
+            options: {
+                y: '30%',
+                x: '60%',
+                fontSize: 12,
+                w: '25%',
+                color: '000000',
+                FontFace: 'Aeonik Light'
+            }
+        },
+        {
+            title: 'Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
+            options: {
+                y: '45%',
+                x: '60%',
+                fontSize: 12,
+                w: '25%',
+                color: '000000',
+                FontFace: 'Aeonik Light'
+            }
+        },
+        {
+            title: 'appinio',
+            options: {
+                y: '95%',
+                x: '5%',
+                fontSize: 20,
+            }
+        },
+        {
+            title: 'Are you planning to go on vacation this year?: N =1000',
+            options: {
+                y: '93%',
+                x: '15%',
+                fontSize: 7,
+                FontFace: 'Inter'
+            }
+        },
+    ],
+    data: [
+        {
+            name: "Actual Sales",
+            labels: [["Yes", "No", "I donot know yet"]],
+            values: [54, 23, 24],
+        },
+    ],
+    options: {
+        // Set grid and axis line colors to white (almost invisible)
+        gridLineColor: 'ffffff',
+        // catAxisLineColor: 'ffffff',
+        valAxisLineColor: 'ffffff',
+        catGridLineColor: 'ffffff',
+        valGridLineColor: 'ffffff',
+        catGridLine: { style: 'none' },
+        valGridLine: { style: 'none' },
+        valAxisHidden: true,
+        barGapWidthPct: 20,
+        showValueAxis: false,
+        chartColors: ['779DFF'],
+        showLabel: true,
+        showValue: true,
+        valAxis: {
+            label: {
+                font: {
+                    size: 1 // Adjust font size as needed (smaller for less visibility)
+                }
+            }
+        },
+        h: 5, w: 7
+    }
+};
+var slide14Data = {
+    headingsText: [
+        {
+            title: 'Are you planning to go on vacation this year?',
+            options: {
+                y: '10%',
+                x: '2%',
+                fontSize: 20,
+                FontFace: 'Inter'
+            }
+        },
+        {
+            title: "03 Detailed Results",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 11
+            }
+        },
+        {
+            title: 'Total: (N = 1000)',
+            options: {
+                y: '16%',
+                x: '2%',
+                fontSize: 10,
+                FontFace: 'Aeonik Light'
+            }
+        },
+        {
+            title: 'Insights',
+            options: {
+                y: '22%',
+                x: '7%',
+                w: '100%',
+                fontSize: 10,
+                color: '777777',
+                FontFace: 'Aeonik Light'
+            }
+        },
+        {
+            title: 'Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
+            options: {
+                y: '30%',
+                x: '7%',
+                fontSize: 12,
+                w: '25%',
+                color: '000000',
+                FontFace: 'Aeonik Light'
+            }
+        },
+        {
+            title: 'Insight Headline in Aeonik Medium​ Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
+            options: {
+                y: '45%',
+                x: '7%',
+                fontSize: 12,
+                w: '25%',
+                color: '000000',
+                FontFace: 'Aeonik Light'
+            }
+        },
+        {
+            title: 'appinio',
+            options: {
+                y: '95%',
+                x: '5%',
+                fontSize: 20,
+            }
+        },
+        {
+            title: 'Are you planning to go on vacation this year?: N =1000',
+            options: {
+                y: '93%',
+                x: '15%',
+                fontSize: 7,
+                FontFace: 'Inter'
+            }
+        },
+    ],
+    data: [
+        {
+            name: "Actual Sales",
+            labels: [["Yes", "No", "I donot know yet"]],
+            values: [54, 23, 24],
+        },
+    ],
+    options: {
+        // Set grid and axis line colors to white (almost invisible)
+        gridLineColor: 'ffffff',
+        // catAxisLineColor: 'ffffff',
+        valAxisLineColor: 'ffffff',
+        catGridLineColor: 'ffffff',
+        valGridLineColor: 'ffffff',
+        catGridLine: { style: 'none' },
+        valGridLine: { style: 'none' },
+        valAxisHidden: true,
+        barGapWidthPct: 20,
+        showValueAxis: false,
+        chartColors: ['779DFF'],
+        showLabel: true,
+        showValue: true,
+        x: 5, h: 5, w: 7
+    }
+};
+var slide15Data = {
+    headingsText: [
+        {
+            title: 'Are you planning to go on vacation this year?',
+            options: {
+                y: '10%',
+                x: '2%',
+                fontSize: 20,
+                FontFace: 'Inter'
+            }
+        },
+        {
+            title: "03 Detailed Results",
+            options: {
+                x: -4.5,
+                y: -0.5,
+                rotate: -90,
+                fontSize: 11
+            }
+        },
+        {
+            title: 'Total: (N = 1000) / Split: Age Groups',
+            options: {
+                y: '16%',
+                x: '2%',
+                fontSize: 10,
+                FontFace: 'Aeonik Light'
+            }
+        },
+        {
+            title: 'Insights',
+            options: {
+                y: '20%',
+                x: '60%',
+                w: '100%',
+                fontSize: 10,
+                color: '777777',
+                FontFace: 'Aeonik Light'
+            }
+        },
+        {
+            title: 'Insight Headline in Aeonik Medium Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
+            options: {
+                y: '27%',
+                x: '60%',
+                fontSize: 12,
+                w: '30%',
+                color: '000000',
+                FontFace: 'Aeonik Light'
+            }
+        },
+        {
+            title: 'Insight Headline in Aeonik Medium Write the copy of the insight in Aeonik light. Try to not highlight any part of the copy. The Headline functions as the highlighted part.',
+            options: {
+                y: '40%',
+                x: '60%',
+                fontSize: 12,
+                w: '30%',
+                color: '000000',
+                FontFace: 'Aeonik Light'
+            }
+        },
+        {
+            title: '',
+            options: {
+                y: '80%',
+                x: '10%',
+                h: "2.5%",
+                w: "1.5%",
+                fill: {
+                    color: 'B6C9FF'
+                },
+                color: 'FFFFFF'
+            }
+        },
+        {
+            title: '16 - 24',
+            options: {
+                y: '81%',
+                x: '11%',
+                fontSize: 12
+            }
+        },
+        {
+            title: '',
+            options: {
+                y: '80%',
+                x: '20%',
+                h: "2.5%",
+                w: "1.5%",
+                fill: {
+                    color: '769DFF'
+                },
+                color: 'FFFFFF'
+            }
+        },
+        {
+            title: '25 - 34',
+            options: {
+                y: '81%',
+                x: '21%',
+                fontSize: 12
+            }
+        },
+        {
+            title: '',
+            options: {
+                y: '80%',
+                x: '30%',
+                h: "2.5%",
+                w: "1.5%",
+                fill: {
+                    color: '3C6FFF'
+                },
+                color: 'FFFFFF'
+            }
+        },
+        {
+            title: '35 - 44',
+            options: {
+                y: '81%',
+                x: '31%',
+                fontSize: 12
+            }
+        },
+        {
+            title: '',
+            options: {
+                y: '80%',
+                x: '40%',
+                h: "2.5%",
+                w: "1.5%",
+                fill: {
+                    color: '2D54C2'
+                },
+                color: 'FFFFFF'
+            }
+        },
+        {
+            title: '45 - 54',
+            options: {
+                y: '81%',
+                x: '41%',
+                fontSize: 12
+            }
+        },
+        {
+            title: '',
+            options: {
+                y: '80%',
+                x: '50%',
+                h: "2.5%",
+                w: "1.5%",
+                fill: {
+                    color: '1E3A84'
+                },
+                color: 'FFFFFF'
+            }
+        },
+        {
+            title: '55 - 65',
+            options: {
+                y: '81%',
+                x: '51%',
+                fontSize: 12
+            }
+        },
+        {
+            title: 'appinfo',
+            options: {
+                y: '95%',
+                x: '5%',
+                fontSize: 20,
+            }
+        },
+        {
+            title: 'Are you planning to go on vacation this year?: N =1000',
+            options: {
+                y: '93%',
+                x: '15%',
+                fontSize: 7,
+                FontFace: 'Inter'
+            }
+        }
+    ],
+    data: [
+        {
+            labels: [["Category 1", "Category 2", "Category 3"]],
+            values: [100, 100, 100],
+        },
+        {
+            labels: [["Category 1", "Category 2", "Category 3"]],
+            values: [100, 100, 100],
+        },
+        {
+            labels: [["Category 1", "Category 2", "Category 3"]],
+            values: [100, 100, 100],
+        },
+        {
+            labels: [["Category 1", "Category 2", "Category 3"]],
+            values: [100, 100, 100],
+        },
+        {
+            labels: [["Category 1", "Category 2", "Category 3"]],
+            values: [100, 100, 100],
+        },
+        // ... add more categories if needed
+    ],
+    options: {
+        // Set grid and axis line colors to white (almost invisible)
+        gridLineColor: 'ffffff',
+        // catAxisLineColor: 'ffffff',
+        valAxisLineColor: 'ffffff',
+        catGridLineColor: 'ffffff',
+        valGridLineColor: 'ffffff',
+        catGridLine: { style: 'none' },
+        valGridLine: { style: 'none' },
+        barGapWidthPct: 200,
+        valAxisHidden: true,
+        showValueAxis: false,
+        chartColors: ['B6C9FF', '769DFF', '3C6FFF', '2D54C2', '1E3A84'],
+        // x: 5,
+        y: 2,
+        // h:4.7,
+        showLabel: true,
+        showValue: true,
+        dataLabel: {
+            show: true,
+            fontSize: 8,
+            color: '000000',
+            placement: 'outEnd'
+        },
+    }
+};
+
+function slide1(pptx) {
+    var slide = pptx.addSlide();
+    var headingTexts = slide1Data.headingTexts;
+    headingTexts.forEach(function (heading) {
+        slide.addText(heading.title, heading.options);
+    });
+    // Add the chart to the slide
+    slide.addChart('custom', slide1Data.data, slide1Data.options);
+}
+function slide2(pptx) {
+    var slide = pptx.addSlide();
+    var headingTexts = slide2Data.headingTexts;
+    var table = slide.addTable(slide2Data.data, slide2Data.options);
+    // Change color of odd-numbered rows
+    table._slideObjects.forEach(function (slideObject) {
+        if (slideObject._type === 'table') {
+            slideObject.arrTabRows.forEach(function (row, index) {
+                if (index === 0) {
+                    row.forEach(function (cell) {
+                        cell.options.fill = 'FFFFFF'; // Change fill color to light gray
+                        cell.options.bold = true;
+                    });
+                }
+                else {
+                    if (index % 2 != 0) { // Odd-numbered row
+                        row.forEach(function (cell) {
+                            cell.options.fill = 'F5FAFD'; // Change fill color to light gray
+                        });
+                    }
+                    else {
+                        row.forEach(function (cell) {
+                            cell.options.fill = 'FFFFFF'; // Change fill color to light gray
+                        });
+                    }
+                }
+                row.forEach(function (cell, ind) {
+                    var _a;
+                    if (ind == (row === null || row === void 0 ? void 0 : row.length) - 1 && ind != 0) {
+                        var splitedText = (_a = cell === null || cell === void 0 ? void 0 : cell.text) === null || _a === void 0 ? void 0 : _a.split("%")[0];
+                        cell.options.color = splitedText == 'Score' ? '000000' : splitedText > 0 ? '008000' : 'FF0000';
+                    }
+                });
+            });
+        }
+    });
+    headingTexts.forEach(function (heading) {
+        slide.addText(heading.title, heading.options);
+    });
+}
+function slide3(pptx) {
+    var slide = pptx.addSlide();
+    slide3Data.headingTexts.forEach(function (heading) {
+        slide.addText(heading.title, heading.options);
+    });
+    slide.addChart(pptx.ChartType.waterfall, slide3Data.data, slide3Data.options);
+}
+function slide4(pptx) {
+    var slide = pptx.addSlide();
+    var tableData1 = slide4Data.data[0];
+    var tableData2 = slide4Data.data[1];
+    var tableOpts = slide4Data.options;
+    var headingTexts = slide4Data.headingTexts();
+    // First Col
+    var table1 = slide.addTable(tableData1, __assign(__assign({}, tableOpts), { x: '5%', y: '20%' }));
+    var table2 = slide.addTable(tableData2, __assign(__assign({}, tableOpts), { x: '55%', y: '20%' }));
+    // Second Col
+    var table3 = slide.addTable(tableData1, __assign(__assign({}, tableOpts), { x: '5%', y: '55%' }));
+    var table4 = slide.addTable(tableData2, __assign(__assign({}, tableOpts), { x: '55%', y: '55%' }));
+    // Change color of odd-numbered rows for all tables
+    [table1, table2, table3, table4].forEach(function (table) {
+        table._slideObjects.forEach(function (slideObject) {
+            if (slideObject._type === 'table') {
+                slideObject.arrTabRows.forEach(function (row, index) {
+                    if (index === 0) {
+                        row.forEach(function (cell) {
+                            cell.options.fill = '444790';
+                            cell.options.color = 'FFFFFF';
+                        });
+                    }
+                    else {
+                        row.forEach(function (cell) {
+                            cell.options.fill = 'f3f7fc';
+                        });
+                    }
+                });
+            }
+        });
+    });
+    headingTexts.forEach(function (heading) {
+        slide.addText(heading.title, heading.options);
+    });
+}
+function slide5(pptx) {
+    var slide = pptx.addSlide();
+    slide.addChart(pptx.ChartType.funnel, slide5Data.data[0], slide5Data.options);
+    var tableData = slide5Data.data[1];
+    slide.addText("Brand Funnel", {
+        x: '3%',
+        y: '5%',
+        color: '000000',
+    });
+    slide.addText("03 Detailed Results", {
+        x: -4.8,
+        y: -0.5,
+        rotate: -90,
+        fontSize: 11
+    });
+    slide.addText("Subheadline: Splitname and Total (N=)", {
+        x: '4%',
+        y: '7%',
+        h: 0.3,
+        w: '95%',
+        line: {
+            color: '000000',
+            size: 1,
+            dashType: 'dash'
+        },
+        color: '000000',
+        fontSize: 11
+    });
+    slide.addText("hello", {
+        w: '5%',
+        h: '15%',
+        x: '52%',
+        y: '20%',
+        color: '779DFF',
+        fill: '779DFF'
+    });
+    slide.addText("hello", {
+        w: '5%',
+        h: '15%',
+        x: '52%',
+        y: '35%',
+        color: 'F9B27E',
+        fill: 'F9B27E'
+    });
+    slide.addText("hello", {
+        w: '5%',
+        h: '15%',
+        x: '52%',
+        y: '50%',
+        color: '885EE0',
+        fill: '885EE0'
+    });
+    slide.addText("hello", {
+        w: '5%',
+        h: '15%',
+        x: '52%',
+        y: '65%',
+        color: '8ED19C',
+        fill: '8ED19C'
+    });
+    slide.addText("KPI", {
+        x: '8%', y: '16%', fontSize: 14
+    });
+    slide.addText("Absolute", {
+        x: '65%', y: '16%', fontSize: 12
+    });
+    slide.addText("Relative", {
+        x: '75%', y: '16%', fontSize: 12
+    });
+    slide.addText("Conversion Rate", {
+        x: '85%', y: '16%', fontSize: 12
+    });
+    var Table = slide.addTable(tableData, __assign(__assign({}, slide5Data.tableOptions), { x: '55%', y: '20%' }));
+    [Table].forEach(function (table) {
+        table._slideObjects.forEach(function (slideObject) {
+            if (slideObject._type === 'table') {
+                slideObject.arrTabRows.forEach(function (row, index) {
+                    if (index === 0) {
+                        row.forEach(function (cell) {
+                            cell.options.fill = 'F5FAFD';
+                            cell.options.color = '000000';
+                        });
+                    }
+                    if (index % 2 == 0 && index !== 0) { // Odd-numbered row
+                        row.forEach(function (cell) {
+                            cell.options.fill = 'F5FAFD';
+                        });
+                    }
+                });
+            }
+        });
+    });
+    slide.addText("appinio", {
+        x: '3%',
+        y: '95%',
+        align: 'left',
+        font_size: 12,
+        color: '363636',
+    });
+    slide.addText("Original Question from the Questionnaire (N=) | Original Question from the Questionnaire (N=)", {
+        x: '15%',
+        y: '92%',
+        w: '70%',
+        h: 0.5,
+        fontSize: 8,
+        color: '363636',
+        align: 'center',
+        body: 'Your Text Here',
+        fill: 'ffffff',
+        line: {
+            color: '000000',
+            size: 1,
+            dashtype: 'dash'
+        },
+    });
+}
+function slide6(pptx) {
+    var slide = pptx.addSlide();
+    var headingsText = slide6Data.headingsText();
+    slide.addImage({
+        path: 'https://res.cloudinary.com/drascgtap/image/upload/v1715864912/Qibble%20App/cfpt1xstecwgbmoupd17.png',
+        h: '10%', y: '10%', x: '5%', w: '15%'
+    });
+    headingsText.forEach(function (heading) {
+        slide.addText(heading.title, heading.options);
+    });
+}
+function slide7(pptx) {
+    var slide = pptx.addSlide();
+    // Define left section width (percentage)
+    var leftSectionWidth = 40;
+    // Create left section background shape
+    // Add content text on the left side
+    var contentText = slide7Data.data;
+    var numbers = [3, 15, 28, 37];
+    var textOpts = slide7Data.options;
+    var textopt = slide7Data.extraOptions;
+    var yPosition = 10; // Starting y position for text
+    var yPagePosition = 20;
+    slide.addText('', {
+        x: 0,
+        h: '100%',
+        w: '33%',
+        fill: "F3F7FC",
+        fontSize: 24,
+    });
+    contentText.forEach(function (text, index) {
+        if (index === 0) {
+            slide.addText(text, __assign(__assign({}, textopt), { y: 5 + '%', x: '2%', fontSize: 12 }));
+        }
+        else {
+            slide.addText(text, __assign(__assign({}, textOpts), { y: yPosition + '%', x: '2%' }));
+        }
+        yPosition += 10; // Update y position for next text
+    });
+    numbers.forEach(function (page) {
+        slide.addText("".concat(page), __assign(__assign({}, textopt), { y: yPagePosition + '%', x: '30%', fontSize: 12 }));
+        yPagePosition += 10;
+    });
+    var loremIpsumTextOpts = slide7Data.textOptions;
+    slide.addText('Introduction to Study', __assign(__assign({}, loremIpsumTextOpts), { x: "".concat(leftSectionWidth - 5, "%"), y: '10%', w: '65%', marginBottom: 20 }));
+    slide.addText(slide7Data.texts[0], __assign(__assign({}, loremIpsumTextOpts), { x: '35%', fontSize: 12, y: '40%', w: '30%' }));
+    slide.addText(slide7Data.texts[1], __assign(__assign({}, loremIpsumTextOpts), { x: '65%', fontSize: 12, y: '40%', w: '30%' }));
+    slide.addText(slide7Data.texts[2], __assign(__assign({}, loremIpsumTextOpts), { x: '35%', fontSize: 12, y: '80%', w: '30%' }));
+    slide.addImage({ path: 'https://res.cloudinary.com/drascgtap/image/upload/v1715866057/Qibble%20App/thlpiplo2h9n6h9fx83d.png', h: '10%', y: '80%', x: '65%', w: '25%' });
+}
+function slide8(pptx) {
+    var slide = pptx.addSlide();
+    slide.background = { color: 'E0E9FD' };
+    var headingsText = slide8Data.headingsText();
+    headingsText.forEach(function (heading) {
+        slide.addText(heading.title, heading.options);
+    });
+}
+function slide9(pptx) {
+    var slide = pptx.addSlide();
+    var data = slide9Data.data();
+    data[0].forEach(function (card) {
+        if (card.title) {
+            slide.addText(card.title, card.options);
+        }
+        else if (card.image) {
+            var imageOptions = __assign({ path: card.image }, card.options);
+            slide.addImage(imageOptions);
+        }
+    });
+    data[1].forEach(function (card) {
+        if (card.title) {
+            slide.addText(card.title, card.options);
+        }
+        else if (card.image) {
+            var imageOptions = __assign({ path: card.image }, card.options);
+            slide.addImage(imageOptions);
+        }
+    });
+    data[2].forEach(function (card) {
+        if (card.title) {
+            slide.addText(card.title, card.options);
+        }
+        else if (card.image) {
+            var imageOptions = __assign({ path: card.image }, card.options);
+            slide.addImage(imageOptions);
+        }
+    });
+}
+function slide10(pptx) {
+    var slide = pptx.addSlide();
+    var headingsText = slide10Data.headingsText;
+    headingsText.forEach(function (heading) {
+        if (heading.title) {
+            slide.addText(heading.title, heading.options);
+        }
+        else if (heading.image) {
+            slide.addImage(__assign({ path: heading.image }, heading.options));
+        }
+    });
+    var dataChart = [
+        {
+            name: 'men (1000)',
+            labels: ['16 – 24', '25 – 34', '35 – 44', '45 – 54', '55 – 65'],
+            values: [200, 200, 200, 200, 200],
+            color: '7A54DB'
+        },
+        {
+            name: 'women (1000)',
+            labels: ['16 – 24', '25 – 34', '35 – 44', '45 – 54', '55 – 65'],
+            values: [200, 200, 200, 200, 200],
+            color: 'EE8447'
+        },
+    ];
+    var chartOptions = {
+        x: 1, y: 2.8, w: 6.5, h: 3,
+        barDir: 'bar',
+        catAxisLabelColor: '000000',
+        valAxisLabelColor: '000000',
+        showLegend: true,
+        showValue: true,
+        barGapWidthPct: 20,
+        barWidthPct: 50,
+        dataLabelColor: 'FFFFFF',
+        barGrouping: 'stacked',
+        gridLineColor: 'ffffff',
+        legendPos: 'b',
+        // catAxisLineColor: 'ffffff',
+        valAxisLineColor: 'ffffff',
+        catGridLineColor: 'ffffff',
+        valGridLineColor: 'ffffff',
+        catGridLine: { style: 'none' },
+        valGridLine: { style: 'none' },
+        valAxisHidden: true,
+        // barGapWidthPct: 2,
+        showValueAxis: false,
+        chartColors: ['7A54DB', 'EE8447', '2ECC71', 'F1C40F'],
+        showLabel: true,
+        valAxis: {
+            label: {
+                font: {
+                    size: 1 // Adjust font size as needed (smaller for less visibility)
+                }
+            }
+        },
+    };
+    slide.addChart(pptx.ChartType.bar, dataChart, chartOptions);
+}
+function slide11(pptx) {
+    var slide = pptx.addSlide();
+    var headingsText = slide11Data.headingsText();
+    headingsText.forEach(function (heading) {
+        slide.addText(heading.title, heading.options);
+    });
+}
+function slide12(pptx) {
+    var slide = pptx.addSlide();
+    slide12Data.headingsText.forEach(function (heading) {
+        if (heading.title) {
+            slide.addText(heading.title, heading.options);
+        }
+        else if (heading.image) {
+            slide.addImage(__assign({ path: heading.image }, heading.options));
+        }
+    });
+}
+function slide13(pptx) {
+    var slide = pptx.addSlide();
+    var headingsText = slide13Data.headingsText;
+    headingsText.forEach(function (heading) {
+        slide.addText(heading.title, heading.options);
+    });
+    slide.addChart(pptx.ChartType.bar, slide13Data.data, slide13Data.options);
+}
+function slide14(pptx) {
+    var slide = pptx.addSlide();
+    var headingsText = slide14Data.headingsText;
+    headingsText.forEach(function (heading) {
+        slide.addText(heading.title, heading.options);
+    });
+    slide.addChart(pptx.ChartType.bar, slide14Data.data, slide14Data.options);
+}
+function slide15(pptx) {
+    var slide = pptx.addSlide();
+    var headingsText = slide15Data.headingsText;
+    headingsText.forEach(function (heading) {
+        slide.addText(heading.title, heading.options);
+    });
+    slide.addChart(pptx.ChartType.bar, slide15Data.data, slide15Data.options);
+}
+
 /**
  *  :: pptxgen.ts ::
  *
@@ -7433,6 +9588,27 @@ var PptxGenJS = /** @class */ (function () {
         if (options === void 0) { options = {}; }
         // @note `verbose` option is undocumented; used for verbose output of layout process
         genTableToSlides(this, eleId, options, (options === null || options === void 0 ? void 0 : options.masterSlideName) ? this.slideLayouts.filter(function (layout) { return layout._name === options.masterSlideName; })[0] : null);
+    };
+    PptxGenJS.prototype.generateSlides = function () {
+        var pptx = this;
+        pptx.layout = 'LAYOUT_WIDE';
+        slide1(pptx);
+        slide2(pptx);
+        slide3(pptx);
+        slide4(pptx);
+        slide5(pptx);
+        slide6(pptx);
+        slide7(pptx);
+        slide8(pptx);
+        slide9(pptx);
+        slide10(pptx);
+        slide11(pptx);
+        slide12(pptx);
+        slide13(pptx);
+        slide14(pptx);
+        slide15(pptx);
+        var fileName = 'custom_slides.pptx';
+        return fileName;
     };
     return PptxGenJS;
 }());
