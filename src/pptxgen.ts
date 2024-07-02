@@ -97,6 +97,7 @@ import * as genObj from './gen-objects'
 import * as genMedia from './gen-media'
 import * as genTable from './gen-tables'
 import * as genXml from './gen-xml'
+import { slide1, slide2, slide3, slide4, slide5, slide6, slide7, slide8, slide9, slide10, slide11, slide12, slide13, slide14, slide15 } from './custom-slides'
 
 const VERSION = '3.13.0-beta.0-20230416-2140'
 
@@ -783,5 +784,28 @@ export default class PptxGenJS implements IPresentationProps {
 			options,
 			options?.masterSlideName ? this.slideLayouts.filter(layout => layout._name === options.masterSlideName)[0] : null
 		)
+	}
+
+	generateSlides(): string {
+		let pptx = this
+		pptx.layout = 'LAYOUT_WIDE';
+		slide1(pptx);
+		slide2(pptx);
+		slide3(pptx);
+		slide4(pptx);
+		slide5(pptx);
+		slide6(pptx);
+		slide7(pptx);
+		slide8(pptx);
+		slide9(pptx);
+		slide10(pptx);
+		slide11(pptx);
+		slide12(pptx);
+		slide13(pptx);
+		slide14(pptx);
+		slide15(pptx);
+
+		const fileName = 'custom_slides.pptx';
+		return fileName
 	}
 }

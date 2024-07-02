@@ -1209,6 +1209,26 @@ export interface IChartMulti {
 	data: IOptsChartData[]
 	options: IChartOptsLib
 }
+
+export interface ICustomChart {
+	type: CHART_NAME
+	data: IOptsCustomChartData[],
+	options: IChartOptsLib
+}
+
+export interface IOptsCustomChartData {
+	name: string
+	value: number
+	type?: string
+}
+
+export interface IOptsCustomChartWaterfallData {
+	labelsY: string[] | number[]
+	labelsX: string[] | number[]
+	values: string[] | number[]
+	type?: string,
+	fill: string
+}
 export interface IChartPropsFillLine {
 	/**
 	 * PowerPoint: Format Chart Area/Plot > Border ["Line"]
@@ -1619,6 +1639,8 @@ export interface IChartOpts
 	 * - PowerPoint: [right-click on a chart] > "Edit Alt Text..."
 	 */
 	altText?: string
+	align?: any
+	position?: string
 }
 export interface IChartOptsLib extends IChartOpts {
 	_type?: CHART_NAME | IChartMulti[] // TODO: v3.4.0 - move to `IChartOpts`, remove `IChartOptsLib`

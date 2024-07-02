@@ -168,6 +168,9 @@ declare namespace PptxGenJS {
 		'pie' = 'pie',
 		'radar' = 'radar',
 		'scatter' = 'scatter',
+		'funnel' = 'funnel',
+		'waterfall' = 'waterfall',
+		'custom' = 'custom'
 	}
 	export enum OutputType {
 		'arraybuffer' = 'arraybuffer',
@@ -401,6 +404,9 @@ declare namespace PptxGenJS {
 		'PIE' = 'pie',
 		'RADAR' = 'radar',
 		'SCATTER' = 'scatter',
+		'FUNNEL' = 'funnel',
+		'WATERFALL'= 'waterfall',
+		'CUSTOM' = 'custom'
 	}
 	export enum shapes {
 		ACTION_BUTTON_BACK_OR_PREVIOUS = 'actionButtonBackPrevious',
@@ -601,6 +607,9 @@ declare namespace PptxGenJS {
 		'PIE' = 'pie',
 		'RADAR' = 'radar',
 		'SCATTER' = 'scatter',
+		'FUNNEL' = 'funnel',
+		'WATERFALL' = 'waterfall',
+		'CUSTOM' = 'custom'
 	}
 	export enum SCHEME_COLOR_NAMES {
 		'TEXT1' = 'tx1',
@@ -617,7 +626,7 @@ declare namespace PptxGenJS {
 
 	// @source `core-interfaces.d.ts` (via import)
 	// @code `import { CHART_NAME, PLACEHOLDER_TYPES, SHAPE_NAME, SLIDE_OBJECT_TYPES, TEXT_HALIGN, TEXT_VALIGN, WRITE_OUTPUT_TYPE } from './core-enums'`
-	export type CHART_NAME = 'area' | 'bar' | 'bar3D' | 'bubble' | 'doughnut' | 'line' | 'pie' | 'radar' | 'scatter'
+	export type CHART_NAME = 'area' | 'bar' | 'bar3D' | 'bubble' | 'doughnut' | 'line' | 'pie' | 'radar' | 'scatter' | 'waterfall'
 	export enum PLACEHOLDER_TYPES {
 		'title' = 'title',
 		'body' = 'body',

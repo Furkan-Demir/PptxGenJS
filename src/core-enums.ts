@@ -39,7 +39,7 @@ export const AXIS_ID_SERIES_PRIMARY = '2094734556'
 
 export type JSZIP_OUTPUT_TYPE = 'arraybuffer' | 'base64' | 'binarystring' | 'blob' | 'nodebuffer' | 'uint8array'
 export type WRITE_OUTPUT_TYPE = JSZIP_OUTPUT_TYPE | 'STREAM'
-export type CHART_NAME = 'area' | 'bar' | 'bar3D' | 'bubble' | 'bubble3D' | 'doughnut' | 'line' | 'pie' | 'radar' | 'scatter'
+export type CHART_NAME = 'area' | 'bar' | 'bar3D' | 'bubble' | 'bubble3D' | 'doughnut' | 'line' | 'pie' | 'radar' | 'scatter' | 'funnel' | 'waterfall' | "custom_funnel" |'custom' | 'slide10'
 export type SCHEME_COLORS = 'tx1' | 'tx2' | 'bg1' | 'bg2' | 'accent1' | 'accent2' | 'accent3' | 'accent4' | 'accent5' | 'accent6'
 
 export const LETTERS: string[] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
@@ -117,6 +117,10 @@ export enum ChartType {
 	'pie' = 'pie',
 	'radar' = 'radar',
 	'scatter' = 'scatter',
+	'funnel' = 'funnel',
+	"custom_funnel" = "custom_funnel",
+	'waterfall' = 'waterfall',
+	'custom' = 'custom',
 }
 export enum ShapeType {
 	'accentBorderCallout1' = 'accentBorderCallout1',
@@ -704,6 +708,11 @@ export enum CHART_TYPE {
 	'PIE' = 'pie',
 	'RADAR' = 'radar',
 	'SCATTER' = 'scatter',
+	'FUNNEL' = 'funnel',
+	'WATERFALL' = 'waterfall',
+	"CUSTOM_FUNNEL" = "custom_funnel",
+	'CUSTOM' = 'custom',
+	'SLIDE10' = 'slide10'
 }
 
 export enum SCHEME_COLOR_NAMES {

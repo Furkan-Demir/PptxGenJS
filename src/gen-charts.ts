@@ -11,6 +11,7 @@ import {
 	BARCHART_COLORS,
 	CHART_NAME,
 	CHART_TYPE,
+	ChartType,
 	DEF_CHART_GRIDLINE,
 	DEF_FONT_COLOR,
 	DEF_FONT_SIZE,
@@ -217,7 +218,11 @@ export async function createExcelWorksheet (chartObject: ISlideRelChart, zip: JS
 					strTableXml += `<tableColumn id="${idx + 1}" name="${idx === 0 ? 'X-Values' : 'Y-Value '}${idx}"/>`
 				})
 			} else {
-				strTableXml += `<table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" id="1" name="Table1" displayName="Table1" ref="A1:${getExcelColName(data.length + data[0].labels.length)}${data[0].labels[0].length + 1}'" totalsRowShown="0">`
+				strTableXml +=
+					'<table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" id="1" name="Table1" displayName="Table1" ref="A1:' +
+					getExcelColName(data.length + data[0].labels.length) +
+					(data[0].labels[0].length + 1) +
+					'" totalsRowShown="0">'
 				strTableXml += `<tableColumns count="${data.length + data[0].labels.length}">`
 				data[0].labels.forEach((_labelsGroup, idx) => {
 					strTableXml += `<tableColumn id="${idx + 1}" name="Column${idx + 1}"/>`
@@ -749,8 +754,425 @@ export function makeXmlCharts (rel: ISlideRelChart): string {
 
 	// LAST: chartSpace end
 	strXml += '</c:chartSpace>'
+	if(rel.opts._type === ChartType.custom_funnel) {
+		return createFunnelChart()
+	} else if (rel.opts._type === CHART_TYPE.CUSTOM) {
+		return createcustomChart(rel)
+	} else if(rel.opts._type === CHART_TYPE.SLIDE10) {
+		return createSlide10Chart(rel)
+	} else {
+		return strXml
+	}
+}
 
-	return strXml
+function createcustomChart(rel) {
+		const data = {
+			labels: rel.data[0]?.labels[0],
+			negativeValues: rel.data[0]?.values[0]?.negativeValues,
+			positiveValues: rel.data[0]?.values[0]?.positiveValues
+		};
+	
+		let labelPoints = data.labels.map((label, idx) => 
+			`<c:pt idx="${idx}"><c:v>${label}</c:v></c:pt>`).join('');
+	
+		let negativeValuePoints = data.negativeValues.map((value, idx) => 
+			`<c:pt idx="${idx}"><c:v>${value}</c:v></c:pt>`).join('');
+	
+		let positiveValuePoints = data.positiveValues.map((value, idx) => 
+			`<c:pt idx="${idx}"><c:v>${value}</c:v></c:pt>`).join('');
+	
+		let xmlString = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+		<c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:c16r2="http://schemas.microsoft.com/office/drawing/2015/06/chart"><c:date1904 val="0"/><c:lang val="en-GB"/><c:roundedCorners val="0"/><mc:AlternateContent xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"><mc:Choice Requires="c14" xmlns:c14="http://schemas.microsoft.com/office/drawing/2007/8/2/chart"><c14:style val="102"/></mc:Choice><mc:Fallback><c:style val="2"/></mc:Fallback></mc:AlternateContent><c:chart><c:autoTitleDeleted val="0"/><c:plotArea><c:layout><c:manualLayout><c:layoutTarget val="inner"/><c:xMode val="edge"/><c:yMode val="edge"/><c:x val="0.10482734584069632"/><c:y val="5.5871344259417713E-2"/><c:w val="0.87057867529141852"/><c:h val="0.92307398175211686"/></c:manualLayout></c:layout><c:barChart><c:barDir val="bar"/><c:grouping val="stacked"/><c:varyColors val="0"/><c:ser><c:idx val="0"/><c:order val="0"/><c:tx><c:strRef><c:f>Sheet1!$B$1</c:f><c:strCache><c:ptCount val="1"/><c:pt idx="0"><c:v>Negative</c:v></c:pt></c:strCache></c:strRef></c:tx><c:spPr><a:solidFill><a:srgbClr val="A93B4C"/></a:solidFill><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:invertIfNegative val="0"/><c:dLbls><c:dLbl><c:idx val="1"/><c:layout><c:manualLayout><c:x val="4.8201188184149061E-3"/><c:y val="4.158618463171603E-6"/></c:manualLayout></c:layout><c:dLblPos val="ctr"/><c:showLegendKey val="0"/><c:showVal val="1"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/><c:extLst><c:ext uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}" xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart"/><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{00000000-C60A-6F4C-8131-02F22F975519}"/></c:ext></c:extLst></c:dLbl><c:dLbl><c:idx val="7"/><c:layout><c:manualLayout><c:x val="3.2134968893602848E-3"/><c:y val="2.1887465595640017E-7"/></c:manualLayout></c:layout><c:dLblPos val="ctr"/><c:showLegendKey val="0"/><c:showVal val="1"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/><c:extLst><c:ext uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}" xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart"/><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{00000001-C60A-6F4C-8131-02F22F975519}"/></c:ext></c:extLst></c:dLbl><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:txPr><a:bodyPr rot="0" spcFirstLastPara="1" vertOverflow="ellipsis" vert="horz" wrap="square" lIns="38100" tIns="19050" rIns="38100" bIns="19050" anchor="ctr" anchorCtr="0"><a:spAutoFit/></a:bodyPr><a:lstStyle/><a:p><a:pPr algn="ctr"><a:defRPr lang="en-US" sz="1100" b="0" i="0" u="none" strike="noStrike" kern="1200" baseline="0"><a:solidFill><a:srgbClr val="FFFFF9"/></a:solidFill><a:latin typeface="Aeonik" panose="020B0503030300000000" pitchFamily="34" charset="0"/><a:ea typeface="+mn-ea"/><a:cs typeface="+mn-cs"/></a:defRPr></a:pPr><a:endParaRPr lang="en-PK"/></a:p></c:txPr><c:dLblPos val="ctr"/><c:showLegendKey val="0"/><c:showVal val="1"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/><c:showLeaderLines val="0"/><c:extLst><c:ext uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}" xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart"><c15:showLeaderLines val="0"/></c:ext></c:extLst></c:dLbls><c:cat><c:strRef><c:f>Sheet1!$A$2:$A$8</c:f><c:strCache><c:ptCount val="7"/>${labelPoints}</c:strCache></c:strRef></c:cat><c:val><c:numRef><c:f>Sheet1!$B$2:$B$8</c:f><c:numCache><c:formatCode>0%</c:formatCode><c:ptCount val="7"/>${negativeValuePoints}</c:numCache></c:numRef></c:val><c:extLst><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{00000002-C60A-6F4C-8131-02F22F975519}"/></c:ext></c:extLst></c:ser><c:ser><c:idx val="1"/><c:order val="1"/><c:tx><c:strRef><c:f>Sheet1!$C$1</c:f><c:strCache><c:ptCount val="1"/><c:pt idx="0"><c:v>Positive</c:v></c:pt></c:strCache></c:strRef></c:tx><c:spPr><a:solidFill><a:srgbClr val="8ED19C"/></a:solidFill><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:invertIfNegative val="0"/><c:dLbls><c:dLbl><c:idx val="0"/><c:layout><c:manualLayout><c:x val="1.0442910990218195E-2"/><c:y val="2.9462338448117653E-6"/></c:manualLayout></c:layout><c:dLblPos val="ctr"/><c:showLegendKey val="0"/><c:showVal val="1"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/><c:extLst><c:ext uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}" xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart"/><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{00000003-C60A-6F4C-8131-02F22F975519}"/></c:ext></c:extLst></c:dLbl><c:dLbl><c:idx val="1"/><c:layout><c:manualLayout><c:x val="8.033362676524089E-3"/><c:y val="2.8453705274332021E-6"/></c:manualLayout></c:layout><c:dLblPos val="ctr"/><c:showLegendKey val="0"/><c:showVal val="1"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/><c:extLst><c:ext uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}" xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart"/><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{00000004-C60A-6F4C-8131-02F22F975519}"/></c:ext></c:extLst></c:dLbl><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:txPr><a:bodyPr rot="0" spcFirstLastPara="1" vertOverflow="ellipsis" vert="horz" wrap="square" lIns="38100" tIns="19050" rIns="38100" bIns="19050" anchor="ctr" anchorCtr="0"><a:spAutoFit/></a:bodyPr><a:lstStyle/><a:p><a:pPr algn="ctr"><a:defRPr lang="en-US" sz="1050" b="0" i="0" u="none" strike="noStrike" kern="1200" baseline="0"><a:solidFill><a:srgbClr val="FFFFF9"/></a:solidFill><a:latin typeface="Aeonik" panose="020B0503030300000000" pitchFamily="34" charset="0"/><a:ea typeface="+mn-ea"/><a:cs typeface="+mn-cs"/></a:defRPr></a:pPr><a:endParaRPr lang="en-PK"/></a:p></c:txPr><c:dLblPos val="ctr"/><c:showLegendKey val="0"/><c:showVal val="1"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/><c:showLeaderLines val="0"/><c:extLst><c:ext uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}" xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart"><c15:showLeaderLines val="0"/></c:ext></c:extLst></c:dLbls><c:cat><c:strRef><c:f>Sheet1!$A$2:$A$8</c:f><c:strCache><c:ptCount val="7"/>${labelPoints}</c:strCache></c:strRef></c:cat><c:val><c:numRef><c:f>Sheet1!$C$2:$C$8</c:f><c:numCache><c:formatCode>0%</c:formatCode><c:ptCount val="7"/>${positiveValuePoints}</c:numCache></c:numRef></c:val><c:extLst><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{00000005-C60A-6F4C-8131-02F22F975519}"/></c:ext></c:extLst></c:ser><c:dLbls><c:showLegendKey val="0"/><c:showVal val="0"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/></c:dLbls><c:gapWidth val="20"/><c:overlap val="100"/><c:axId val="1722139648"/><c:axId val="1"/></c:barChart><c:catAx><c:axId val="1722139648"/><c:scaling><c:orientation val="maxMin"/></c:scaling><c:delete val="0"/><c:axPos val="l"/><c:numFmt formatCode="General" sourceLinked="1"/><c:majorTickMark val="none"/><c:minorTickMark val="none"/><c:tickLblPos val="low"/><c:spPr><a:noFill/><a:ln w="9122" cap="flat" cmpd="sng" algn="ctr"><a:solidFill><a:schemeClr val="tx2"/></a:solidFill><a:round/></a:ln><a:effectLst/></c:spPr><c:txPr><a:bodyPr rot="-60000000" spcFirstLastPara="1" vertOverflow="ellipsis" vert="horz" wrap="square" anchor="ctr" anchorCtr="1"/><a:lstStyle/><a:p><a:pPr><a:defRPr sz="1050" b="0" i="0" u="none" strike="noStrike" kern="1200" spc="10" baseline="0"><a:solidFill><a:schemeClr val="bg2"><a:lumMod val="25000"/></a:schemeClr></a:solidFill><a:latin typeface="Aeonik" panose="020B0503030300000000" pitchFamily="34" charset="0"/><a:ea typeface="+mn-ea"/><a:cs typeface="+mn-cs"/></a:defRPr></a:pPr><a:endParaRPr lang="en-PK"/></a:p></c:txPr><c:crossAx val="1"/><c:crosses val="autoZero"/><c:auto val="1"/><c:lblAlgn val="ctr"/><c:lblOffset val="100"/><c:noMultiLvlLbl val="0"/></c:catAx><c:valAx><c:axId val="1"/><c:scaling><c:orientation val="minMax"/><c:max val="1"/><c:min val="-1"/></c:scaling><c:delete val="0"/><c:axPos val="t"/><c:numFmt formatCode="0%" sourceLinked="1"/><c:majorTickMark val="out"/><c:minorTickMark val="none"/><c:tickLblPos val="nextTo"/><c:crossAx val="1722139648"/><c:crosses val="autoZero"/><c:crossBetween val="between"/></c:valAx><c:spPr><a:noFill/><a:ln w="24325"><a:noFill/></a:ln></c:spPr></c:plotArea><c:plotVisOnly val="1"/><c:dispBlanksAs val="gap"/><c:showDLblsOverMax val="0"/></c:chart><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:txPr><a:bodyPr/><a:lstStyle/><a:p><a:pPr><a:defRPr/></a:pPr><a:endParaRPr lang="en-PK"/></a:p></c:txPr><c:externalData r:id="rId1"><c:autoUpdate val="0"/></c:externalData></c:chartSpace>`;
+
+		return xmlString
+}
+//Outdated
+function createSlide10Chart(rel) {
+    // Static variables
+    const categories = rel.data[0]?.labels[0];
+    const dataValues = rel.data[0]?.values[0];
+	const colors = rel.data[0]?.colors;
+	var xPosition =  0.2
+	var width = 0.20
+
+	for(let i = 0; i<(colors.length-1); i++){
+		xPosition = xPosition/2;
+		width = width + 0.15
+	}
+
+
+    const generateDynamicXml = () => {
+        let str = '';
+        // Iterate over each key in dataValues (assuming it contains multiple series)
+        Object.keys(dataValues).forEach((key, index) => {
+            const seriesName = key; // Use this as your series name or identifier
+            // Generate XML for each series dynamically
+            str += `
+            <c:ser>
+                <c:idx val="${index}"/>
+                <c:order val="${index}"/>
+                <c:tx>
+                    <c:strRef>
+                        <c:f>Sheet1!$A$2</c:f>
+                        <c:strCache>
+                            <c:ptCount val="1"/>
+                            <c:pt idx="0">
+                                <c:v>${seriesName} (1000)</c:v>
+                            </c:pt>
+                        </c:strCache>
+                    </c:strRef>
+                </c:tx>
+                <c:spPr>
+                    <a:solidFill>
+                        <a:srgbClr val="${colors[index]}"/>
+                    </a:solidFill>
+                    <a:ln w="6350" cap="flat">
+                        <a:noFill/>
+                        <a:miter lim="400000"/>
+                    </a:ln>
+                    <a:effectLst/>
+                </c:spPr>
+                <c:invertIfNegative val="0"/>
+                <c:dLbls>
+                    <c:numFmt formatCode="#,##0" sourceLinked="0"/>
+                    <c:spPr>
+                        <a:noFill/>
+                        <a:ln>
+                            <a:noFill/>
+                        </a:ln>
+                        <a:effectLst/>
+                    </c:spPr>
+                    <c:txPr>
+                        <a:bodyPr/>
+                        <a:lstStyle/>
+                        <a:p>
+                            <a:pPr>
+                                <a:defRPr>
+                                    <a:solidFill>
+                                        <a:srgbClr val="FFFFFF"/>
+                                    </a:solidFill>
+                                </a:defRPr>
+                            </a:pPr>
+                            <a:endParaRPr lang="en-PK"/>
+                        </a:p>
+                    </c:txPr>
+                    <c:dLblPos val="ctr"/>
+                    <c:showLegendKey val="0"/>
+                    <c:showVal val="1"/>
+                    <c:showCatName val="0"/>
+                    <c:showSerName val="0"/>
+                    <c:showPercent val="0"/>
+                    <c:showBubbleSize val="0"/>
+                    <c:showLeaderLines val="0"/>
+                </c:dLbls>
+                <c:cat>
+                    <c:strRef>
+                        <c:f>Sheet1!$B$1:$F$1</c:f>
+                        <c:strCache>
+                            <c:ptCount val="${categories.length}"/>
+                            ${generateCategoryXML(categories)}
+                        </c:strCache>
+                    </c:strRef>
+                </c:cat>
+                <c:val>
+                    <c:numRef>
+                        <c:f>Sheet1!$B$2:$F$2</c:f>
+                        <c:numCache>
+                            <c:formatCode>General</c:formatCode>
+                            <c:ptCount val="${dataValues[key].length}"/>
+                            ${generateDataXML(dataValues[key])}
+                        </c:numCache>
+                    </c:numRef>
+                </c:val>
+                <c:extLst>
+                    <c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart">
+                        <c16:uniqueId val="{00000000-07DB-8E4D-8FB1-AAE78A14B9A9}"/>
+                    </c:ext>
+                </c:extLst>
+            </c:ser>`;
+        });
+
+        return str;
+    };
+
+    // Helper function to generate category XML
+    const generateCategoryXML = (categories) => {
+        return categories.map((category, index) => `<c:pt idx="${index}"><c:v>${category}</c:v></c:pt>`).join('');
+    };
+
+    // Helper function to generate data XML
+    const generateDataXML = (data) => {
+        return data.map((value, index) => `<c:pt idx="${index}"><c:v>${value}</c:v></c:pt>`).join('');
+    };
+
+    // Construct the entire XML for the chart
+    const chartXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:c16r2="http://schemas.microsoft.com/office/drawing/2015/06/chart">
+        <c:date1904 val="1"/>
+        <c:lang val="en-GB"/>
+        <c:roundedCorners val="0"/>
+        <mc:AlternateContent xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+            <mc:Choice Requires="c14" xmlns:c14="http://schemas.microsoft.com/office/drawing/2007/8/2/chart">
+                <c14:style val="102"/>
+            </mc:Choice>
+            <mc:Fallback>
+                <c:style val="2"/>
+            </mc:Fallback>
+        </mc:AlternateContent>
+        <c:chart>
+            <c:autoTitleDeleted val="1"/>
+            <c:plotArea>
+                <c:layout>
+                    <c:manualLayout>
+                        <c:layoutTarget val="inner"/>
+                        <c:xMode val="edge"/>
+                        <c:yMode val="edge"/>
+                        <c:x val="0.0"/>
+                        <c:y val="0.335"/>
+                        <c:w val="0.5"/>
+                        <c:h val="0.5"/>
+                    </c:manualLayout>
+                </c:layout>
+                <c:barChart>
+                    <c:barDir val="bar"/>
+                    <c:grouping val="stacked"/>
+                    <c:varyColors val="0"/>
+                    ${generateDynamicXml()}
+                    <c:dLbls>
+                        <c:showLegendKey val="0"/>
+                        <c:showVal val="0"/>
+                        <c:showCatName val="0"/>
+                        <c:showSerName val="0"/>
+                        <c:showPercent val="0"/>
+                        <c:showBubbleSize val="0"/>
+                    </c:dLbls>
+                    <c:gapWidth val="30"/>
+                    <c:overlap val="100"/>
+                    <c:axId val="2094734552"/>
+                    <c:axId val="2094734553"/>
+                </c:barChart>
+                <c:catAx>
+                    <c:axId val="2094734552"/>
+                    <c:scaling>
+                        <c:orientation val="maxMin"/>
+                    </c:scaling>
+                    <c:delete val="0"/>
+                    <c:axPos val="l"/>
+                    <c:numFmt formatCode="General" sourceLinked="0"/>
+                    <c:majorTickMark val="none"/>
+                    <c:minorTickMark val="none"/>
+                    <c:tickLblPos val="nextTo"/>
+                    <c:spPr>
+                        <a:ln w="6350" cap="flat">
+                            <a:noFill/>
+                            <a:prstDash val="solid"/>
+                            <a:miter lim="800000"/>
+                        </a:ln>
+                    </c:spPr>
+                    <c:txPr>
+                        <a:bodyPr rot="0"/>
+                        <a:lstStyle/>
+                        <a:p>
+                            <a:pPr>
+                                <a:defRPr sz="1200" spc="10" baseline="0"/>
+                            </a:pPr>
+                            <a:endParaRPr lang="en-PK"/>
+                        </a:p>
+                    </c:txPr>
+                    <c:crossAx val="2094734553"/>
+                    <c:crosses val="autoZero"/>
+                    <c:auto val="1"/>
+                    <c:lblAlgn val="ctr"/>
+                    <c:lblOffset val="100"/>
+                    <c:noMultiLvlLbl val="1"/>
+                </c:catAx>
+                <c:valAx>
+                    <c:axId val="2094734553"/>
+                    <c:scaling>
+                        <c:orientation val="minMax"/>
+                    </c:scaling>
+                    <c:delete val="0"/>
+                    <c:axPos val="t"/>
+                    <c:numFmt formatCode="#,##0" sourceLinked="0"/>
+                    <c:majorTickMark val="none"/>
+                    <c:minorTickMark val="none"/>
+                    <c:tickLblPos val="none"/>
+                    <c:spPr>
+                        <a:ln w="6350" cap="flat">
+                            <a:noFill/>
+                            <a:prstDash val="solid"/>
+                            <a:miter lim="800000"/>
+                        </a:ln>
+                    </c:spPr>
+                    <c:txPr>
+                        <a:bodyPr rot="0"/>
+                        <a:lstStyle/>
+                        <a:p>
+                            <a:pPr>
+                                <a:defRPr/>
+                            </a:pPr>
+                            <a:endParaRPr lang="en-PK"/>
+                        </a:p>
+                    </c:txPr>
+                    <c:crossAx val="2094734552"/>
+                    <c:crosses val="autoZero"/>
+                    <c:crossBetween val="between"/>
+                </c:valAx>
+                <c:spPr>
+                    <a:noFill/>
+                    <a:ln w="12700" cap="flat">
+                        <a:noFill/>
+                        <a:miter lim="400000"/>
+                    </a:ln>
+                    <a:effectLst/>
+                </c:spPr>
+            </c:plotArea>
+            <c:legend>
+                <c:legendPos val="b"/>
+                <c:layout>
+                    <c:manualLayout>
+                        <c:xMode val="edge"/>
+                        <c:yMode val="edge"/>
+                        <c:x val="${xPosition}"/>
+                        <c:y val="0.99"/>
+                        <c:w val="${width}"/>
+                        <c:h val="0.3"/>
+                    </c:manualLayout>
+                </c:layout>
+                <c:overlay val="1"/>
+                <c:spPr>
+                    <a:noFill/>
+                    <a:ln w="12700" cap="flat">
+                        <a:noFill/>
+                        <a:miter lim="400000"/>
+                    </a:ln>
+                    <a:effectLst/>
+                </c:spPr>
+                <c:txPr>
+                    <a:bodyPr rot="0"/>
+                    <a:lstStyle/>
+                    <a:p>
+                        <a:pPr>
+                            <a:defRPr sz="1200" spc="10" baseline="0"/>
+                        </a:pPr>
+                        <a:endParaRPr lang="en-PK"/>
+                    </a:p>
+                </c:txPr>
+            </c:legend>
+            <c:plotVisOnly val="1"/>
+            <c:dispBlanksAs val="gap"/>
+            <c:showDLblsOverMax val="1"/>
+        </c:chart>
+        <c:spPr>
+            <a:noFill/>
+            <a:ln>
+                <a:noFill/>
+            </a:ln>
+            <a:effectLst/>
+        </c:spPr>
+        <c:txPr>
+            <a:bodyPr/>
+            <a:lstStyle/>
+            <a:p>
+                <a:pPr>
+                    <a:defRPr>
+                        <a:solidFill>
+                            <a:schemeClr val="tx1"/>
+                        </a:solidFill>
+                    </a:defRPr>
+                </a:pPr>
+                <a:endParaRPr lang="en-PK"/>
+            </a:p>
+        </c:txPr>
+        <c:externalData r:id="rId1">
+            <c:autoUpdate val="0"/>
+        </c:externalData>
+    </c:chartSpace>`;
+
+    return chartXml;
+}
+
+
+function createFunnelChart() {
+	const data = [
+		{
+			values: [0, 0, 0, 1051.5, 1026.5],
+			fill: '88D298'
+		},
+		{
+			values: [0, 0, 1647.5, 1051.5],
+			fill: '8152E3'
+		},
+		{
+			values: [0, 1824, 1647.5],
+			fill: 'FFAF75'
+		},
+		{
+			values: [0, 1824, 1647.5],
+			fill: '779DFF'
+		},
+		{
+			values: [50, 58, 58, 234.5, 830.5],
+			fill: 'FFFFFF'
+		}
+	]
+
+	let newStrxml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" 
+              xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" 
+              xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+    <c:date1904 val="0"/>
+    <c:roundedCorners val="1"/>
+    <c:chart>
+        <c:autoTitleDeleted val="1"/>
+        <c:plotArea>
+            <c:layout/>
+            <c:areaChart>
+                <c:grouping val="standard"/>
+                <c:varyColors val="0"/>`;
+
+	for (let i = 0; i < data.length; i++) {
+		const info = data[i];
+		const seriesIdx = data.length - 1 - i;
+
+		newStrxml += `<c:ser>
+        <c:idx val="${seriesIdx}"/>
+        <c:order val="${i}"/>
+        <c:spPr>
+            <a:solidFill>
+                <a:srgbClr val="${info.fill}"/>
+            </a:solidFill>
+            <a:ln>
+                <a:noFill/>
+            </a:ln>
+        </c:spPr>
+        <c:val>
+            <c:numRef>
+                <c:f>scratch!$AJ$11:$AJ$16</c:f>
+                <c:numCache>
+                    <c:formatCode>General</c:formatCode>
+                    <c:ptCount val="${info.values.length}"/>`;
+
+		for (let j = 0; j < info.values.length; j++) {
+			const val = info.values[j];
+			newStrxml += `<c:pt idx="${j}">
+                        <c:v>${val}</c:v>
+                      </c:pt>`;
+		}
+
+		newStrxml += `</c:numCache>
+            </c:numRef>
+        </c:val>
+        <c:extLst>
+            <c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart">
+                <c16:uniqueId val="{00000000-096B-3942-BF36-84F747CF6E4D}"/>
+            </c:ext>
+        </c:extLst>
+    </c:ser>`;
+	}
+
+	newStrxml += `<c:dLbls><c:showLegendKey val="0"/><c:showVal val="0"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/></c:dLbls><c:axId val="270962536"/><c:axId val="270962928"/></c:areaChart><c:scatterChart><c:scatterStyle val="lineMarker"/><c:varyColors val="0"/><c:ser><c:idx val="1"/><c:order val="5"/><c:spPr><a:ln w="28575"><a:noFill/></a:ln></c:spPr><c:marker><c:symbol val="none"/></c:marker><c:xVal><c:numRef><c:f>scratch!$Y$11:$Y$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="6"/><c:pt idx="0"><c:v>1.8</c:v></c:pt><c:pt idx="1"><c:v>2</c:v></c:pt><c:pt idx="2"><c:v>3</c:v></c:pt><c:pt idx="3"><c:v>4</c:v></c:pt><c:pt idx="4"><c:v>5</c:v></c:pt><c:pt idx="5"><c:v>6</c:v></c:pt></c:numCache></c:numRef></c:xVal><c:yVal><c:numRef><c:f>scratch!$AD$11:$AD$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="6"/><c:pt idx="0"><c:v>50</c:v></c:pt><c:pt idx="1"><c:v>58</c:v></c:pt><c:pt idx="2"><c:v>58</c:v></c:pt><c:pt idx="3"><c:v>234.5</c:v></c:pt><c:pt idx="4"><c:v>830.5</c:v></c:pt><c:pt idx="5"><c:v>855.5</c:v></c:pt></c:numCache></c:numRef></c:yVal><c:smooth val="0"/><c:extLst><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{00000005-096B-3942-BF36-84F747CF6E4D}"/></c:ext></c:extLst></c:ser><c:ser><c:idx val="6"/><c:order val="6"/><c:spPr><a:ln w="28575"><a:noFill/></a:ln></c:spPr><c:marker><c:symbol val="none"/></c:marker><c:xVal><c:numRef><c:f>scratch!$Y$11:$Y$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="6"/><c:pt idx="0"><c:v>1.8</c:v></c:pt><c:pt idx="1"><c:v>2</c:v></c:pt><c:pt idx="2"><c:v>3</c:v></c:pt><c:pt idx="3"><c:v>4</c:v></c:pt><c:pt idx="4"><c:v>5</c:v></c:pt><c:pt idx="5"><c:v>6</c:v></c:pt></c:numCache></c:numRef></c:xVal><c:yVal><c:numRef><c:f>scratch!$AE$11:$AE$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="6"/><c:pt idx="0"><c:v>1832</c:v></c:pt><c:pt idx="1"><c:v>1824</c:v></c:pt><c:pt idx="2"><c:v>1824</c:v></c:pt><c:pt idx="3"><c:v>1647.5</c:v></c:pt><c:pt idx="4"><c:v>1051.5</c:v></c:pt><c:pt idx="5"><c:v>1026.5</c:v></c:pt></c:numCache></c:numRef></c:yVal><c:smooth val="0"/><c:extLst><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{00000006-096B-3942-BF36-84F747CF6E4D}"/></c:ext></c:extLst></c:ser><c:ser><c:idx val="8"/><c:order val="7"/><c:tx><c:v>Lost</c:v></c:tx><c:spPr><a:ln><a:noFill/></a:ln></c:spPr><c:marker><c:symbol val="none"/></c:marker><c:xVal><c:numRef><c:f>scratch!$Q$13:$Q$15</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="3"/><c:pt idx="0"><c:v>2.4500000000000002</c:v></c:pt><c:pt idx="1"><c:v>3.45</c:v></c:pt><c:pt idx="2"><c:v>4.45</c:v></c:pt></c:numCache></c:numRef></c:xVal><c:yVal><c:numRef><c:f>scratch!$R$13:$R$15</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="3"/><c:pt idx="0"><c:v>760.32799999999997</c:v></c:pt><c:pt idx="1"><c:v>760.32799999999997</c:v></c:pt><c:pt idx="2"><c:v>760.32799999999997</c:v></c:pt></c:numCache></c:numRef></c:yVal><c:smooth val="0"/><c:extLst><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{00000007-096B-3942-BF36-84F747CF6E4D}"/></c:ext></c:extLst></c:ser><c:ser><c:idx val="9"/><c:order val="8"/><c:tx><c:v>Uqualified</c:v></c:tx><c:marker><c:symbol val="none"/></c:marker><c:xVal><c:numRef><c:f>scratch!$V$13</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="1"/><c:pt idx="0"><c:v>2.4500000000000002</c:v></c:pt></c:numCache></c:numRef></c:xVal><c:yVal><c:numRef><c:f>scratch!$W$13</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="1"/><c:pt idx="0"><c:v>699.16300000000001</c:v></c:pt></c:numCache></c:numRef></c:yVal><c:smooth val="0"/><c:extLst><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{00000008-096B-3942-BF36-84F747CF6E4D}"/></c:ext></c:extLst></c:ser><c:ser><c:idx val="11"/><c:order val="9"/><c:tx><c:v>Percentages</c:v></c:tx><c:spPr><a:ln><a:noFill/></a:ln></c:spPr><c:marker><c:symbol val="none"/></c:marker><c:dLbls><c:dLbl><c:idx val="0"/><c:tx><c:rich><a:bodyPr wrap="square" lIns="38100" tIns="19050" rIns="38100" bIns="19050" anchor="ctr"><a:noAutofit/></a:bodyPr><a:lstStyle/><a:p><a:pPr><a:defRPr sz="900" b="0"><a:solidFill><a:schemeClr val="bg1"/></a:solidFill><a:latin typeface="+mj-lt"/></a:defRPr></a:pPr><a:fld id="{F3440B4F-6AD0-2147-9A45-FCA5C5DF2AEA}" type="CELLRANGE"><a:rPr lang="en-US"/><a:pPr><a:defRPr sz="900" b="0"><a:solidFill><a:schemeClr val="bg1"/></a:solidFill><a:latin typeface="+mj-lt"/></a:defRPr></a:pPr><a:t>[CELLRANGE]</a:t></a:fld><a:endParaRPr lang="en-PK"/></a:p></c:rich></c:tx><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:dLblPos val="ctr"/><c:showLegendKey val="0"/><c:showVal val="0"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/><c:extLst><c:ext uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}" xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart"><c15:layout><c:manualLayout><c:w val="0.22918996461474705"/><c:h val="0.15312670347996721"/></c:manualLayout></c15:layout><c15:dlblFieldTable/><c15:showDataLabelsRange val="1"/></c:ext><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{00000009-096B-3942-BF36-84F747CF6E4D}"/></c:ext></c:extLst></c:dLbl><c:dLbl><c:idx val="1"/><c:tx><c:rich><a:bodyPr wrap="square" lIns="38100" tIns="19050" rIns="38100" bIns="19050" anchor="ctr"><a:spAutoFit/></a:bodyPr><a:lstStyle/><a:p><a:pPr><a:defRPr sz="900" b="0"><a:solidFill><a:schemeClr val="tx1"/></a:solidFill><a:latin typeface="+mj-lt"/></a:defRPr></a:pPr><a:fld id="{3742B605-1CFB-9447-8470-9250B9702A05}" type="CELLRANGE"><a:rPr lang="en-PK"/><a:pPr><a:defRPr sz="900" b="0"><a:solidFill><a:schemeClr val="tx1"/></a:solidFill><a:latin typeface="+mj-lt"/></a:defRPr></a:pPr><a:t>[CELLRANGE]</a:t></a:fld><a:endParaRPr lang="en-PK"/></a:p></c:rich></c:tx><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:dLblPos val="ctr"/><c:showLegendKey val="0"/><c:showVal val="0"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/><c:extLst><c:ext uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}" xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart"><c15:dlblFieldTable/><c15:xForSave val="1"/><c15:showDataLabelsRange val="1"/></c:ext><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{0000000A-096B-3942-BF36-84F747CF6E4D}"/></c:ext></c:extLst></c:dLbl><c:dLbl><c:idx val="2"/><c:tx><c:rich><a:bodyPr/><a:lstStyle/><a:p><a:fld id="{2728191A-B09D-9D45-A38E-5F7AA3D6E41A}" type="CELLRANGE"><a:rPr lang="en-PK"/><a:pPr/><a:t>[CELLRANGE]</a:t></a:fld><a:endParaRPr lang="en-PK"/></a:p></c:rich></c:tx><c:dLblPos val="ctr"/><c:showLegendKey val="0"/><c:showVal val="0"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/><c:extLst><c:ext uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}" xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart"><c15:dlblFieldTable/><c15:xForSave val="1"/><c15:showDataLabelsRange val="1"/></c:ext><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{0000000B-096B-3942-BF36-84F747CF6E4D}"/></c:ext></c:extLst></c:dLbl><c:dLbl><c:idx val="3"/><c:tx><c:rich><a:bodyPr wrap="square" lIns="38100" tIns="19050" rIns="38100" bIns="19050" anchor="ctr"><a:spAutoFit/></a:bodyPr><a:lstStyle/><a:p><a:pPr><a:defRPr sz="900" b="0"><a:solidFill><a:schemeClr val="tx1"/></a:solidFill><a:latin typeface="+mj-lt"/></a:defRPr></a:pPr><a:fld id="{6CC5A663-137A-8646-B00A-8819AF793E7D}" type="CELLRANGE"><a:rPr lang="en-PK"/><a:pPr><a:defRPr sz="900" b="0"><a:solidFill><a:schemeClr val="tx1"/></a:solidFill><a:latin typeface="+mj-lt"/></a:defRPr></a:pPr><a:t>[CELLRANGE]</a:t></a:fld><a:endParaRPr lang="en-PK"/></a:p></c:rich></c:tx><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:dLblPos val="ctr"/><c:showLegendKey val="0"/><c:showVal val="0"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/><c:extLst><c:ext uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}" xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart"><c15:dlblFieldTable/><c15:xForSave val="1"/><c15:showDataLabelsRange val="1"/></c:ext><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{0000000C-096B-3942-BF36-84F747CF6E4D}"/></c:ext></c:extLst></c:dLbl><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr><c:txPr><a:bodyPr wrap="square" lIns="38100" tIns="19050" rIns="38100" bIns="19050" anchor="ctr"><a:spAutoFit/></a:bodyPr><a:lstStyle/><a:p><a:pPr><a:defRPr sz="900" b="0"><a:solidFill><a:schemeClr val="bg1"/></a:solidFill><a:latin typeface="+mj-lt"/></a:defRPr></a:pPr><a:endParaRPr lang="en-PK"/></a:p></c:txPr><c:dLblPos val="ctr"/><c:showLegendKey val="0"/><c:showVal val="0"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/><c:showLeaderLines val="0"/><c:extLst><c:ext uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}" xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart"><c15:showDataLabelsRange val="1"/><c15:showLeaderLines val="0"/></c:ext></c:extLst></c:dLbls><c:xVal><c:numRef><c:f>scratch!$G$13:$G$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="4"/><c:pt idx="0"><c:v>2.4500000000000002</c:v></c:pt><c:pt idx="1"><c:v>3.45</c:v></c:pt><c:pt idx="2"><c:v>4.45</c:v></c:pt><c:pt idx="3"><c:v>5.3500000000000005</c:v></c:pt></c:numCache></c:numRef></c:xVal><c:yVal><c:numRef><c:f>scratch!$H$13:$H$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="4"/><c:pt idx="0"><c:v>977.22849999999994</c:v></c:pt><c:pt idx="1"><c:v>977.22849999999994</c:v></c:pt><c:pt idx="2"><c:v>977.22849999999994</c:v></c:pt><c:pt idx="3"><c:v>977.22849999999994</c:v></c:pt></c:numCache></c:numRef></c:yVal><c:smooth val="0"/><c:extLst><c:ext uri="{02D57815-91ED-43cb-92C2-25804820EDAC}" xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart"><c15:datalabelsRange><c15:f>scratch!$E$13:$E$16</c15:f><c15:dlblRangeCache><c:ptCount val="4"/><c:pt idx="0"><c:v>100%</c:v></c:pt><c:pt idx="1"><c:v>80%</c:v></c:pt><c:pt idx="2"><c:v>13%</c:v></c:pt><c:pt idx="3"><c:v>10%</c:v></c:pt></c15:dlblRangeCache></c15:datalabelsRange></c:ext><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{0000000D-096B-3942-BF36-84F747CF6E4D}"/></c:ext></c:extLst></c:ser><c:ser><c:idx val="7"/><c:order val="10"/><c:tx><c:v>Stage Totals 2</c:v></c:tx><c:spPr><a:ln><a:noFill/></a:ln></c:spPr><c:marker><c:symbol val="none"/></c:marker><c:xVal><c:numRef><c:f>scratch!$L$13:$L$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="4"/><c:pt idx="0"><c:v>2.4500000000000002</c:v></c:pt><c:pt idx="1"><c:v>3.45</c:v></c:pt><c:pt idx="2"><c:v>4.45</c:v></c:pt></c:numCache></c:numRef></c:xVal><c:yVal><c:numRef><c:f>scratch!$M$13:$M$16</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="4"/><c:pt idx="0"><c:v>904.77150000000006</c:v></c:pt><c:pt idx="1"><c:v>904.77150000000006</c:v></c:pt><c:pt idx="2"><c:v>904.77150000000006</c:v></c:pt></c:numCache></c:numRef></c:yVal><c:smooth val="0"/><c:extLst><c:ext uri="{C3380CC4-5D6E-409C-BE32-E72D297353CC}" xmlns:c16="http://schemas.microsoft.com/office/drawing/2014/chart"><c16:uniqueId val="{0000000E-096B-3942-BF36-84F747CF6E4D}"/></c:ext></c:extLst></c:ser><c:dLbls><c:showLegendKey val="0"/><c:showVal val="0"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/></c:dLbls><c:axId val="270962536"/><c:axId val="270962928"/></c:scatterChart><c:catAx>  <c:axId val="2094734554"/>  <c:scaling><c:orientation val="minMax"/></c:scaling>  <c:delete val="0"/>  <c:axPos val="b"/>  <c:numFmt formatCode="General" sourceLinked="1"/>  <c:majorTickMark val="out"/>  <c:minorTickMark val="none"/>  <c:tickLblPos val="low"/>  <c:spPr>    <a:ln w="12700" cap="flat"><a:solidFill><a:srgbClr val="888888"/></a:solidFill>      <a:prstDash val="solid"/>      <a:round/>    </a:ln>  </c:spPr>  <c:txPr><a:bodyPr/>    <a:lstStyle/>    <a:p>    <a:pPr>      <a:defRPr sz="1200" b="0" i="0" u="none" strike="noStrike">      <a:solidFill><a:srgbClr val="000000"/></a:solidFill>      <a:latin typeface="Arial"/>   </a:defRPr>  </a:pPr>  <a:endParaRPr lang="en-US"/>  </a:p> </c:txPr> <c:crossAx val="2094734552"/> <c:crosses val="autoZero"/> <c:auto val="1"/> <c:lblAlgn val="ctr"/> <c:noMultiLvlLbl val="1"/></c:catAx><c:valAx>  <c:axId val="2094734552"/>  <c:scaling><c:orientation val="minMax"/>  </c:scaling>  <c:delete val="0"/>  <c:axPos val="l"/><c:numFmt formatCode="General" sourceLinked="0"/> <c:majorTickMark val="out"/> <c:minorTickMark val="none"/> <c:tickLblPos val="nextTo"/> <c:spPr>   <a:ln w="12700" cap="flat"><a:solidFill><a:srgbClr val="888888"/></a:solidFill>     <a:prstDash val="solid"/>     <a:round/>   </a:ln> </c:spPr> <c:txPr>  <a:bodyPr/>  <a:lstStyle/>  <a:p>    <a:pPr>      <a:defRPr sz="1200" b="0" i="0" u="none" strike="noStrike">        <a:solidFill><a:srgbClr val="000000"/></a:solidFill>        <a:latin typeface="Arial"/>      </a:defRPr>    </a:pPr>  <a:endParaRPr lang="en-US"/>  </a:p> </c:txPr> <c:crossAx val="2094734554"/> <c:crosses val="autoZero"/> <c:crossBetween val="between"/></c:valAx>  <c:spPr><a:noFill/><a:ln><a:noFill/></a:ln>    <a:effectLst/>  </c:spPr></c:plotArea>  <c:plotVisOnly val="1"/>  <c:dispBlanksAs val="span"/></c:chart><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln>  <a:effectLst/></c:spPr><c:externalData r:id="rId1"><c:autoUpdate val="0"/></c:externalData></c:chartSpace>`
+	return newStrxml
 }
 
 /**
